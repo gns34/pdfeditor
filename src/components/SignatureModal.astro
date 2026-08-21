@@ -1,0 +1,108 @@
+---
+---
+
+<div id="signature-modal" class="fixed inset-0 z-50 bg-[#0d253d]/50 backdrop-blur-xs hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl border border-[#e3e8ee] shadow-level-3 w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-[#e3e8ee] flex items-center justify-between bg-[#f6f9fc]">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-[#533afd]/10 text-[#533afd] flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
+            <path d="m14 6 4 4"/>
+            <path d="M4 22h16"/>
+          </svg>
+        </div>
+        <h3 class="font-medium text-[17px] text-[#0d253d]">Create Digital Signature</h3>
+      </div>
+      <button id="close-signature-modal" class="text-[#64748d] hover:text-[#0d253d] p-1.5 rounded-lg hover:bg-[#e3e8ee]/60 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="px-6 pt-4 border-b border-[#e3e8ee] flex gap-6 text-[14px]">
+      <button id="tab-draw-btn" class="pb-3 border-b-2 border-[#533afd] text-[#533afd] font-medium transition-colors">Draw Signature</button>
+      <button id="tab-type-btn" class="pb-3 border-b-2 border-transparent text-[#64748d] hover:text-[#0d253d] font-normal transition-colors">Type Cursive</button>
+      <button id="tab-upload-btn" class="pb-3 border-b-2 border-transparent text-[#64748d] hover:text-[#0d253d] font-normal transition-colors">Upload Image</button>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+      <!-- Tab 1: Draw Pad -->
+      <div id="tab-draw-content" class="space-y-4">
+        <div class="border-2 border-dashed border-[#e3e8ee] rounded-xl bg-[#f6f9fc] relative overflow-hidden">
+          <canvas id="signature-canvas" width="460" height="180" class="w-full h-44 cursor-crosshair touch-none"></canvas>
+          <div class="absolute bottom-2 left-3 pointer-events-none text-[11px] text-[#64748d]/60 select-none">
+            Sign above using mouse or touch
+          </div>
+        </div>
+        <div class="flex items-center justify-between text-[13px]">
+          <div class="flex items-center gap-2">
+            <span class="text-[#64748d]">Color:</span>
+            <button class="sig-color-btn w-6 h-6 rounded-full bg-[#0d253d] ring-2 ring-offset-1 ring-[#533afd]" data-color="#0d253d"></button>
+            <button class="sig-color-btn w-6 h-6 rounded-full bg-[#533afd]" data-color="#533afd"></button>
+            <button class="sig-color-btn w-6 h-6 rounded-full bg-[#1e40af]" data-color="#1e40af"></button>
+          </div>
+          <button id="clear-signature-btn" class="text-[#64748d] hover:text-[#ea2261] transition-colors flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18"/>
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+            </svg>
+            <span>Clear</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 2: Type Cursive -->
+      <div id="tab-type-content" class="space-y-4 hidden">
+        <div>
+          <label class="block text-[13px] text-[#273951] mb-1.5 font-normal">Type your name:</label>
+          <input id="typed-signature-input" type="text" placeholder="e.g. Alex Morgan" class="w-full px-3 py-2 rounded-lg border border-[#a8c3de] text-[#0d253d] text-[15px] focus:outline-none focus:border-[#533afd]" />
+        </div>
+        <div class="space-y-2 pt-2">
+          <label class="block text-[12px] text-[#64748d]">Choose Style:</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" class="sig-font-option border-2 border-[#533afd] bg-[#b9b9f9]/10 rounded-xl p-3 text-center" data-font="dancing">
+              <span class="font-['Dancing_Script'] text-2xl text-[#0d253d] block preview-sig-text">Alex Morgan</span>
+              <span class="text-[11px] text-[#64748d] mt-1 block">Dancing Script</span>
+            </button>
+            <button type="button" class="sig-font-option border-2 border-[#e3e8ee] hover:border-[#a8c3de] rounded-xl p-3 text-center" data-font="pacifico">
+              <span class="font-['Pacifico'] text-xl text-[#0d253d] block preview-sig-text">Alex Morgan</span>
+              <span class="text-[11px] text-[#64748d] mt-1 block">Pacifico</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Upload Image -->
+      <div id="tab-upload-content" class="space-y-4 hidden">
+        <label for="signature-file-input" class="border-2 border-dashed border-[#e3e8ee] hover:border-[#533afd] rounded-xl p-6 bg-[#f6f9fc] flex flex-col items-center justify-center cursor-pointer transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-[#533afd] mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <span class="text-[14px] text-[#0d253d] font-medium">Click or Drag Signature Image</span>
+          <span class="text-[12px] text-[#64748d] mt-1">PNG with transparent background or JPG</span>
+          <input id="signature-file-input" type="file" accept="image/png, image/jpeg, image/webp" class="hidden" />
+        </label>
+        <div id="upload-preview-container" class="hidden text-center">
+          <img id="upload-signature-preview" class="max-h-24 mx-auto object-contain border rounded p-2" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t border-[#e3e8ee] bg-[#f6f9fc] flex items-center justify-end gap-3">
+      <button id="cancel-signature-btn" class="btn-secondary-pill text-[13px] py-1.5 px-4">Cancel</button>
+      <button id="apply-signature-btn" class="btn-primary-pill text-[13px] py-1.5 px-5">
+        <span>Insert Signature</span>
+      </button>
+    </div>
+  </div>
+</div>

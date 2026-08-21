@@ -12,6 +12,16 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.2.4"
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.4",
+    "canvas-confetti": "^1.9.4",
+    "fabric": "^7.4.0",
+    "lucide": "^1.33.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.2.108",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0"
   }
 }

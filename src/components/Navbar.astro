@@ -1,0 +1,59 @@
+---
+interface Props {
+  isEditorPage?: boolean;
+}
+
+const { isEditorPage = false } = Astro.props;
+---
+
+<header class="w-full border-b border-[#e3e8ee]/70 bg-white/90 backdrop-blur-md sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <a href="/" class="flex items-center gap-3 group text-decoration-none">
+      <div class="w-9 h-9 rounded-xl bg-[#533afd] flex items-center justify-center shadow-sm text-white transition-transform group-hover:scale-105">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <path d="m9 15 2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-[17px] tracking-tight text-[#0d253d]">PDF Editor <span class="text-[#533afd] font-semibold">AI</span></span>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#b9b9f9]/40 text-[#4434d4] border border-[#533afd]/20 uppercase tracking-wide">Local</span>
+      </div>
+    </a>
+
+    <!-- Center Nav Links -->
+    <nav class="hidden md:flex items-center gap-7 text-[14px] text-[#273951]">
+      <a href="/edit" class="hover:text-[#533afd] transition-colors py-1">In-Browser Studio</a>
+      <a href="/#features" class="hover:text-[#533afd] transition-colors py-1">Features</a>
+      <a href="/#ai-redactor" class="hover:text-[#533afd] transition-colors py-1">AI Redactor</a>
+      <a href="/#comparison" class="hover:text-[#533afd] transition-colors py-1">Why vs Sejda</a>
+      <a href="/privacy" class="hover:text-[#533afd] transition-colors py-1">Zero-Upload Privacy</a>
+      <a href="/#faq" class="hover:text-[#533afd] transition-colors py-1">FAQ</a>
+    </nav>
+
+    <!-- Right CTAs & Privacy Badge -->
+    <div class="flex items-center gap-3">
+      <!-- Privacy Indicator -->
+      <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951] text-[12px] font-normal" title="No documents are ever uploaded to cloud servers">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>100% Client-Side</span>
+      </div>
+
+      {!isEditorPage ? (
+        <a href="/edit" class="btn-primary-pill text-[14px] py-2 px-4 shadow-sm">
+          <span>Open Editor</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/>
+            <path d="m12 5 7 7-7 7"/>
+          </svg>
+        </a>
+      ) : (
+        <a href="/" class="btn-secondary-pill text-[13px] py-1.5 px-3">
+          <span>Exit Studio</span>
+        </a>
+      )}
+    </div>
+  </div>
+</header>

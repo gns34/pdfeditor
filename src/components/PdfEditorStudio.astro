@@ -1,0 +1,1451 @@
+---
+import SignatureModal from './SignatureModal.astro';
+
+interface Props {
+  mode?: 'standalone' | 'embedded';
+}
+
+const { mode = 'standalone' } = Astro.props;
+---
+
+<div class={`pdf-studio-root w-full flex flex-col ${mode === 'standalone' ? 'h-[calc(100vh-64px)]' : 'h-[800px] rounded-2xl border border-[#e3e8ee] shadow-level-2 overflow-hidden'}`} id="pdf-studio-container">
+  
+  <!-- Studio Top Toolbar -->
+  <div class="bg-white border-b border-[#e3e8ee] px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 select-none z-20">
+    <!-- Left: Tool Groups -->
+    <div class="flex items-center gap-1 sm:gap-1.5 flex-wrap">
+      
+      <!-- Select / Move Tool -->
+      <button class="tool-btn active p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="select" title="Select, Move, Scale & Rotate Objects (V)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 3 7 18 3-7 7-3L3 3z"/>
+          <path d="m13 13 6 6"/>
+        </svg>
+        <span class="text-[12px] hidden lg:inline">Select</span>
+      </button>
+
+      <!-- Edit Existing Text Mode -->
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="edit-existing" title="Click & In-Place Edit Existing PDF Text (E)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"/>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+        </svg>
+        <span class="text-[12px] font-medium hidden lg:inline text-[#533afd]">Edit Text</span>
+      </button>
+
+      <!-- Add New Text Tool -->
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="text" title="Click to Add New Text Box (T)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4 7 4 4 20 4 20 7"/>
+          <line x1="9" y1="20" x2="15" y2="20"/>
+          <line x1="12" y1="4" x2="12" y2="20"/>
+        </svg>
+        <span class="text-[12px] hidden lg:inline">Add Text</span>
+      </button>
+
+      <!-- Freehand Pen -->
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="draw" title="Draw / Smooth Pen (P)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+          <path d="M2 2l7.586 7.586"/>
+        </svg>
+        <span class="text-[12px] hidden xl:inline">Pen</span>
+      </button>
+
+      <!-- Highlighter -->
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="highlight" title="Highlighter (H)">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 11-6 6v3h3l6-6"/>
+          <path d="m22 2-5 5-4-4 5-5a2.828 2.828 0 1 1 4 4z"/>
+        </svg>
+        <span class="text-[12px] hidden xl:inline">Highlight</span>
+      </button>
+
+      <!-- Shapes Dropdown -->
+      <div class="relative inline-block">
+        <button id="shapes-menu-btn" class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="shape" title="Shapes (Rectangle, Circle, Arrow, Line)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="3" rx="2"/>
+          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-2.5 h-2.5 text-[#64748d]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <!-- Shapes Menu -->
+        <div id="shapes-dropdown" class="hidden absolute left-0 top-full mt-1 bg-white border border-[#e3e8ee] rounded-xl shadow-level-2 p-1.5 z-30 flex flex-col gap-1 w-36">
+          <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="rectangle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+            <span>Rectangle</span>
+          </button>
+          <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+            <span>Circle</span>
+          </button>
+          <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <span>Arrow</span>
+          </button>
+          <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="line">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg>
+            <span>Line</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Whiteout / Redact -->
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="whiteout" title="Whiteout Mask / Redact Area">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/>
+          <path d="M22 21H7"/>
+          <path d="m5 11 9 9"/>
+        </svg>
+        <span class="text-[12px] hidden lg:inline">Whiteout</span>
+      </button>
+
+      <!-- Signature -->
+      <button id="open-sign-modal-btn" class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1.5" title="Insert E-Signature">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
+          <path d="m14 6 4 4"/>
+          <path d="M4 22h16"/>
+        </svg>
+        <span class="text-[12px] font-normal hidden sm:inline">Sign</span>
+      </button>
+
+      <!-- Image / Stamp -->
+      <label class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent cursor-pointer flex items-center gap-1" title="Insert Image / Stamp">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+          <circle cx="9" cy="9" r="2"/>
+          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+        </svg>
+        <span class="text-[12px] hidden lg:inline">Image</span>
+        <input type="file" id="image-upload-input" accept="image/png, image/jpeg, image/svg+xml, image/webp" class="hidden" />
+      </label>
+
+      <!-- AI Assistant Button -->
+      <button id="toggle-ai-sidebar-btn" class="p-1.5 px-2.5 rounded-lg bg-[#b9b9f9]/30 text-[#4434d4] hover:bg-[#b9b9f9]/50 transition-colors flex items-center gap-1.5 border border-[#533afd]/20 text-[13px] font-medium" title="AI Document Assistant">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+        </svg>
+        <span>AI Assistant</span>
+      </button>
+    </div>
+
+    <!-- Center: Contextual Tool Properties -->
+    <div id="tool-props-bar" class="flex items-center gap-2 text-[13px] text-[#273951] bg-[#f6f9fc] px-3 py-1 rounded-lg border border-[#e3e8ee]">
+      <!-- Color Picker -->
+      <div class="flex items-center gap-1">
+        <label for="active-color-input" class="cursor-pointer flex items-center gap-1.5">
+          <span id="color-preview-circle" class="w-4 h-4 rounded-full bg-[#0d253d] border border-[#e3e8ee]"></span>
+          <span class="text-[12px] text-[#64748d]">Color</span>
+        </label>
+        <input type="color" id="active-color-input" value="#0d253d" class="w-0 h-0 opacity-0 absolute" />
+      </div>
+
+      <div class="w-px h-4 bg-[#e3e8ee]"></div>
+
+      <!-- Size -->
+      <div class="flex items-center gap-1.5">
+        <span class="text-[12px] text-[#64748d]">Size:</span>
+        <select id="active-size-select" class="bg-transparent border-0 text-[#0d253d] font-normal text-[13px] focus:outline-none cursor-pointer">
+          <option value="12">12px</option>
+          <option value="14">14px</option>
+          <option value="16" selected>16px</option>
+          <option value="18">18px</option>
+          <option value="22">22px</option>
+          <option value="28">28px</option>
+          <option value="36">36px</option>
+        </select>
+      </div>
+
+      <div class="w-px h-4 bg-[#e3e8ee]"></div>
+
+      <!-- Font Family -->
+      <select id="active-font-select" class="bg-transparent border-0 text-[#0d253d] font-normal text-[13px] focus:outline-none cursor-pointer">
+        <option value="Helvetica">Helvetica / Modern</option>
+        <option value="TimesRoman">Times / Serif</option>
+        <option value="Courier">Courier / Mono</option>
+      </select>
+    </div>
+
+    <!-- Right: Undo/Redo, Zoom & Single-Indigo Download CTA -->
+    <div class="flex items-center gap-2">
+      <!-- Undo / Redo -->
+      <div class="flex items-center">
+        <button id="undo-btn" class="p-1.5 text-[#64748d] hover:text-[#0d253d] hover:bg-[#f6f9fc] rounded transition-colors" title="Undo (Ctrl+Z)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7v6h6"/>
+            <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+          </svg>
+        </button>
+        <button id="redo-btn" class="p-1.5 text-[#64748d] hover:text-[#0d253d] hover:bg-[#f6f9fc] rounded transition-colors" title="Redo (Ctrl+Y)">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 7v6h-6"/>
+            <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="w-px h-5 bg-[#e3e8ee]"></div>
+
+      <!-- Zoom Controls -->
+      <div class="flex items-center gap-1 text-[13px] text-[#273951] bg-[#f6f9fc] px-2 py-1 rounded-lg border border-[#e3e8ee]">
+        <button id="zoom-out-btn" class="p-0.5 text-[#64748d] hover:text-[#0d253d] font-bold text-sm px-1">-</button>
+        <span id="zoom-display" class="tabular-num font-mono text-[12px] px-1 min-w-10 text-center">130%</span>
+        <button id="zoom-in-btn" class="p-0.5 text-[#64748d] hover:text-[#0d253d] font-bold text-sm px-1">+</button>
+      </div>
+
+      <!-- Single Primary Indigo CTA -->
+      <button id="download-pdf-btn" class="btn-primary-pill text-[13px] py-1.5 px-4 shadow-sm" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span>Download PDF</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Studio Workspace (Sidebar + Canvas Viewport + AI Assistant) -->
+  <div class="flex-1 flex overflow-hidden relative bg-[#f6f9fc]">
+    
+    <!-- Left Sidebar: Pages & Thumbnails -->
+    <aside id="editor-left-sidebar" class="w-64 bg-white border-r border-[#e3e8ee] flex flex-col z-10">
+      <!-- Header -->
+      <div class="p-3 border-b border-[#e3e8ee] flex items-center justify-between">
+        <div class="flex items-center gap-1.5 text-[13px] font-medium text-[#0d253d]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
+          <span>Pages (<span id="total-page-count" class="tabular-num">0</span>)</span>
+        </div>
+        <button id="rotate-current-page-btn" class="text-[#64748d] hover:text-[#533afd] p-1 rounded hover:bg-[#f6f9fc] transition-colors" title="Rotate Current Page 90° Clockwise">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Thumbnail List -->
+      <div id="pages-thumbnail-list" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div id="no-pages-placeholder" class="text-center py-12 text-[#64748d] text-[13px]">
+          No document loaded
+        </div>
+      </div>
+
+      <!-- Bottom Status -->
+      <div class="p-3 border-t border-[#e3e8ee] bg-[#f6f9fc] flex items-center justify-between text-[12px] text-[#64748d]">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Zero Server Uploads</span>
+        </span>
+        <label for="pdf-file-input" class="text-[#533afd] hover:underline cursor-pointer">Open File</label>
+      </div>
+    </aside>
+
+    <!-- Center Canvas Area -->
+    <main id="editor-main-canvas-area" class="flex-1 overflow-auto p-6 flex flex-col items-center justify-start relative select-none">
+      
+      <!-- Dropzone State (When No Document is Loaded) -->
+      <div id="editor-dropzone-view" class="w-full max-w-2xl my-auto bg-white rounded-3xl border-2 border-dashed border-[#a8c3de] p-10 text-center shadow-level-2 relative overflow-hidden transition-all hover:border-[#533afd]">
+        <div class="w-16 h-16 rounded-2xl bg-[#b9b9f9]/20 text-[#533afd] flex items-center justify-center mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <path d="M12 18v-6"/>
+            <path d="m9 15 3-3 3 3"/>
+          </svg>
+        </div>
+
+        <h3 class="display-md text-[#0d253d] mb-2">Drop your PDF here to edit</h3>
+        <p class="body-md text-[#64748d] max-w-md mx-auto mb-6">
+          Files are processed <strong class="text-[#0d253d] font-medium">100% locally in your browser memory</strong> using PDF.js & Fabric.js. No cloud servers, total privacy.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <label for="pdf-file-input" class="btn-primary-pill cursor-pointer shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span>Choose PDF File</span>
+          </label>
+
+          <button id="load-sample-pdf-btn" class="btn-secondary-pill">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            <span>Try Sample Contract PDF</span>
+          </button>
+        </div>
+
+        <input type="file" id="pdf-file-input" accept="application/pdf" class="hidden" />
+
+        <!-- Privacy Badges -->
+        <div class="mt-8 pt-6 border-t border-[#e3e8ee] flex flex-wrap items-center justify-center gap-6 text-[12px] text-[#64748d]">
+          <span class="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Zero Server Uploads
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Fabric.js Vector Canvas
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+            AI PII Auto-Redaction
+          </span>
+        </div>
+      </div>
+
+      <!-- Active PDF Page Viewport (Shown when document loaded) -->
+      <div id="editor-viewport-container" class="hidden relative pb-16">
+        <!-- Page Wrapper with Level 2 Shadow -->
+        <div id="active-page-wrapper" class="relative bg-white rounded-lg shadow-level-2 border border-[#e3e8ee] transition-all origin-top select-none">
+          <!-- Background PDF Render Canvas (PDF.js) -->
+          <canvas id="pdf-render-canvas" class="block rounded-lg pointer-events-none"></canvas>
+          
+          <!-- Interactive Fabric.js Canvas Layer directly overlaid -->
+          <div id="fabric-canvas-wrapper" class="absolute inset-0 z-20">
+            <canvas id="fabric-canvas"></canvas>
+          </div>
+
+          <!-- Extracted Text Layer for Clicking & Editing Existing Text -->
+          <div id="extracted-text-layer" class="absolute inset-0 w-full h-full z-30 pointer-events-none hidden"></div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Right Sidebar: AI Assistant Drawer -->
+    <aside id="editor-ai-sidebar" class="w-80 bg-white border-l border-[#e3e8ee] flex flex-col z-20 shadow-level-1 hidden">
+      <!-- AI Header -->
+      <div class="p-4 border-b border-[#e3e8ee] flex items-center justify-between bg-[#f6f9fc]">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-[#533afd] text-white flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          </div>
+          <h4 class="font-medium text-[15px] text-[#0d253d]">AI Document Superpowers</h4>
+        </div>
+        <button id="close-ai-sidebar-btn" class="text-[#64748d] hover:text-[#0d253d]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- AI Content -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-6">
+        
+        <!-- 1. Smart PII Auto-Redactor -->
+        <div class="bg-[#f6f9fc] rounded-xl p-4 border border-[#e3e8ee] space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[13px] font-semibold text-[#0d253d] flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#ea2261]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Smart PII Auto-Redact
+            </span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#ea2261]/10 text-[#ea2261]">Privacy Guard</span>
+          </div>
+          <p class="text-[12px] text-[#64748d] leading-relaxed">
+            Auto-detect and blank out sensitive personal data (emails, credit cards, SSNs, phone numbers) with 1 click.
+          </p>
+
+          <div class="space-y-2 pt-1">
+            <input type="text" id="custom-redact-keyword" placeholder="Or custom keyword e.g. Confidential" class="w-full px-2.5 py-1.5 text-[12px] rounded-lg border border-[#a8c3de] focus:outline-none focus:border-[#533afd]" />
+            <button id="ai-auto-redact-btn" class="w-full btn-primary-pill text-[12px] py-1.5 px-3">
+              <span>1-Click Auto-Redact</span>
+            </button>
+            <div id="ai-redact-result-msg" class="text-[11px] text-[#273951] hidden p-2 bg-emerald-50 text-emerald-800 rounded border border-emerald-200"></div>
+          </div>
+        </div>
+
+        <!-- 2. AI Document Summarizer -->
+        <div class="bg-white rounded-xl p-4 border border-[#e3e8ee] space-y-3 shadow-level-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[13px] font-semibold text-[#0d253d] flex items-center gap-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              Document Summary
+            </span>
+            <button id="generate-summary-btn" class="text-[12px] text-[#533afd] hover:underline font-medium">Generate</button>
+          </div>
+
+          <div id="summary-content-area" class="text-[12px] text-[#64748d] space-y-2">
+            <p>Click "Generate" to create an instant in-browser executive brief and bullet takeaways.</p>
+          </div>
+        </div>
+
+        <!-- 3. Ask Document / Q&A -->
+        <div class="bg-white rounded-xl p-4 border border-[#e3e8ee] space-y-3 shadow-level-1">
+          <span class="text-[13px] font-semibold text-[#0d253d] flex items-center gap-1.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#665efd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Ask Document
+          </span>
+          <div class="space-y-2">
+            <div class="flex items-center gap-1.5">
+              <input type="text" id="ask-doc-input" placeholder="e.g. What is the contract amount?" class="flex-1 px-2.5 py-1.5 text-[12px] rounded-lg border border-[#a8c3de] focus:outline-none focus:border-[#533afd]" />
+              <button id="ask-doc-btn" class="p-1.5 bg-[#533afd] text-white rounded-lg hover:bg-[#4434d4] transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </div>
+            <div id="ask-doc-answer" class="text-[12px] text-[#273951] bg-[#f6f9fc] p-2.5 rounded-lg border border-[#e3e8ee] hidden"></div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="editor-toast" class="fixed bottom-6 right-6 z-50 bg-[#0d253d] text-white px-4 py-2.5 rounded-xl shadow-level-3 text-[13px] font-normal flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-200 pointer-events-none">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toast-message">Action completed</span>
+  </div>
+
+  <!-- Signature Modal Mount -->
+  <SignatureModal />
+</div>
+
+<!-- Interactive Client Script (Fabric.js + PDF.js + pdf-lib) -->
+<script>
+  import { PdfEngine, type ExtractedTextItem } from '../scripts/pdf-engine';
+  import { PdfAiAssistant } from '../scripts/pdf-ai';
+  import confetti from 'canvas-confetti';
+  import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+  import {
+    Canvas,
+    IText,
+    Textbox,
+    Rect,
+    Ellipse,
+    Line,
+    Triangle,
+    Group,
+    FabricImage,
+    PencilBrush,
+    FabricObject,
+  } from 'fabric';
+
+  const engine = new PdfEngine();
+  let fabricCanvas: Canvas | null = null;
+
+  // State
+  let currentPageIndex = 0;
+  let currentTool: string = 'select'; // 'select' | 'text' | 'edit-existing' | 'draw' | 'highlight' | 'shape' | 'whiteout'
+  let activeColor = '#0d253d';
+  let activeFontSize = 16;
+  let activeFontFamily: string = 'Helvetica';
+  let activeShapeType: 'rectangle' | 'circle' | 'arrow' | 'line' = 'rectangle';
+  let activeStrokeWidth = 2.5;
+  let currentScale = 1.3;
+  let extractedItems: ExtractedTextItem[] = [];
+
+  // Shape interactive drawing state
+  let isShapeDrawing = false;
+  let shapeStartX = 0;
+  let shapeStartY = 0;
+  let activeShapeObj: FabricObject | null = null;
+
+  // DOM Elements
+  const container = document.getElementById('pdf-studio-container');
+  const dropzoneView = document.getElementById('editor-dropzone-view');
+  const viewportContainer = document.getElementById('editor-viewport-container');
+  const pdfCanvas = document.getElementById('pdf-render-canvas') as HTMLCanvasElement;
+  const extractedTextLayer = document.getElementById('extracted-text-layer');
+  const thumbnailList = document.getElementById('pages-thumbnail-list');
+  const totalPageCount = document.getElementById('total-page-count');
+  const downloadBtn = document.getElementById('download-pdf-btn') as HTMLButtonElement;
+  const toast = document.getElementById('editor-toast');
+  const toastMsg = document.getElementById('toast-message');
+  const zoomDisplay = document.getElementById('zoom-display');
+
+  // Tool buttons
+  const toolBtns = document.querySelectorAll('.tool-btn');
+  const shapesMenuBtn = document.getElementById('shapes-menu-btn');
+  const shapesDropdown = document.getElementById('shapes-dropdown');
+  const shapeTypeBtns = document.querySelectorAll('.shape-type-btn');
+
+  // Properties
+  const colorInput = document.getElementById('active-color-input') as HTMLInputElement;
+  const colorPreview = document.getElementById('color-preview-circle');
+  const sizeSelect = document.getElementById('active-size-select') as HTMLSelectElement;
+  const fontSelect = document.getElementById('active-font-select') as HTMLSelectElement;
+
+  // AI Sidebar
+  const aiSidebar = document.getElementById('editor-ai-sidebar');
+  const toggleAiBtn = document.getElementById('toggle-ai-sidebar-btn');
+  const closeAiBtn = document.getElementById('close-ai-sidebar-btn');
+  const aiAutoRedactBtn = document.getElementById('ai-auto-redact-btn');
+  const customRedactKw = document.getElementById('custom-redact-keyword') as HTMLInputElement;
+  const aiRedactMsg = document.getElementById('ai-redact-result-msg');
+  const generateSummaryBtn = document.getElementById('generate-summary-btn');
+  const summaryArea = document.getElementById('summary-content-area');
+  const askDocBtn = document.getElementById('ask-doc-btn');
+  const askDocInput = document.getElementById('ask-doc-input') as HTMLInputElement;
+  const askDocAnswer = document.getElementById('ask-doc-answer');
+
+  // Signature Modal
+  const signModal = document.getElementById('signature-modal');
+  const openSignModalBtn = document.getElementById('open-sign-modal-btn');
+  const closeSignModalBtn = document.getElementById('close-signature-modal');
+  const cancelSignBtn = document.getElementById('cancel-signature-btn');
+  const applySignBtn = document.getElementById('apply-signature-btn');
+  const sigCanvas = document.getElementById('signature-canvas') as HTMLCanvasElement;
+  const clearSigBtn = document.getElementById('clear-signature-btn');
+  const tabDrawBtn = document.getElementById('tab-draw-btn');
+  const tabTypeBtn = document.getElementById('tab-type-btn');
+  const tabUploadBtn = document.getElementById('tab-upload-btn');
+  const tabDrawContent = document.getElementById('tab-draw-content');
+  const tabTypeContent = document.getElementById('tab-type-content');
+  const tabUploadContent = document.getElementById('tab-upload-content');
+  const typedSigInput = document.getElementById('typed-signature-input') as HTMLInputElement;
+  const sigFontOptions = document.querySelectorAll('.sig-font-option');
+  const sigFileInput = document.getElementById('signature-file-input') as HTMLInputElement;
+  const uploadSigPreview = document.getElementById('upload-signature-preview') as HTMLImageElement;
+  const imageUploadInput = document.getElementById('image-upload-input') as HTMLInputElement;
+
+  function showToast(message: string) {
+    if (!toast || !toastMsg) return;
+    toastMsg.textContent = message;
+    toast.classList.remove('translate-y-20', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-20', 'opacity-0');
+    }, 2500);
+  }
+
+  // Initialize Fabric.js interactive canvas overlay
+  function initFabricCanvas() {
+    if (fabricCanvas) {
+      fabricCanvas.dispose();
+    }
+    
+    fabricCanvas = new Canvas('fabric-canvas', {
+      selection: true,
+      preserveObjectStacking: true,
+    });
+
+    fabricCanvas.on('object:modified', () => {
+      engine.recordHistory();
+    });
+
+    fabricCanvas.on('path:created', () => {
+      engine.recordHistory();
+    });
+
+    // Interactive mouse events for text placement and shape drawing
+    fabricCanvas.on('mouse:down', (opt: any) => {
+      if (!fabricCanvas) return;
+      const pt = opt.scenePoint || opt.pointer;
+      if (!pt) return;
+
+      if (currentTool === 'text') {
+        if (opt.target && opt.target instanceof IText) return;
+        const fontName = activeFontFamily === 'TimesRoman' ? 'serif' : activeFontFamily === 'Courier' ? 'monospace' : 'sans-serif';
+        const itext = new IText('Type your text...', {
+          left: pt.x,
+          top: pt.y,
+          fontSize: activeFontSize,
+          fontFamily: fontName,
+          fill: activeColor,
+          editable: true,
+        });
+        fabricCanvas.add(itext);
+        fabricCanvas.setActiveObject(itext);
+        itext.enterEditing();
+        itext.selectAll();
+        fabricCanvas.renderAll();
+        engine.recordHistory();
+        setTool('select');
+      } else if (currentTool === 'shape' || currentTool === 'whiteout') {
+        isShapeDrawing = true;
+        shapeStartX = pt.x;
+        shapeStartY = pt.y;
+
+        if (currentTool === 'whiteout') {
+          activeShapeObj = new Rect({
+            left: shapeStartX,
+            top: shapeStartY,
+            width: 1,
+            height: 1,
+            fill: '#ffffff',
+            stroke: '#e3e8ee',
+            strokeWidth: 1,
+            rx: 2,
+            ry: 2,
+          });
+          fabricCanvas.add(activeShapeObj);
+        } else if (currentTool === 'shape') {
+          if (activeShapeType === 'rectangle') {
+            activeShapeObj = new Rect({
+              left: shapeStartX,
+              top: shapeStartY,
+              width: 1,
+              height: 1,
+              fill: 'transparent',
+              stroke: activeColor,
+              strokeWidth: activeStrokeWidth,
+              rx: 4,
+              ry: 4,
+            });
+          } else if (activeShapeType === 'circle') {
+            activeShapeObj = new Ellipse({
+              left: shapeStartX,
+              top: shapeStartY,
+              rx: 1,
+              ry: 1,
+              fill: 'transparent',
+              stroke: activeColor,
+              strokeWidth: activeStrokeWidth,
+            });
+          } else if (activeShapeType === 'line' || activeShapeType === 'arrow') {
+            activeShapeObj = new Line([shapeStartX, shapeStartY, shapeStartX, shapeStartY], {
+              stroke: activeColor,
+              strokeWidth: activeStrokeWidth,
+            });
+          }
+          if (activeShapeObj) {
+            fabricCanvas.add(activeShapeObj);
+          }
+        }
+      }
+    });
+
+    fabricCanvas.on('mouse:move', (opt: any) => {
+      if (!isShapeDrawing || !activeShapeObj || !fabricCanvas) return;
+      const pt = opt.scenePoint || opt.pointer;
+      if (!pt) return;
+
+      const curX = pt.x;
+      const curY = pt.y;
+
+      if (activeShapeObj instanceof Rect) {
+        activeShapeObj.set({
+          left: Math.min(shapeStartX, curX),
+          top: Math.min(shapeStartY, curY),
+          width: Math.abs(curX - shapeStartX),
+          height: Math.abs(curY - shapeStartY),
+        });
+      } else if (activeShapeObj instanceof Ellipse) {
+        const rx = Math.abs(curX - shapeStartX) / 2;
+        const ry = Math.abs(curY - shapeStartY) / 2;
+        activeShapeObj.set({
+          left: Math.min(shapeStartX, curX),
+          top: Math.min(shapeStartY, curY),
+          rx,
+          ry,
+        });
+      } else if (activeShapeObj instanceof Line) {
+        activeShapeObj.set({
+          x2: curX,
+          y2: curY,
+        });
+      }
+      fabricCanvas.renderAll();
+    });
+
+    fabricCanvas.on('mouse:up', () => {
+      if (isShapeDrawing) {
+        isShapeDrawing = false;
+        if (activeShapeObj && fabricCanvas) {
+          if (currentTool === 'shape' && activeShapeType === 'arrow' && activeShapeObj instanceof Line) {
+            const x1 = activeShapeObj.x1 ?? shapeStartX;
+            const y1 = activeShapeObj.y1 ?? shapeStartY;
+            const x2 = activeShapeObj.x2 ?? shapeStartX;
+            const y2 = activeShapeObj.y2 ?? shapeStartY;
+            const angle = Math.atan2(y2 - y1, x2 - x1) * (180 / Math.PI);
+            const headLen = 14;
+            const triangle = new Triangle({
+              left: x2,
+              top: y2,
+              angle: angle + 90,
+              width: headLen,
+              height: headLen,
+              fill: activeColor,
+              originX: 'center',
+              originY: 'center',
+            });
+            fabricCanvas.remove(activeShapeObj);
+            const arrowGroup = new Group([activeShapeObj, triangle]);
+            fabricCanvas.add(arrowGroup);
+            fabricCanvas.setActiveObject(arrowGroup);
+          } else {
+            fabricCanvas.setActiveObject(activeShapeObj);
+          }
+          fabricCanvas.renderAll();
+          engine.recordHistory();
+          activeShapeObj = null;
+        }
+      }
+    });
+  }
+
+  // Load PDF file into Engine
+  async function loadPdfBuffer(buffer: ArrayBuffer) {
+    try {
+      showToast('Processing PDF locally in RAM with PDF.js...');
+      const visiblePages = await engine.loadPdf(buffer);
+      if (visiblePages.length === 0) return;
+
+      currentPageIndex = 0;
+      if (totalPageCount) totalPageCount.textContent = String(visiblePages.length);
+      if (downloadBtn) downloadBtn.disabled = false;
+
+      dropzoneView?.classList.add('hidden');
+      viewportContainer?.classList.remove('hidden');
+
+      initFabricCanvas();
+      await renderCurrentPage();
+      await renderThumbnails(visiblePages);
+      showToast('PDF loaded with Fabric.js vector canvas!');
+    } catch (err) {
+      console.error(err);
+      alert('Could not render PDF. Please verify file format.');
+    }
+  }
+
+  async function renderCurrentPage() {
+    if (!pdfCanvas) return;
+    
+    // 1. Render PDF page with PDF.js
+    const dims = await engine.renderPageToCanvas(currentPageIndex, pdfCanvas, currentScale);
+    
+    // 2. Attach Fabric.js canvas
+    if (!fabricCanvas) {
+      initFabricCanvas();
+    }
+    if (fabricCanvas) {
+      await engine.attachFabricCanvas(fabricCanvas, currentPageIndex, dims.width, dims.height, currentScale);
+      setTool(currentTool);
+    }
+
+    // 3. Extract text items for in-place text editing & AI
+    extractedItems = await engine.getPageTextItems(currentPageIndex);
+    if (currentTool === 'edit-existing') {
+      renderExtractedTextBadges();
+    }
+  }
+
+  // Tool Switching and Configuration
+  function setTool(tool: string) {
+    currentTool = tool;
+    toolBtns.forEach(b => {
+      if (b.getAttribute('data-tool') === tool) {
+        b.classList.add('active', 'border-[#533afd]', 'bg-[#b9b9f9]/20', 'text-[#533afd]');
+      } else {
+        b.classList.remove('active', 'border-[#533afd]', 'bg-[#b9b9f9]/20', 'text-[#533afd]');
+      }
+    });
+
+    if (!fabricCanvas) return;
+
+    if (tool === 'select') {
+      fabricCanvas.isDrawingMode = false;
+      fabricCanvas.selection = true;
+      fabricCanvas.defaultCursor = 'default';
+      extractedTextLayer?.classList.add('hidden');
+    } else if (tool === 'text') {
+      fabricCanvas.isDrawingMode = false;
+      fabricCanvas.selection = false;
+      fabricCanvas.defaultCursor = 'text';
+      extractedTextLayer?.classList.add('hidden');
+    } else if (tool === 'edit-existing') {
+      fabricCanvas.isDrawingMode = false;
+      fabricCanvas.selection = true;
+      fabricCanvas.defaultCursor = 'default';
+      renderExtractedTextBadges();
+      extractedTextLayer?.classList.remove('hidden');
+    } else if (tool === 'draw') {
+      fabricCanvas.isDrawingMode = true;
+      fabricCanvas.selection = false;
+      const brush = new PencilBrush(fabricCanvas);
+      brush.color = activeColor;
+      brush.width = activeStrokeWidth;
+      fabricCanvas.freeDrawingBrush = brush;
+      extractedTextLayer?.classList.add('hidden');
+    } else if (tool === 'highlight') {
+      fabricCanvas.isDrawingMode = true;
+      fabricCanvas.selection = false;
+      const brush = new PencilBrush(fabricCanvas);
+      brush.color = 'rgba(253, 224, 71, 0.45)';
+      brush.width = 24;
+      fabricCanvas.freeDrawingBrush = brush;
+      extractedTextLayer?.classList.add('hidden');
+    } else if (tool === 'shape' || tool === 'whiteout') {
+      fabricCanvas.isDrawingMode = false;
+      fabricCanvas.selection = false;
+      fabricCanvas.defaultCursor = 'crosshair';
+      extractedTextLayer?.classList.add('hidden');
+    }
+  }
+
+  // Render clickable badges over original PDF text for instant in-place replacement
+  function renderExtractedTextBadges() {
+    if (!extractedTextLayer) return;
+    extractedTextLayer.innerHTML = '';
+
+    for (const item of extractedItems) {
+      const badge = document.createElement('div');
+      badge.className = 'absolute pointer-events-auto rounded border border-dashed border-[#533afd]/60 bg-[#533afd]/10 hover:bg-[#533afd]/25 hover:border-[#533afd] cursor-pointer transition-colors';
+      badge.style.left = `${item.x * currentScale}px`;
+      badge.style.top = `${item.y * currentScale}px`;
+      badge.style.width = `${item.width * currentScale}px`;
+      badge.style.height = `${item.height * currentScale}px`;
+      badge.title = `Click to edit text: "${item.str}"`;
+
+      badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!fabricCanvas) return;
+
+        // Add smart text box with solid whiteout background to replace original PDF text
+        const fontName = activeFontFamily === 'TimesRoman' ? 'serif' : activeFontFamily === 'Courier' ? 'monospace' : 'sans-serif';
+        const editBox = new Textbox(item.str, {
+          left: Math.max(0, item.x * currentScale - 2),
+          top: Math.max(0, item.y * currentScale - 2),
+          width: Math.max(item.width * currentScale + 4, 80),
+          fontSize: item.fontSize * currentScale,
+          fontFamily: fontName,
+          fill: activeColor,
+          backgroundColor: '#ffffff',
+          padding: 2,
+          editable: true,
+        });
+
+        fabricCanvas.add(editBox);
+        fabricCanvas.setActiveObject(editBox);
+        editBox.enterEditing();
+        editBox.selectAll();
+        fabricCanvas.renderAll();
+        engine.recordHistory();
+        setTool('select');
+        showToast('Text block ready to edit');
+      });
+
+      extractedTextLayer.appendChild(badge);
+    }
+  }
+
+  // Insert image or signature onto Fabric canvas
+  async function insertImageOnCanvas(dataUrl: string, defaultWidth: number = 180) {
+    if (!fabricCanvas) return;
+    try {
+      const img = await FabricImage.fromURL(dataUrl);
+      const scale = defaultWidth / (img.width || 1);
+      img.set({
+        left: 100,
+        top: 150,
+        scaleX: scale,
+        scaleY: scale,
+      });
+      fabricCanvas.add(img);
+      fabricCanvas.setActiveObject(img);
+      fabricCanvas.renderAll();
+      engine.recordHistory();
+      setTool('select');
+      showToast('Image inserted on page');
+    } catch (err) {
+      console.error('Failed to insert image onto canvas', err);
+    }
+  }
+
+  // Render Page Thumbnails in Left Sidebar
+  async function renderThumbnails(pages: any[]) {
+    if (!thumbnailList) return;
+    thumbnailList.innerHTML = '';
+
+    for (const p of pages) {
+      const thumbItem = document.createElement('div');
+      thumbItem.className = `p-2 rounded-xl border transition-all cursor-pointer ${p.pageIndex === currentPageIndex ? 'border-[#533afd] bg-[#b9b9f9]/10 shadow-xs ring-1 ring-[#533afd]' : 'border-[#e3e8ee] hover:border-[#a8c3de] bg-white'}`;
+      thumbItem.dataset.pageIndex = String(p.pageIndex);
+
+      const thumbUrl = await engine.generateThumbnail(p.pageIndex);
+      thumbItem.innerHTML = `
+        <div class="relative rounded overflow-hidden bg-gray-50 aspect-3/4 border border-[#e3e8ee] mb-1.5">
+          <img src="${thumbUrl}" class="w-full h-full object-contain pointer-events-none" />
+          <span class="absolute bottom-1 right-1 bg-[#0d253d]/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">${p.pageIndex + 1}</span>
+        </div>
+        <div class="flex items-center justify-between text-[11px] text-[#64748d]">
+          <span>Page ${p.pageIndex + 1}</span>
+          <button class="delete-page-btn text-[#64748d] hover:text-[#ea2261] p-0.5" title="Delete page">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        </div>
+      `;
+
+      thumbItem.addEventListener('click', async (e) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('.delete-page-btn')) {
+          e.stopPropagation();
+          if (confirm(`Delete Page ${p.pageIndex + 1}?`)) {
+            engine.deletePage(p.pageIndex);
+            const remaining = engine.getVisiblePages();
+            if (remaining.length > 0) {
+              currentPageIndex = remaining[0].pageIndex;
+              await renderCurrentPage();
+              await renderThumbnails(remaining);
+            }
+          }
+          return;
+        }
+        currentPageIndex = p.pageIndex;
+        await renderCurrentPage();
+        document.querySelectorAll('#pages-thumbnail-list > div').forEach(el => {
+          el.classList.remove('border-[#533afd]', 'bg-[#b9b9f9]/10', 'ring-1', 'ring-[#533afd]');
+          el.classList.add('border-[#e3e8ee]', 'bg-white');
+        });
+        thumbItem.classList.add('border-[#533afd]', 'bg-[#b9b9f9]/10', 'ring-1', 'ring-[#533afd]');
+      });
+
+      thumbnailList.appendChild(thumbItem);
+    }
+  }
+
+  // Generate Sample PDF Agreement for immediate testing
+  async function generateSamplePdf() {
+    const doc = await PDFDocument.create();
+    const font = await doc.embedFont(StandardFonts.Helvetica);
+    const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
+
+    // Page 1: Agreement
+    const page1 = doc.addPage([595.28, 841.89]);
+    page1.drawText('MUTUAL NON-DISCLOSURE AGREEMENT', {
+      x: 50,
+      y: 780,
+      size: 18,
+      font: fontBold,
+      color: rgb(0.05, 0.15, 0.24),
+    });
+
+    page1.drawText('This Agreement is entered into by and between Acme Corp and Nova Global.', {
+      x: 50,
+      y: 740,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+
+    page1.drawText('1. Confidential Information & Data Protection', {
+      x: 50,
+      y: 700,
+      size: 13,
+      font: fontBold,
+      color: rgb(0.05, 0.15, 0.24),
+    });
+
+    page1.drawText('Contact Email: legal-confidential@acmecorp.com | Direct Phone: +1 (555) 492-9102', {
+      x: 50,
+      y: 675,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+
+    page1.drawText('Billing Reference: 4532-8921-9844-1234 | Tax ID / SSN: 123-45-6789', {
+      x: 50,
+      y: 650,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+
+    page1.drawText('The receiving party agrees that all proprietary technical diagrams, source code, and customer records', {
+      x: 50,
+      y: 615,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+    page1.drawText('shall be protected with strict encryption. Neither party shall disclose terms without written consent.', {
+      x: 50,
+      y: 595,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+
+    page1.drawText('2. Signatures & Approvals', {
+      x: 50,
+      y: 540,
+      size: 13,
+      font: fontBold,
+      color: rgb(0.05, 0.15, 0.24),
+    });
+
+    page1.drawRectangle({
+      x: 50,
+      y: 430,
+      width: 230,
+      height: 70,
+      borderColor: rgb(0.8, 0.85, 0.9),
+      borderWidth: 1,
+    });
+    page1.drawText('Authorized Signature (Party A):', { x: 60, y: 485, size: 10, font: font, color: rgb(0.4, 0.45, 0.5) });
+
+    page1.drawRectangle({
+      x: 310,
+      y: 430,
+      width: 230,
+      height: 70,
+      borderColor: rgb(0.8, 0.85, 0.9),
+      borderWidth: 1,
+    });
+    page1.drawText('Authorized Signature (Party B):', { x: 320, y: 485, size: 10, font: font, color: rgb(0.4, 0.45, 0.5) });
+
+    // Page 2: Schedule
+    const page2 = doc.addPage([595.28, 841.89]);
+    page2.drawText('SCHEDULE A — DELIVERABLES & PAYMENT MILESTONES', {
+      x: 50,
+      y: 780,
+      size: 16,
+      font: fontBold,
+      color: rgb(0.05, 0.15, 0.24),
+    });
+    page2.drawText('Total Agreed Consideration: $45,000.00 USD payable upon completion.', {
+      x: 50,
+      y: 740,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+    page2.drawText('Effective Date: October 1, 2026. Governing Law: State of Delaware.', {
+      x: 50,
+      y: 715,
+      size: 11,
+      font: font,
+      color: rgb(0.2, 0.25, 0.3),
+    });
+
+    return await doc.save();
+  }
+
+  // File Upload Handlers
+  const fileInput = document.getElementById('pdf-file-input') as HTMLInputElement;
+  fileInput?.addEventListener('change', async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const buffer = await file.arrayBuffer();
+      await loadPdfBuffer(buffer);
+    }
+  });
+
+  const samplePdfBtn = document.getElementById('load-sample-pdf-btn');
+  samplePdfBtn?.addEventListener('click', async () => {
+    const sampleBytes = await generateSamplePdf();
+    await loadPdfBuffer(sampleBytes.buffer as ArrayBuffer);
+  });
+
+  // Tool Switching
+  toolBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tool = btn.getAttribute('data-tool');
+      if (tool) {
+        setTool(tool);
+      }
+    });
+  });
+
+  // Shapes dropdown
+  shapesMenuBtn?.addEventListener('click', () => {
+    shapesDropdown?.classList.toggle('hidden');
+  });
+
+  shapeTypeBtns.forEach(b => {
+    b.addEventListener('click', () => {
+      const st = b.getAttribute('data-shape') as any;
+      if (st) {
+        activeShapeType = st;
+        shapesDropdown?.classList.add('hidden');
+        setTool('shape');
+        showToast(`Shape tool: ${st}`);
+      }
+    });
+  });
+
+  // Color, Size, Font Controls
+  colorInput?.addEventListener('input', (e) => {
+    activeColor = (e.target as HTMLInputElement).value;
+    if (colorPreview) colorPreview.style.backgroundColor = activeColor;
+    
+    if (fabricCanvas) {
+      const activeObj = fabricCanvas.getActiveObject();
+      if (activeObj) {
+        if (activeObj instanceof IText || activeObj instanceof Textbox) {
+          activeObj.set('fill', activeColor);
+        } else if (activeObj instanceof Rect || activeObj instanceof Ellipse || activeObj instanceof Line) {
+          activeObj.set('stroke', activeColor);
+        }
+        fabricCanvas.renderAll();
+        engine.recordHistory();
+      }
+      if (fabricCanvas.isDrawingMode && fabricCanvas.freeDrawingBrush) {
+        fabricCanvas.freeDrawingBrush.color = activeColor;
+      }
+    }
+  });
+
+  sizeSelect?.addEventListener('change', (e) => {
+    activeFontSize = parseInt((e.target as HTMLSelectElement).value, 10);
+    if (fabricCanvas) {
+      const activeObj = fabricCanvas.getActiveObject();
+      if (activeObj && (activeObj instanceof IText || activeObj instanceof Textbox)) {
+        activeObj.set('fontSize', activeFontSize * currentScale);
+        fabricCanvas.renderAll();
+        engine.recordHistory();
+      }
+    }
+  });
+
+  fontSelect?.addEventListener('change', (e) => {
+    activeFontFamily = (e.target as HTMLSelectElement).value;
+    const fontName = activeFontFamily === 'TimesRoman' ? 'serif' : activeFontFamily === 'Courier' ? 'monospace' : 'sans-serif';
+    if (fabricCanvas) {
+      const activeObj = fabricCanvas.getActiveObject();
+      if (activeObj && (activeObj instanceof IText || activeObj instanceof Textbox)) {
+        activeObj.set('fontFamily', fontName);
+        fabricCanvas.renderAll();
+        engine.recordHistory();
+      }
+    }
+  });
+
+  // Undo / Redo
+  document.getElementById('undo-btn')?.addEventListener('click', async () => {
+    if (await engine.undo()) {
+      showToast('Undo');
+    }
+  });
+
+  document.getElementById('redo-btn')?.addEventListener('click', async () => {
+    if (await engine.redo()) {
+      showToast('Redo');
+    }
+  });
+
+  // Keyboard Shortcuts (Ctrl+Z, Ctrl+Y, Delete, V, T, P, H, E)
+  window.addEventListener('keydown', async (e) => {
+    if ((e.target as HTMLElement).tagName === 'TEXTAREA' || (e.target as HTMLElement).tagName === 'INPUT') return;
+    
+    if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+      e.preventDefault();
+      if (await engine.undo()) {
+        showToast('Undo');
+      }
+    } else if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+      e.preventDefault();
+      if (await engine.redo()) {
+        showToast('Redo');
+      }
+    } else if (e.key === 'Delete' || e.key === 'Backspace') {
+      if (fabricCanvas) {
+        const activeObjs = fabricCanvas.getActiveObjects();
+        if (activeObjs.length > 0) {
+          activeObjs.forEach(obj => fabricCanvas?.remove(obj));
+          fabricCanvas.discardActiveObject();
+          fabricCanvas.renderAll();
+          engine.recordHistory();
+          showToast('Deleted object');
+        }
+      }
+    } else if (e.key === 'v' || e.key === 'V') {
+      setTool('select');
+    } else if (e.key === 't' || e.key === 'T') {
+      setTool('text');
+    } else if (e.key === 'p' || e.key === 'P') {
+      setTool('draw');
+    } else if (e.key === 'h' || e.key === 'H') {
+      setTool('highlight');
+    } else if (e.key === 'e' || e.key === 'E') {
+      setTool('edit-existing');
+    }
+  });
+
+  // Zoom Controls
+  document.getElementById('zoom-in-btn')?.addEventListener('click', async () => {
+    currentScale = Math.min(currentScale + 0.25, 2.5);
+    if (zoomDisplay) zoomDisplay.textContent = `${Math.round(currentScale * 100)}%`;
+    await renderCurrentPage();
+  });
+
+  document.getElementById('zoom-out-btn')?.addEventListener('click', async () => {
+    currentScale = Math.max(currentScale - 0.25, 0.5);
+    if (zoomDisplay) zoomDisplay.textContent = `${Math.round(currentScale * 100)}%`;
+    await renderCurrentPage();
+  });
+
+  // Rotate Page 90°
+  document.getElementById('rotate-current-page-btn')?.addEventListener('click', async () => {
+    engine.rotatePage(currentPageIndex, 90);
+    await renderCurrentPage();
+    const visible = engine.getVisiblePages();
+    await renderThumbnails(visible);
+    showToast('Page rotated 90°');
+  });
+
+  // Export & Download PDF via pdf-lib
+  downloadBtn?.addEventListener('click', async () => {
+    try {
+      showToast('Rendering high-DPI layers with pdf-lib...');
+      const outputBytes = await engine.exportPdf();
+      const blob = new Blob([outputBytes], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `edited-document-${Date.now()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      confetti({
+        particleCount: 90,
+        spread: 70,
+        origin: { y: 0.8 },
+        colors: ['#533afd', '#ea2261', '#f96bee', '#4434d4']
+      });
+
+      showToast('PDF exported successfully!');
+    } catch (e) {
+      console.error(e);
+      alert('Failed to export PDF: ' + e);
+    }
+  });
+
+  // AI Assistant Drawer
+  toggleAiBtn?.addEventListener('click', () => aiSidebar?.classList.toggle('hidden'));
+  closeAiBtn?.addEventListener('click', () => aiSidebar?.classList.add('hidden'));
+
+  // 1-Click PII Auto-Redact into Fabric.js Rectangles
+  aiAutoRedactBtn?.addEventListener('click', async () => {
+    if (!fabricCanvas) return;
+    try {
+      showToast('Scanning page for sensitive PII...');
+      const textItems = await engine.getPageTextItems(currentPageIndex);
+      const customWords = customRedactKw?.value ? [customRedactKw.value] : [];
+      const matches = PdfAiAssistant.detectPii(currentPageIndex, textItems, customWords);
+
+      if (matches.length === 0) {
+        if (aiRedactMsg) {
+          aiRedactMsg.textContent = 'No sensitive emails, SSNs, or cards found on this page.';
+          aiRedactMsg.classList.remove('hidden');
+        }
+        showToast('No PII detected');
+        return;
+      }
+
+      for (const m of matches) {
+        const redactRect = new Rect({
+          left: m.x * currentScale,
+          top: m.y * currentScale,
+          width: m.width * currentScale,
+          height: m.height * currentScale,
+          fill: '#0d253d',
+          stroke: '#0d253d',
+          strokeWidth: 1,
+        });
+        fabricCanvas.add(redactRect);
+      }
+      fabricCanvas.renderAll();
+      engine.recordHistory();
+
+      if (aiRedactMsg) {
+        aiRedactMsg.textContent = `Auto-redacted ${matches.length} items (${matches.map(m => m.label).join(', ')}).`;
+        aiRedactMsg.classList.remove('hidden');
+      }
+      showToast(`Redacted ${matches.length} sensitive items!`);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  // AI Document Summarizer
+  generateSummaryBtn?.addEventListener('click', async () => {
+    if (!summaryArea) return;
+    summaryArea.innerHTML = '<span class="animate-pulse text-[#533afd]">Analyzing document text...</span>';
+    const pagesText = await engine.extractFullText();
+    const summary = PdfAiAssistant.summarizeDocument(pagesText);
+
+    summaryArea.innerHTML = `
+      <div class="flex gap-2 text-[11px] text-[#273951] font-mono pb-1 border-b border-[#e3e8ee]">
+        <span>Pages: <strong>${summary.pageCount}</strong></span>
+        <span>Words: <strong>${summary.wordCount}</strong></span>
+        <span>Reading: <strong>~${summary.readingTimeMinutes} min</strong></span>
+      </div>
+      <p class="font-medium text-[#0d253d] text-[12px] pt-1">Executive Summary:</p>
+      <p class="leading-relaxed text-[#64748d]">${summary.executiveSummary}</p>
+      <p class="font-medium text-[#0d253d] text-[12px] pt-1">Key Takeaways:</p>
+      <ul class="list-disc pl-4 space-y-1 text-[#64748d]">
+        ${summary.keyTakeaways.map(t => `<li>${t}</li>`).join('')}
+      </ul>
+    `;
+  });
+
+  // AI Q&A Search
+  askDocBtn?.addEventListener('click', async () => {
+    const q = askDocInput?.value;
+    if (!q || !askDocAnswer) return;
+    askDocAnswer.classList.remove('hidden');
+    askDocAnswer.innerHTML = '<span class="animate-pulse text-[#533afd]">Searching clauses...</span>';
+
+    const pagesText = await engine.extractFullText();
+    const res = PdfAiAssistant.askQuestion(pagesText, q);
+    askDocAnswer.innerHTML = `
+      <p class="font-medium text-[#0d253d] mb-1">Answer:</p>
+      <p class="text-[#273951] leading-relaxed">${res.answer}</p>
+    `;
+  });
+
+  // Signature Modal Logic
+  let sigDrawing = false;
+  let activeSigTypeStyle = 'dancing';
+  let activeSigColor = '#0d253d';
+
+  openSignModalBtn?.addEventListener('click', () => signModal?.classList.remove('hidden'));
+  closeSignModalBtn?.addEventListener('click', () => signModal?.classList.add('hidden'));
+  cancelSignBtn?.addEventListener('click', () => signModal?.classList.add('hidden'));
+
+  tabDrawBtn?.addEventListener('click', () => {
+    tabDrawBtn.classList.add('border-[#533afd]', 'text-[#533afd]');
+    tabTypeBtn?.classList.remove('border-[#533afd]', 'text-[#533afd]');
+    tabUploadBtn?.classList.remove('border-[#533afd]', 'text-[#533afd]');
+    tabDrawContent?.classList.remove('hidden');
+    tabTypeContent?.classList.add('hidden');
+    tabUploadContent?.classList.add('hidden');
+  });
+
+  tabTypeBtn?.addEventListener('click', () => {
+    tabTypeBtn.classList.add('border-[#533afd]', 'text-[#533afd]');
+    tabDrawBtn?.classList.remove('border-[#533afd]', 'text-[#533afd]');
+    tabUploadBtn?.classList.remove('border-[#533afd]', 'text-[#533afd]');
+    tabTypeContent?.classList.remove('hidden');
+    tabDrawContent?.classList.add('hidden');
+    tabUploadContent?.classList.add('hidden');
+  });
+
+  tabUploadBtn?.addEventListener('click', () => {
+    tabUploadBtn.classList.add('border-[#533afd]', 'text-[#533afd]');
+    tabDrawBtn?.classList.remove('border-[#533afd]', 'text-[#533afd]');
+    tabTypeBtn?.classList.remove('border-[#533afd]', 'text-[#533afd]');
+    tabUploadContent?.classList.remove('hidden');
+    tabDrawContent?.classList.add('hidden');
+    tabTypeContent?.classList.add('hidden');
+  });
+
+  // Draw signature pad
+  const sigCtx = sigCanvas?.getContext('2d');
+  if (sigCtx) {
+    sigCtx.lineWidth = 2.5;
+    sigCtx.lineCap = 'round';
+    sigCtx.strokeStyle = '#0d253d';
+  }
+
+  const sigColorBtns = document.querySelectorAll('.sig-color-btn');
+  sigColorBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const col = btn.getAttribute('data-color');
+      if (col && sigCtx) {
+        activeSigColor = col;
+        sigCtx.strokeStyle = col;
+        sigColorBtns.forEach(b => b.classList.remove('ring-2', 'ring-offset-1', 'ring-[#533afd]'));
+        btn.classList.add('ring-2', 'ring-offset-1', 'ring-[#533afd]');
+      }
+    });
+  });
+
+  sigCanvas?.addEventListener('mousedown', (e) => {
+    sigDrawing = true;
+    const rect = sigCanvas.getBoundingClientRect();
+    sigCtx?.beginPath();
+    sigCtx?.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+  });
+  sigCanvas?.addEventListener('mousemove', (e) => {
+    if (!sigDrawing) return;
+    const rect = sigCanvas.getBoundingClientRect();
+    sigCtx?.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+    sigCtx?.stroke();
+  });
+  sigCanvas?.addEventListener('mouseup', () => { sigDrawing = false; });
+
+  // Touch event support for signature pad
+  sigCanvas?.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    sigDrawing = true;
+    const rect = sigCanvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    sigCtx?.beginPath();
+    sigCtx?.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+  }, { passive: false });
+  sigCanvas?.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    if (!sigDrawing) return;
+    const rect = sigCanvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    sigCtx?.lineTo(touch.clientX - rect.left, touch.clientY - rect.top);
+    sigCtx?.stroke();
+  }, { passive: false });
+  sigCanvas?.addEventListener('touchend', () => { sigDrawing = false; });
+
+  clearSigBtn?.addEventListener('click', () => {
+    sigCtx?.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+  });
+
+  typedSigInput?.addEventListener('input', (e) => {
+    const val = (e.target as HTMLInputElement).value || 'Alex Morgan';
+    document.querySelectorAll('.preview-sig-text').forEach(el => {
+      el.textContent = val;
+    });
+  });
+
+  sigFontOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      sigFontOptions.forEach(o => o.classList.remove('border-[#533afd]', 'bg-[#b9b9f9]/10'));
+      opt.classList.add('border-[#533afd]', 'bg-[#b9b9f9]/10');
+      activeSigTypeStyle = opt.getAttribute('data-font') as any;
+    });
+  });
+
+  // Signature file upload
+  sigFileInput?.addEventListener('change', (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (uploadSigPreview) {
+          uploadSigPreview.src = reader.result as string;
+          document.getElementById('upload-preview-container')?.classList.remove('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Insert signature onto document
+  applySignBtn?.addEventListener('click', async () => {
+    let sigDataUrl = '';
+    if (!tabDrawContent?.classList.contains('hidden')) {
+      sigDataUrl = sigCanvas.toDataURL('image/png');
+    } else if (!tabTypeContent?.classList.contains('hidden')) {
+      const name = typedSigInput.value || 'Alex Morgan';
+      sigDataUrl = PdfAiAssistant.generateCursiveSignature(name, activeSigTypeStyle as any, activeSigColor);
+    } else if (!tabUploadContent?.classList.contains('hidden')) {
+      sigDataUrl = uploadSigPreview.src;
+    }
+
+    if (sigDataUrl) {
+      await insertImageOnCanvas(sigDataUrl, 160);
+      signModal?.classList.add('hidden');
+    }
+  });
+
+  // Image stamp upload
+  imageUploadInput?.addEventListener('change', async (e) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const dataUrl = reader.result as string;
+        await insertImageOnCanvas(dataUrl, 180);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+

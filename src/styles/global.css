@@ -1,0 +1,277 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #533afd;
+  --color-primary-deep: #4434d4;
+  --color-primary-press: #2e2b8c;
+  --color-primary-soft: #665efd;
+  --color-primary-subdued: #b9b9f9;
+  --color-brand-dark-900: #1c1e54;
+  --color-ruby: #ea2261;
+  --color-magenta: #f96bee;
+  --color-lemon: #9b6829;
+  
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #f6f9fc;
+  --color-canvas-cream: #f5e9d4;
+  --color-hairline: #e3e8ee;
+  --color-hairline-input: #a8c3de;
+  
+  --color-ink: #0d253d;
+  --color-ink-secondary: #273951;
+  --color-ink-mute: #64748d;
+  --color-ink-mute-2: #61718a;
+  --color-on-primary: #ffffff;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background-color: var(--color-canvas);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-feature-settings: "ss01" on, "cv05" on;
+    font-weight: 300;
+    line-height: 1.4;
+    font-size: 15px;
+    color: #0d253d;
+    background-color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Stripi Typography Tokens */
+.display-xxl {
+  font-size: clamp(36px, 5vw, 56px);
+  font-weight: 300;
+  line-height: 1.03;
+  letter-spacing: -1.4px;
+}
+
+.display-xl {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.96px;
+}
+
+.display-lg {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.64px;
+}
+
+.display-md {
+  font-size: 26px;
+  font-weight: 300;
+  line-height: 1.12;
+  letter-spacing: -0.26px;
+}
+
+.heading-lg {
+  font-size: 22px;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: -0.22px;
+}
+
+.heading-md {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+.heading-sm {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.body-lg {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.body-md {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.body-tabular {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: -0.42px;
+  font-feature-settings: "tnum" on;
+}
+
+.tabular-num {
+  font-feature-settings: "tnum" on;
+  font-variant-numeric: tabular-nums;
+}
+
+.caption {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: -0.39px;
+}
+
+.micro-cap {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Stripi Elevation Tokens */
+.shadow-level-1 {
+  box-shadow: rgba(0, 55, 112, 0.08) 0 1px 3px;
+}
+
+.shadow-level-2 {
+  box-shadow: rgba(0, 55, 112, 0.08) 0 8px 24px, rgba(0, 55, 112, 0.04) 0 2px 6px;
+}
+
+.shadow-level-3 {
+  box-shadow: rgba(0, 55, 112, 0.12) 0 16px 40px, rgba(0, 55, 112, 0.06) 0 4px 12px;
+}
+
+/* Atmospheric Stripi Gradient Mesh */
+.gradient-mesh-hero {
+  position: relative;
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(ellipse 90% 70% at 10% -20%, #fbe8d0 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% -10%, #ffd8cb 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 50% 10%, #ded7fc 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 80% 35%, #fce2f5 0%, transparent 50%),
+    radial-gradient(ellipse 40% 40% at 20% 40%, #e8e4fe 0%, transparent 50%);
+  background-repeat: no-repeat;
+}
+
+.gradient-mesh-band {
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(245, 233, 212, 0.8) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(222, 215, 252, 0.8) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(254, 226, 245, 0.5) 0%, transparent 60%);
+}
+
+/* Custom Pill Button Utilities */
+.btn-primary-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #533afd;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+  box-shadow: 0 1px 3px rgba(83, 58, 253, 0.2);
+}
+
+.btn-primary-pill:hover {
+  background-color: #4434d4;
+  box-shadow: 0 4px 12px rgba(83, 58, 253, 0.3);
+  transform: translateY(-0.5px);
+}
+
+.btn-primary-pill:active {
+  background-color: #2e2b8c;
+  transform: translateY(0);
+}
+
+.btn-secondary-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #ffffff;
+  color: #0d253d;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  border: 1px solid #e3e8ee;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: rgba(0, 55, 112, 0.04) 0 1px 2px;
+}
+
+.btn-secondary-pill:hover {
+  border-color: #a8c3de;
+  color: #533afd;
+  background-color: #f6f9fc;
+  box-shadow: rgba(0, 55, 112, 0.08) 0 2px 6px;
+}
+
+.btn-secondary-pill:active {
+  background-color: #e3e8ee;
+}
+
+.btn-on-dark-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #1c1e54;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-on-dark-pill:hover {
+  background-color: #272a73;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f6f9fc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

@@ -1,11 +1,47 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import PdfEditorStudio from '../components/PdfEditorStudio.astro';
+import EditorFeatures from '../components/EditorFeatures.astro';
+import PrivacyGuarantee from '../components/PrivacyGuarantee.astro';
+import CompetitorComparison from '../components/CompetitorComparison.astro';
+import EditorFaq from '../components/EditorFaq.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout 
+  title="PDF Editor AI — Free Online Local In-Browser PDF Editor with Privacy"
+  description="Edit PDF documents directly in your browser with 100% privacy. Add text, draw annotations, sign contracts, and auto-redact sensitive PII with zero server uploads."
+>
+  <Navbar />
+  
+  <main>
+    <Hero />
+
+    <!-- Interactive In-Browser Studio Section -->
+    <section id="demo" class="py-16 bg-white border-b border-[#e3e8ee]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+          <span class="micro-cap text-[#533afd] mb-2 block">Live In-Browser Workspace</span>
+          <h2 class="display-lg text-[#0d253d] mb-3">
+            Try the PDF Editor AI Studio now
+          </h2>
+          <p class="body-md text-[#64748d]">
+            Drop any PDF file below or click <strong>"Try Sample Contract PDF"</strong> to test annotations, e-signatures, and 1-click AI auto-redaction in real-time.
+          </p>
+        </div>
+
+        <!-- Embedded Editor Studio Island -->
+        <PdfEditorStudio mode="embedded" />
+      </div>
+    </section>
+
+    <EditorFeatures />
+    <PrivacyGuarantee />
+    <CompetitorComparison />
+    <EditorFaq />
+  </main>
+
+  <Footer />
 </Layout>

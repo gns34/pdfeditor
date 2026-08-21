@@ -1,0 +1,106 @@
+---
+---
+
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Cream Band Card -->
+    <div class="bg-[#f5e9d4] rounded-3xl p-8 sm:p-12 lg:p-16 border border-[#e8d5b8] shadow-level-2 relative overflow-hidden">
+      
+      <!-- Ambient Gradient Highlight -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-[#ffd8cb]/40 blur-3xl pointer-events-none"></div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+        
+        <!-- Left: Copy & Explanation -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#e8d5b8] text-[#9b6829] text-[12px] font-medium">
+            <span class="w-2 h-2 rounded-full bg-[#9b6829]"></span>
+            <span>Zero-Knowledge Local Execution</span>
+          </div>
+
+          <h2 class="display-lg text-[#0d253d] text-[32px] sm:text-[38px] leading-tight">
+            Your confidential files never leave your device. Ever.
+          </h2>
+
+          <p class="body-lg text-[#273951] leading-relaxed font-light">
+            Traditional online editors upload your sensitive financial contracts, invoices, medical records, and passports to remote cloud servers where they can be cached, leaked, or scanned.
+          </p>
+
+          <p class="body-md text-[#273951] leading-relaxed">
+            <strong>PDF Editor AI</strong> is built differently. Our entire parsing, annotation, and export engine executes inside your browser’s isolated memory via <strong class="text-[#0d253d]">WebAssembly & Canvas</strong>. You can even disconnect your internet after loading the page, and the editor will continue working without interruption.
+          </p>
+
+          <!-- Security Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
+            <div class="bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-[#e8d5b8]">
+              <span class="block text-xl font-light text-[#0d253d] tabular-num">0%</span>
+              <span class="text-[12px] text-[#64748d]">Server Storage</span>
+            </div>
+            <div class="bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-[#e8d5b8]">
+              <span class="block text-xl font-light text-[#0d253d] tabular-num">100%</span>
+              <span class="text-[12px] text-[#64748d]">Client-Side RAM</span>
+            </div>
+            <div class="bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-[#e8d5b8]">
+              <span class="block text-xl font-light text-[#0d253d] tabular-num">GDPR & HIPAA</span>
+              <span class="text-[12px] text-[#64748d]">Safe Architecture</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Technical Architecture Diagram Card -->
+        <div class="lg:col-span-5 bg-white rounded-2xl p-6 border border-[#e8d5b8] shadow-level-1 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#e3e8ee]">
+            <span class="text-[13px] font-semibold text-[#0d253d]">Local Privacy Flow</span>
+            <span class="text-[11px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Active Protection</span>
+          </div>
+
+          <!-- Flow Steps -->
+          <div class="space-y-3 text-[13px]">
+            <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
+              <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">1</div>
+              <div>
+                <strong class="text-[#0d253d] block">Local File Ingestion</strong>
+                <span class="text-[#64748d] text-[12px]">File bytes read directly into HTML5 FileReader memory.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
+              <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">2</div>
+              <div>
+                <strong class="text-[#0d253d] block">In-Browser PDF.js Rendering</strong>
+                <span class="text-[#64748d] text-[12px]">Pages drawn to hardware-accelerated canvas.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
+              <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">3</div>
+              <div>
+                <strong class="text-[#0d253d] block">AI & PII Pattern Processing</strong>
+                <span class="text-[#64748d] text-[12px]">Regex & text heuristics run client-side in Web Workers.</span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
+              <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">4</div>
+              <div>
+                <strong class="text-[#0d253d] block">PDF-Lib Binary Export</strong>
+                <span class="text-[#64748d] text-[12px]">Compiled directly to a local download Blob.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 text-center">
+            <a href="/privacy" class="text-[13px] text-[#533afd] font-medium hover:underline inline-flex items-center gap-1">
+              <span>Read Full Security Architecture</span>
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

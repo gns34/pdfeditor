@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import PdfEditorStudio from '../components/PdfEditorStudio.astro';
+---
+
+<Layout 
+  title="PDF Studio — PDF Editor AI | Free Local In-Browser Editor"
+  description="Full-screen in-browser PDF Editor with 100% privacy. Edit text, draw freehand, highlight, insert shapes, e-sign, and auto-redact sensitive PII."
+>
+  <div class="h-screen flex flex-col overflow-hidden bg-white">
+    <Navbar isEditorPage={true} />
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <PdfEditorStudio mode="standalone" />
+    </main>
+  </div>
+</Layout>

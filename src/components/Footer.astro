@@ -1,0 +1,75 @@
+---
+---
+
+<footer class="w-full bg-white border-t border-[#e3e8ee] mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-10">
+      <!-- Col 1: Brand & Philosophy -->
+      <div class="md:col-span-2 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#533afd] flex items-center justify-center text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <path d="m9 15 2 2 4-4"/>
+            </svg>
+          </div>
+          <span class="font-medium text-[16px] text-[#0d253d]">PDF Editor AI</span>
+        </div>
+        <p class="text-[13px] text-[#64748d] leading-relaxed max-w-sm">
+          The next-generation in-browser PDF editor engineered with local WebAssembly. Annotate, redact sensitive PII with AI, e-sign, and rearrange pages with zero cloud uploads and 100% data sovereignty.
+        </p>
+        <div class="flex items-center gap-2 pt-2 text-[12px] text-[#273951]">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span>Zero Server Uploads • Files Stay in Your RAM</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Editor Capabilities -->
+      <div class="space-y-3">
+        <h4 class="text-[12px] font-semibold text-[#0d253d] uppercase tracking-wider">Editing Tools</h4>
+        <ul class="space-y-2 text-[13px] text-[#64748d]">
+          <li><a href="/edit" class="hover:text-[#533afd] transition-colors">In-Browser Studio</a></li>
+          <li><a href="/edit?tool=text" class="hover:text-[#533afd] transition-colors">Text Annotation</a></li>
+          <li><a href="/edit?tool=draw" class="hover:text-[#533afd] transition-colors">Pen & Highlighter</a></li>
+          <li><a href="/edit?tool=shapes" class="hover:text-[#533afd] transition-colors">Vector Shapes</a></li>
+          <li><a href="/edit?tool=whiteout" class="hover:text-[#533afd] transition-colors">Whiteout & Eraser</a></li>
+          <li><a href="/edit?tool=sign" class="hover:text-[#533afd] transition-colors">Digital E-Signatures</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: AI Superpowers -->
+      <div class="space-y-3">
+        <h4 class="text-[12px] font-semibold text-[#0d253d] uppercase tracking-wider">AI Features</h4>
+        <ul class="space-y-2 text-[13px] text-[#64748d]">
+          <li><a href="/edit?tab=ai" class="hover:text-[#533afd] transition-colors">1-Click PII Auto-Redact</a></li>
+          <li><a href="/edit?tab=summary" class="hover:text-[#533afd] transition-colors">Document Summarizer</a></li>
+          <li><a href="/edit?tab=qa" class="hover:text-[#533afd] transition-colors">Ask Document / Q&A</a></li>
+          <li><a href="/edit?tool=sign" class="hover:text-[#533afd] transition-colors">Cursive Signature AI</a></li>
+          <li><a href="/privacy" class="hover:text-[#533afd] transition-colors">Private Client-Side OCR</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Privacy & Comparison -->
+      <div class="space-y-3">
+        <h4 class="text-[12px] font-semibold text-[#0d253d] uppercase tracking-wider">Trust & Security</h4>
+        <ul class="space-y-2 text-[13px] text-[#64748d]">
+          <li><a href="/privacy" class="hover:text-[#533afd] transition-colors">Privacy Architecture</a></li>
+          <li><a href="/#comparison" class="hover:text-[#533afd] transition-colors">Why vs Sejda & iLovePDF</a></li>
+          <li><a href="/#faq" class="hover:text-[#533afd] transition-colors">Security FAQ</a></li>
+          <li><a href="https://github.com/Hopding/pdf-lib" target="_blank" rel="noopener noreferrer" class="hover:text-[#533afd] transition-colors">Powered by pdf-lib</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="mt-12 pt-6 border-t border-[#e3e8ee] flex flex-col sm:flex-row items-center justify-between gap-4 text-[12px] text-[#64748d]">
+      <p>© {new Date().getFullYear()} PDF Editor AI (<a href="https://aipdfedit.com" class="text-[#533afd] hover:underline">aipdfedit.com</a>). Free online local PDF editor. All rights reserved.</p>
+      <div class="flex items-center gap-6">
+        <a href="/privacy" class="hover:text-[#533afd] transition-colors">Privacy Policy</a>
+        <a href="/privacy#terms" class="hover:text-[#533afd] transition-colors">Terms of Service</a>
+        <a href="/privacy#security" class="hover:text-[#533afd] transition-colors">Security Audit</a>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,72 @@
+---
+const faqs = [
+  {
+    q: 'How does PDF Editor AI ensure 100% privacy?',
+    a: 'Unlike traditional PDF tools that upload your documents to backend cloud servers, PDF Editor AI executes completely inside your browser memory using WebAssembly (via pdf-lib and PDF.js). Your files are never sent over the network, never saved on a database, and never viewable by third parties.'
+  },
+  {
+    q: 'Is this PDF Editor really free with no task limits?',
+    a: 'Yes. Because all processing happens client-side using your own device hardware, we don’t incur costly server GPU/CPU infrastructure overhead for standard editing. You can edit as many documents as you want, with no 3-task hourly caps (unlike Sejda).'
+  },
+  {
+    q: 'Can I use this editor while offline?',
+    a: 'Yes! Once you have loaded the webpage, all WebAssembly binaries and worker scripts are cached in your browser. You can turn off your Wi-Fi or go into airplane mode and continue editing, annotating, and exporting PDFs seamlessly.'
+  },
+  {
+    q: 'How does the 1-Click AI Smart PII Auto-Redactor work?',
+    a: 'The Smart Redactor uses client-side text pattern recognition (regex & lexical analysis) to detect sensitive personal identifiers such as Social Security Numbers, Credit Card Numbers, Email addresses, and Phone numbers. It then computes their exact coordinates on the PDF canvas and draws opaque blackout blocks over them in one click.'
+  },
+  {
+    q: 'What types of annotations and modifications are supported?',
+    a: 'You can add customizable text blocks (with font, size, color), draw freehand pen strokes, use translucent highlighters, insert shapes (rectangles, circles, arrows, lines), place whiteout blocks, insert images or stamps, create digital e-signatures, and reorder/rotate/delete pages.'
+  },
+  {
+    q: 'Can I sign contracts with legally binding e-signatures?',
+    a: 'Yes. You can draw your signature with mouse/touch, type your name using elegant cursive typography, or upload a transparent PNG image of your actual signature and stamp it anywhere on the document.'
+  }
+];
+---
+
+<section id="faq" class="py-24 bg-[#f6f9fc]">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Opener -->
+    <div class="text-center mb-16">
+      <span class="micro-cap text-[#533afd] mb-3 block">Got Questions?</span>
+      <h2 class="display-xl text-[#0d253d] mb-4">
+        Frequently Asked Questions
+      </h2>
+      <p class="body-lg text-[#64748d]">
+        Everything you need to know about our local privacy architecture and editing features.
+      </p>
+    </div>
+
+    <!-- FAQ Accordion / Cards -->
+    <div class="space-y-4">
+      {faqs.map((faq, idx) => (
+        <details class="group bg-white rounded-2xl border border-[#e3e8ee] p-6 shadow-level-1 transition-all open:shadow-level-2 open:border-[#a8c3de]">
+          <summary class="flex items-center justify-between cursor-pointer list-none text-[16px] font-normal text-[#0d253d] select-none">
+            <span class="font-medium text-[#0d253d] pr-4">{faq.q}</span>
+            <span class="w-6 h-6 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] flex items-center justify-center text-[#533afd] group-open:rotate-180 transition-transform shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </summary>
+          <div class="mt-4 pt-4 border-t border-[#e3e8ee]/60 text-[14px] text-[#64748d] leading-relaxed font-light">
+            {faq.a}
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Final Callout -->
+    <div class="mt-16 text-center bg-white p-8 rounded-2xl border border-[#e3e8ee] shadow-level-1">
+      <h3 class="heading-lg text-[#0d253d] mb-2 font-medium">Ready to edit your PDF privately?</h3>
+      <p class="body-md text-[#64748d] mb-6">No account or credit card needed. Open the in-browser studio instantly.</p>
+      <a href="/edit" class="btn-primary-pill text-[15px] py-2.5 px-7 shadow-sm">
+        <span>Open In-Browser Editor</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>

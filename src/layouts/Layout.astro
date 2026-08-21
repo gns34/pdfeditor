@@ -1,23 +1,40 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { 
+	title = 'PDF Editor AI — Free Online Local In-Browser PDF Editor with Privacy',
+	description = 'Edit PDFs directly in your browser with 100% privacy. Zero cloud uploads, unlimited free editing, AI auto-redact, electronic signatures, annotations, and page management.'
+} = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		
+		<!-- Open Graph / Meta -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://aipdfedit.com" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta name="twitter:card" content="summary_large_image" />
+
+		<!-- Inter Font with 300, 400, 500, 600 weights & Cursive Fonts for E-Signatures -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Inter:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
 	</head>
-	<body>
+	<body class="min-h-screen bg-white text-[#0d253d] antialiased selection:bg-[#b9b9f9] selection:text-[#1c1e54]">
 		<slot />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

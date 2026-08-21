@@ -1,0 +1,97 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout 
+  title="Zero-Server Privacy Architecture — PDF Editor AI"
+  description="Learn how PDF Editor AI guarantees 100% data privacy using client-side WebAssembly, isolated browser memory, and zero cloud uploads."
+>
+  <Navbar />
+
+  <main class="py-16 bg-[#f6f9fc]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      
+      <!-- Page Opener -->
+      <div class="text-center space-y-4">
+        <span class="micro-cap text-[#533afd] block">Security & Data Sovereignty</span>
+        <h1 class="display-xl text-[#0d253d]">
+          100% Client-Side Privacy Architecture
+        </h1>
+        <p class="body-lg text-[#64748d] max-w-2xl mx-auto font-light">
+          Your confidential documents, tax forms, bank statements, and legal contracts are processed exclusively in your device's browser memory.
+        </p>
+      </div>
+
+      <!-- Main Explanation Card -->
+      <div class="bg-white rounded-3xl p-8 sm:p-12 border border-[#e3e8ee] shadow-level-2 space-y-8">
+        
+        <!-- Section 1 -->
+        <div class="space-y-3">
+          <h2 class="heading-lg text-[#0d253d] font-medium flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-[#533afd]/10 text-[#533afd] flex items-center justify-center text-sm">1</span>
+            <span>Why Traditional Cloud PDF Editors are a Privacy Risk</span>
+          </h2>
+          <p class="body-md text-[#64748d] leading-relaxed">
+            Most online PDF tools (including Sejda and iLovePDF) require uploading your document file to a remote server cluster where their backend scripts render or convert the PDF. Even if those services promise to delete files after a few hours, your unencrypted data is still transmitted over the public web, stored on shared cloud disks, and exposed to potential server breaches or rogue access.
+          </p>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="space-y-3">
+          <h2 class="heading-lg text-[#0d253d] font-medium flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-sm">2</span>
+            <span>How PDF Editor AI Works (The Local WebAssembly Engine)</span>
+          </h2>
+          <p class="body-md text-[#64748d] leading-relaxed">
+            PDF Editor AI operates entirely within your browser tab:
+          </p>
+          <ul class="list-disc pl-6 space-y-2 text-[14px] text-[#273951]">
+            <li><strong>File Ingestion:</strong> When you select or drop a PDF, the raw binary bytes are read directly into browser RAM via the HTML5 FileReader API.</li>
+            <li><strong>Page Rendering:</strong> Document vectors and fonts are rasterized directly to HTML5 Canvas elements using client-side PDF.js.</li>
+            <li><strong>In-Memory Annotation & Modification:</strong> Freehand strokes, text layers, shapes, and signature stamps are layered in memory without network calls.</li>
+            <li><strong>Compilation & Export:</strong> When you click "Download PDF", <code class="bg-[#f6f9fc] px-1.5 py-0.5 rounded text-[#533afd] font-mono text-xs">pdf-lib</code> compiles the updated binary stream on your local CPU and triggers an instant browser download.</li>
+          </ul>
+        </div>
+
+        <!-- Section 3: Technical Verification -->
+        <div class="bg-[#f5e9d4] rounded-2xl p-6 border border-[#e8d5b8] space-y-3">
+          <h3 class="font-medium text-[16px] text-[#0d253d] flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#9b6829]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>How to Verify Privacy Yourself (The Airplane Mode Test)</span>
+          </h3>
+          <ol class="list-decimal pl-5 space-y-1.5 text-[13px] text-[#273951]">
+            <li>Open <a href="/edit" class="text-[#533afd] underline">aipdfedit.com/edit</a> in your browser.</li>
+            <li>Disconnect your Wi-Fi or turn on <strong>Airplane Mode</strong>.</li>
+            <li>Drag any PDF into the editor, add text, draw annotations, insert e-signatures, and click <strong>Download PDF</strong>.</li>
+            <li>Notice that everything works 100% seamlessly offline — concrete proof that zero network requests or uploads occur!</li>
+          </ol>
+        </div>
+
+        <!-- Section 4: Compliance -->
+        <div class="space-y-3">
+          <h2 class="heading-lg text-[#0d253d] font-medium flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-[#b9b9f9]/40 text-[#4434d4] flex items-center justify-center text-sm">3</span>
+            <span>Compliance & Legal Safety</span>
+          </h2>
+          <p class="body-md text-[#64748d] leading-relaxed">
+            Because PDF Editor AI never ingests, transmits, or stores user document data, our platform is inherently compliant with strict global privacy mandates including <strong>GDPR (EU)</strong>, <strong>HIPAA (US Healthcare)</strong>, and <strong>CCPA (California)</strong>.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="text-center pt-4">
+        <a href="/edit" class="btn-primary-pill text-[15px] py-3 px-8 shadow-sm">
+          <span>Launch In-Browser Editor</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
