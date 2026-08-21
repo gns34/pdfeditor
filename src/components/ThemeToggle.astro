@@ -1,0 +1,122 @@
+---
+interface Props {
+  size?: 'sm' | 'md';
+  class?: string;
+}
+
+const { size = 'sm', class: className = '' } = Astro.props;
+---
+
+<div 
+  class={`theme-toggle-group inline-flex items-center p-0.5 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] transition-colors select-none ${className}`}
+  role="radiogroup" 
+  aria-label="Color theme switcher"
+>
+  <!-- Light Option -->
+  <button 
+    type="button"
+    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] transition-all flex items-center gap-1 cursor-pointer"
+    data-theme-val="light"
+    role="radio"
+    aria-checked="true"
+    title="Light Theme (Canvas White)"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4"/>
+      <path d="M12 2v2"/>
+      <path d="M12 20v2"/>
+      <path d="m4.93 4.93 1.41 1.41"/>
+      <path d="m17.66 17.66 1.41 1.41"/>
+      <path d="M2 12h2"/>
+      <path d="M20 12h2"/>
+      <path d="m6.34 17.66-1.41 1.41"/>
+      <path d="m19.07 4.93-1.41 1.41"/>
+    </svg>
+    <span class="hidden sm:inline text-[11px]">Light</span>
+  </button>
+
+  <!-- Dark (Navy/Midnight) Option -->
+  <button 
+    type="button"
+    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] transition-all flex items-center gap-1 cursor-pointer"
+    data-theme-val="dark"
+    role="radio"
+    aria-checked="false"
+    title="Dark Theme (Deep Navy & Indigo)"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+    </svg>
+    <span class="hidden sm:inline text-[11px]">Dark</span>
+  </button>
+
+  <!-- Black (OLED Pitch Black) Option -->
+  <button 
+    type="button"
+    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] transition-all flex items-center gap-1 cursor-pointer"
+    data-theme-val="black"
+    role="radio"
+    aria-checked="false"
+    title="Black Theme (Pure OLED Black)"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 2a10 10 0 0 1 0 20Z" fill="currentColor"/>
+    </svg>
+    <span class="hidden sm:inline text-[11px]">Black</span>
+  </button>
+</div>
+
+<script>
+  function setupThemeToggles() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    updateToggleButtons(currentTheme);
+
+    document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetTheme = (btn as HTMLElement).getAttribute('data-theme-val') || 'light';
+        applyTheme(targetTheme);
+      });
+    });
+  }
+
+  function applyTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.remove('dark', 'black');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else if (theme === 'black') {
+      document.documentElement.classList.add('black');
+    }
+
+    try {
+      localStorage.setItem('theme', theme);
+    } catch (e) {
+      console.warn('Could not save theme to localStorage', e);
+    }
+
+    updateToggleButtons(theme);
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
+  }
+
+  function updateToggleButtons(theme: string) {
+    document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
+      const val = (btn as HTMLElement).getAttribute('data-theme-val');
+      const isSelected = val === theme;
+      btn.setAttribute('aria-checked', String(isSelected));
+      
+      if (isSelected) {
+        btn.classList.add('active-theme-pill', 'bg-white', 'text-[#533afd]', 'shadow-xs', 'font-semibold');
+        btn.classList.remove('text-[#64748d]');
+      } else {
+        btn.classList.remove('active-theme-pill', 'bg-white', 'text-[#533afd]', 'shadow-xs', 'font-semibold');
+        btn.classList.add('text-[#64748d]');
+      }
+    });
+  }
+
+  // Run on initial load and view transitions
+  setupThemeToggles();
+  document.addEventListener('astro:page-load', setupThemeToggles);
+  document.addEventListener('astro:after-swap', setupThemeToggles);
+</script>

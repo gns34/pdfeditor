@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from './ThemeToggle.astro';
+
 interface Props {
   isEditorPage?: boolean;
 }
@@ -33,10 +35,13 @@ const { isEditorPage = false } = Astro.props;
       <a href="/#faq" class="hover:text-[#533afd] transition-colors py-1">FAQ</a>
     </nav>
 
-    <!-- Right CTAs & Privacy Badge -->
-    <div class="flex items-center gap-3">
+    <!-- Right CTAs, Theme Toggle & Privacy Badge -->
+    <div class="flex items-center gap-2.5 sm:gap-3">
+      <!-- 3-Way Theme Switcher (Light / Dark / Black) -->
+      <ThemeToggle />
+
       <!-- Privacy Indicator -->
-      <div class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951] text-[12px] font-normal" title="No documents are ever uploaded to cloud servers">
+      <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951] text-[12px] font-normal" title="No documents are ever uploaded to cloud servers">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         <span>100% Client-Side</span>
       </div>

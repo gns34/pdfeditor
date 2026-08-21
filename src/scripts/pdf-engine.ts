@@ -48,6 +48,7 @@ export interface ExtractedTextItem {
   height: number;
   fontSize: number;
   fontFamily: string;
+  isBold?: boolean;
 }
 
 export interface PageState {
@@ -186,7 +187,7 @@ export class PdfEngine {
   }
 
   /**
-   * Extract text items from PDF page for in-place text editing & AI PII scanning
+   * Extract text items from PDF page with intelligent line clustering for direct click-to-edit
    */
   async getPageTextItems(pageIndex: number): Promise<ExtractedTextItem[]> {
     if (!this.pdfDoc) return [];
@@ -196,27 +197,105 @@ export class PdfEngine {
       const rotation = this.pageRotations.get(pageIndex) || 0;
       const viewport = page.getViewport({ scale: 1.0, rotation });
 
-      return textContent.items
-        .filter((item: any) => item.str && item.str.trim().length > 0)
-        .map((item: any, idx: number) => {
-          const tx = item.transform; // [scaleX, skewY, skewX, scaleY, tx, ty]
-          const fontSize = Math.abs(tx[3]) || 12;
-          const x = tx[4];
-          const y = viewport.height - tx[5] - fontSize;
-          const width = item.width || item.str.length * (fontSize * 0.55);
-          const height = fontSize * 1.15;
+      const rawItems: ExtractedTextItem[] = [];
 
-          return {
-            id: `text-item-${pageIndex}-${idx}`,
-            str: item.str,
-            x,
-            y,
-            width,
-            height,
-            fontSize,
-            fontFamily: item.fontName || 'Helvetica',
-          };
+      for (let i = 0; i < textContent.items.length; i++) {
+        const item: any = textContent.items[i];
+        if (!item || !item.str || item.str.trim().length === 0) continue;
+
+        const tx = item.transform; // [scaleX, skewY, skewX, scaleY, tx, ty]
+        const fontSize = Math.hypot(tx[2], tx[3]) || Math.abs(tx[3]) || 12;
+        
+        let vx = tx[4];
+        let vy = viewport.height - tx[5];
+        if (typeof viewport.convertToViewportPoint === 'function') {
+          const pt = viewport.convertToViewportPoint(tx[4], tx[5]);
+          vx = pt[0];
+          vy = pt[1];
+        }
+
+        const topY = Math.max(0, vy - fontSize * 0.84);
+        const itemWidth = item.width > 0 ? item.width : item.str.length * (fontSize * 0.54);
+        const itemHeight = fontSize * 1.18;
+
+        const fontNameLower = (item.fontName || '').toLowerCase();
+        const isBold = fontNameLower.includes('bold') || fontNameLower.includes('black') || fontNameLower.includes('heavy') || fontNameLower.includes('700') || fontNameLower.includes('800');
+        let normalizedFamily = 'Helvetica';
+        if (fontNameLower.includes('times') || fontNameLower.includes('serif') || fontNameLower.includes('roman') || fontNameLower.includes('georgia')) {
+          normalizedFamily = 'TimesRoman';
+        } else if (fontNameLower.includes('courier') || fontNameLower.includes('mono') || fontNameLower.includes('consolas')) {
+          normalizedFamily = 'Courier';
+        }
+
+        rawItems.push({
+          id: `text-raw-${pageIndex}-${i}`,
+          str: item.str,
+          x: vx,
+          y: topY,
+          width: itemWidth,
+          height: itemHeight,
+          fontSize,
+          fontFamily: normalizedFamily,
+          isBold,
         });
+      }
+
+      if (rawItems.length === 0) return [];
+
+      // Sort items by vertical position (Y), then horizontal position (X)
+      rawItems.sort((a, b) => {
+        const yTolerance = Math.min(a.fontSize, b.fontSize) * 0.4;
+        if (Math.abs(a.y - b.y) > yTolerance) {
+          return a.y - b.y;
+        }
+        return a.x - b.x;
+      });
+
+      // Cluster adjacent text fragments on the same line into coherent single text blocks
+      const mergedLines: ExtractedTextItem[] = [];
+      let currentLine: ExtractedTextItem | null = null;
+
+      for (let i = 0; i < rawItems.length; i++) {
+        const item = rawItems[i];
+        if (!currentLine) {
+          currentLine = { ...item, id: `text-line-${pageIndex}-${mergedLines.length}` };
+          continue;
+        }
+
+        const yDiff = Math.abs(item.y - currentLine.y);
+        const fontDiff = Math.abs(item.fontSize - currentLine.fontSize);
+        const gap = item.x - (currentLine.x + currentLine.width);
+
+        // Merge if on the same line, matching font size, and within natural word gap
+        const isSameLine =
+          yDiff <= Math.max(3.5, currentLine.fontSize * 0.4) &&
+          fontDiff <= 3.5 &&
+          gap >= -currentLine.fontSize * 0.6 &&
+          gap <= Math.max(14, currentLine.fontSize * 2.2);
+
+        if (isSameLine) {
+          const addSpace =
+            gap > currentLine.fontSize * 0.15 &&
+            !currentLine.str.endsWith(' ') &&
+            !item.str.startsWith(' ');
+
+          currentLine.str = currentLine.str + (addSpace ? ' ' : '') + item.str;
+          const rightEdge = Math.max(currentLine.x + currentLine.width, item.x + item.width);
+          currentLine.width = rightEdge - currentLine.x;
+          currentLine.height = Math.max(currentLine.height, item.height);
+          currentLine.y = Math.min(currentLine.y, item.y);
+          currentLine.isBold = currentLine.isBold || item.isBold;
+        } else {
+          mergedLines.push(currentLine);
+          currentLine = { ...item, id: `text-line-${pageIndex}-${mergedLines.length}` };
+        }
+      }
+
+      if (currentLine) {
+        mergedLines.push(currentLine);
+      }
+
+      return mergedLines;
     } catch (e) {
       console.warn('Could not extract text items from page', pageIndex, e);
       return [];

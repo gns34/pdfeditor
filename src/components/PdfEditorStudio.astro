@@ -532,6 +532,35 @@ const { mode = 'standalone' } = Astro.props;
       engine.recordHistory();
     });
 
+    fabricCanvas.on('mouse:dblclick', (opt: any) => {
+      if (opt.target && (opt.target instanceof Textbox || opt.target instanceof IText)) {
+        opt.target.enterEditing();
+        fabricCanvas?.renderAll();
+      }
+    });
+
+    fabricCanvas.on('selection:created', (e: any) => {
+      const selected = e.selected?.[0];
+      if (selected && (selected instanceof IText || selected instanceof Textbox)) {
+        if (selected.fill && typeof selected.fill === 'string' && selected.fill.startsWith('#')) {
+          activeColor = selected.fill;
+          if (colorInput) colorInput.value = activeColor;
+          if (colorPreview) colorPreview.style.backgroundColor = activeColor;
+        }
+      }
+    });
+
+    fabricCanvas.on('selection:updated', (e: any) => {
+      const selected = e.selected?.[0];
+      if (selected && (selected instanceof IText || selected instanceof Textbox)) {
+        if (selected.fill && typeof selected.fill === 'string' && selected.fill.startsWith('#')) {
+          activeColor = selected.fill;
+          if (colorInput) colorInput.value = activeColor;
+          if (colorPreview) colorPreview.style.backgroundColor = activeColor;
+        }
+      }
+    });
+
     // Interactive mouse events for text placement and shape drawing
     fabricCanvas.on('mouse:down', (opt: any) => {
       if (!fabricCanvas) return;
@@ -718,11 +747,9 @@ const { mode = 'standalone' } = Astro.props;
       setTool(currentTool);
     }
 
-    // 3. Extract text items for in-place text editing & AI
+    // 3. Extract text items for direct in-place text editing & AI
     extractedItems = await engine.getPageTextItems(currentPageIndex);
-    if (currentTool === 'edit-existing') {
-      renderExtractedTextBadges();
-    }
+    renderExtractedTextBadges();
   }
 
   // Tool Switching and Configuration
@@ -738,22 +765,17 @@ const { mode = 'standalone' } = Astro.props;
 
     if (!fabricCanvas) return;
 
-    if (tool === 'select') {
-      fabricCanvas.isDrawingMode = false;
-      fabricCanvas.selection = true;
-      fabricCanvas.defaultCursor = 'default';
-      extractedTextLayer?.classList.add('hidden');
-    } else if (tool === 'text') {
-      fabricCanvas.isDrawingMode = false;
-      fabricCanvas.selection = false;
-      fabricCanvas.defaultCursor = 'text';
-      extractedTextLayer?.classList.add('hidden');
-    } else if (tool === 'edit-existing') {
+    if (tool === 'select' || tool === 'edit-existing') {
       fabricCanvas.isDrawingMode = false;
       fabricCanvas.selection = true;
       fabricCanvas.defaultCursor = 'default';
       renderExtractedTextBadges();
       extractedTextLayer?.classList.remove('hidden');
+    } else if (tool === 'text') {
+      fabricCanvas.isDrawingMode = false;
+      fabricCanvas.selection = false;
+      fabricCanvas.defaultCursor = 'text';
+      extractedTextLayer?.classList.add('hidden');
     } else if (tool === 'draw') {
       fabricCanvas.isDrawingMode = true;
       fabricCanvas.selection = false;
@@ -778,46 +800,98 @@ const { mode = 'standalone' } = Astro.props;
     }
   }
 
-  // Render clickable badges over original PDF text for instant in-place replacement
+  // Render clickable text overlay for instant in-place direct editing
   function renderExtractedTextBadges() {
     if (!extractedTextLayer) return;
     extractedTextLayer.innerHTML = '';
 
+    if (currentTool !== 'select' && currentTool !== 'edit-existing') {
+      return;
+    }
+
+    const isEditGuideMode = currentTool === 'edit-existing';
+
     for (const item of extractedItems) {
       const badge = document.createElement('div');
-      badge.className = 'absolute pointer-events-auto rounded border border-dashed border-[#533afd]/60 bg-[#533afd]/10 hover:bg-[#533afd]/25 hover:border-[#533afd] cursor-pointer transition-colors';
-      badge.style.left = `${item.x * currentScale}px`;
-      badge.style.top = `${item.y * currentScale}px`;
-      badge.style.width = `${item.width * currentScale}px`;
-      badge.style.height = `${item.height * currentScale}px`;
-      badge.title = `Click to edit text: "${item.str}"`;
+      
+      // Styling: In 'select' mode, transparent with subtle hover outline; in 'edit-existing' mode, visible dashed guides
+      if (isEditGuideMode) {
+        badge.className = 'absolute pointer-events-auto rounded border border-dashed border-[#533afd]/60 bg-[#533afd]/10 hover:bg-[#533afd]/25 hover:border-[#533afd] cursor-pointer transition-colors';
+      } else {
+        badge.className = 'absolute pointer-events-auto rounded border border-transparent hover:border-[#533afd]/50 hover:bg-[#533afd]/10 cursor-text transition-all';
+      }
+
+      const boxLeft = item.x * currentScale;
+      const boxTop = item.y * currentScale;
+      const boxWidth = item.width * currentScale;
+      const boxHeight = item.height * currentScale;
+
+      badge.style.left = `${boxLeft}px`;
+      badge.style.top = `${boxTop}px`;
+      badge.style.width = `${boxWidth}px`;
+      badge.style.height = `${boxHeight}px`;
+      badge.title = `Click to edit: "${item.str}"`;
 
       badge.addEventListener('click', (e) => {
         e.stopPropagation();
         if (!fabricCanvas) return;
 
-        // Add smart text box with solid whiteout background to replace original PDF text
-        const fontName = activeFontFamily === 'TimesRoman' ? 'serif' : activeFontFamily === 'Courier' ? 'monospace' : 'sans-serif';
-        const editBox = new Textbox(item.str, {
-          left: Math.max(0, item.x * currentScale - 2),
-          top: Math.max(0, item.y * currentScale - 2),
-          width: Math.max(item.width * currentScale + 4, 80),
-          fontSize: item.fontSize * currentScale,
-          fontFamily: fontName,
-          fill: activeColor,
-          backgroundColor: '#ffffff',
-          padding: 2,
-          editable: true,
+        // Hide badge so it does not intercept user clicks while editing
+        badge.style.display = 'none';
+
+        // 1. Create a clean solid whiteout mask covering the original PDF raster text cleanly
+        const maskRect = new Rect({
+          left: Math.max(0, boxLeft - 2),
+          top: Math.max(0, boxTop - 2),
+          width: boxWidth + 5,
+          height: Math.max(boxHeight + 4, item.fontSize * currentScale * 1.25),
+          fill: '#ffffff',
+          stroke: 'transparent',
+          strokeWidth: 0,
+          selectable: false,
+          evented: false,
+          hoverCursor: 'default',
         });
 
+        // 2. Create the in-place editable Textbox directly over the whited-out region
+        const fontName = item.fontFamily === 'TimesRoman' ? 'serif' : item.fontFamily === 'Courier' ? 'monospace' : 'sans-serif';
+        const editBox = new Textbox(item.str, {
+          left: boxLeft,
+          top: boxTop,
+          width: Math.max(boxWidth + 8, 60),
+          fontSize: item.fontSize * currentScale,
+          fontFamily: fontName,
+          fontWeight: item.isBold ? 'bold' : 'normal',
+          fill: activeColor || '#0d253d',
+          backgroundColor: 'transparent',
+          padding: 2,
+          editable: true,
+          cursorColor: '#533afd',
+          borderColor: '#533afd',
+          cornerColor: '#533afd',
+          cornerSize: 7,
+          cornerStyle: 'circle',
+        });
+
+        (editBox as any)._maskRect = maskRect;
+
+        // Add mask underneath, then text box
+        fabricCanvas.add(maskRect);
         fabricCanvas.add(editBox);
         fabricCanvas.setActiveObject(editBox);
+
         editBox.enterEditing();
         editBox.selectAll();
         fabricCanvas.renderAll();
         engine.recordHistory();
+
+        editBox.on('editing:exited', () => {
+          engine.recordHistory();
+          fabricCanvas?.renderAll();
+        });
+
         setTool('select');
-        showToast('Text block ready to edit');
+        showToast('Text block ready to edit in-place');
       });
 
       extractedTextLayer.appendChild(badge);
