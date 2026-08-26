@@ -17,8 +17,8 @@
     "canvas-confetti": "^1.9.4",
     "fabric": "^7.4.0",
     "lucide": "^1.33.0",
+    "@hyzyla/pdfium": "^2.1.13",
     "pdf-lib": "^1.17.1",
-    "pdfjs-dist": "^6.2.108",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

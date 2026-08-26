@@ -404,7 +404,7 @@ const { mode = 'standalone' } = Astro.props;
   <SignatureModal />
 </div>
 
-<!-- Interactive Client Script (Fabric.js + PDF.js + pdf-lib) -->
+<!-- Interactive Client Script (Fabric.js + PDFium WASM + pdf-lib) -->
 <script>
   import { PdfEngine, type ExtractedTextItem } from '../scripts/pdf-engine';
   import { PdfAiAssistant } from '../scripts/pdf-ai';
@@ -711,7 +711,7 @@ const { mode = 'standalone' } = Astro.props;
   // Load PDF file into Engine
   async function loadPdfBuffer(buffer: ArrayBuffer) {
     try {
-      showToast('Processing PDF locally in RAM with PDF.js...');
+      showToast('Processing PDF locally in RAM with PDFium...');
       const visiblePages = await engine.loadPdf(buffer);
       if (visiblePages.length === 0) return;
 
@@ -735,7 +735,7 @@ const { mode = 'standalone' } = Astro.props;
   async function renderCurrentPage() {
     if (!pdfCanvas) return;
     
-    // 1. Render PDF page with PDF.js
+    // 1. Render PDF page with PDFium WASM → ImageData → canvas
     const dims = await engine.renderPageToCanvas(currentPageIndex, pdfCanvas, currentScale);
     
     // 2. Attach Fabric.js canvas

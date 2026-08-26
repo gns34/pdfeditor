@@ -8,7 +8,12 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
-      include: ['pdf-lib', 'canvas-confetti']
-    }
+      include: ['pdf-lib', 'canvas-confetti'],
+      // @hyzyla/pdfium bundles WASM and cannot be pre-bundled by Vite
+      exclude: ['@hyzyla/pdfium'],
+    },
+    // Ensure .wasm files are served with correct MIME type
+    assetsInclude: ['**/*.wasm'],
   }
 });
+
