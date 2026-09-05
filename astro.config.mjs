@@ -1,10 +1,21 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://aipdfedit.com',
+  output: 'static',
+  site: 'https://pdfeditx.com',
+  integrations: [
+    sitemap({
+      customPages: [
+        'https://pdfeditx.com/',
+        'https://pdfeditx.com/edit',
+        'https://pdfeditx.com/privacy',
+      ],
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
     optimizeDeps: {
