@@ -11,11 +11,10 @@ export default defineConfig({
     plugins: [tailwindcss()],
     optimizeDeps: {
       include: ['pdf-lib', 'canvas-confetti'],
-      // @hyzyla/pdfium bundles WASM and cannot be pre-bundled by Vite
-      exclude: ['@hyzyla/pdfium'],
+      // pdfjs-dist uses dynamic imports; exclude from pre-bundling to avoid issues
+      exclude: ['pdfjs-dist'],
     },
-    // Ensure .wasm files are served with correct MIME type
-    assetsInclude: ['**/*.wasm'],
   }
 });
+
 

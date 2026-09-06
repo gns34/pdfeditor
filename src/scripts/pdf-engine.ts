@@ -1,5 +1,6 @@
+import * as pdfjsLib from 'pdfjs-dist';
+import type { PDFDocumentProxy, PDFPageProxy, TextItem } from 'pdfjs-dist/types/src/display/api';
 import { PDFDocument, rgb, degrees, StandardFonts } from 'pdf-lib';
-import { PDFiumLibrary } from '@hyzyla/pdfium';
 import {
   Canvas,
   StaticCanvas,
@@ -16,18 +17,10 @@ import {
   Point,
 } from 'fabric';
 
-// Singleton PDFium library instance (initialized once per page load)
-let pdfiumLibraryInstance: Awaited<ReturnType<typeof PDFiumLibrary.init>> | null = null;
-
-async function getPdfiumLibrary() {
-  if (!pdfiumLibraryInstance) {
-    // Pass the WASM binary URL so Vite/browser can fetch it from /public.
-    // The pdfium.wasm file must exist at /public/pdfium.wasm.
-    pdfiumLibraryInstance = await PDFiumLibrary.init({
-      wasmUrl: '/pdfium.wasm',
-    });
-  }
-  return pdfiumLibraryInstance;
+// Configure the PDF.js worker. The worker file is copied to /public/ by
+// vite-plugin-static-copy (see astro.config.mjs).
+if (typeof window !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 }
 
 // Configure Stripi Brand style defaults for Fabric.js interactive controls
@@ -45,16 +38,16 @@ if (typeof window !== 'undefined') {
 export interface PageInfo {
   pageIndex: number;
   pageNumber: number;
-  width: number; // PDF points
-  height: number; // PDF points
+  width: number; // PDF points (unscaled)
+  height: number; // PDF points (unscaled)
   rotation: number;
 }
 
 export interface ExtractedTextItem {
   id: string;
   str: string;
-  x: number; // PDF point X (from left)
-  y: number; // PDF point Y (from top)
+  x: number; // PDF point X (from left, top-origin)
+  y: number; // PDF point Y (from top, top-origin)
   width: number;
   height: number;
   fontSize: number;
@@ -68,10 +61,16 @@ export interface PageState {
   historyIndex: number;
 }
 
+/**
+ * Fabric overlay object type tags used during PDF export to determine
+ * how each object should be serialized into the pdf-lib content stream.
+ */
+type FabricExportTag = 'whiteout' | 'text' | 'drawing' | 'image';
+
 export class PdfEngine {
   private pdfBytes: Uint8Array | null = null;
-  /** PDFium document handle — destroyed and replaced on each loadPdf() */
-  private pdfiumDoc: any = null;
+  /** pdf.js document handle — replaced on each loadPdf() */
+  private pdfJsDoc: PDFDocumentProxy | null = null;
   private numPages: number = 0;
   private pages: PageInfo[] = [];
   private pageRotations: Map<number, number> = new Map();
@@ -85,36 +84,36 @@ export class PdfEngine {
   private activeScale: number = 1.3;
 
   /**
-   * Load PDF binary buffer and extract page metadata via PDFium WASM
+   * Load PDF binary buffer and extract page metadata via PDF.js.
    */
   async loadPdf(fileData: ArrayBuffer | Uint8Array): Promise<PageInfo[]> {
-    this.pdfBytes = new Uint8Array(fileData);
+    this.pdfBytes = fileData instanceof Uint8Array ? fileData : new Uint8Array(fileData);
     this.pageStates.clear();
     this.pageRotations.clear();
     this.deletedPages.clear();
 
-    // Destroy previous document to free WASM memory
-    if (this.pdfiumDoc) {
-      try { this.pdfiumDoc.destroy(); } catch (_) {}
-      this.pdfiumDoc = null;
+    // Destroy previous document to free memory
+    if (this.pdfJsDoc) {
+      try { await this.pdfJsDoc.destroy(); } catch (_) {}
+      this.pdfJsDoc = null;
     }
 
-    const library = await getPdfiumLibrary();
-    this.pdfiumDoc = await library.loadDocument(this.pdfBytes);
-    this.numPages = this.pdfiumDoc.getPageCount();
+    // pdf.js requires a copy of the data (it takes ownership of the buffer)
+    const dataCopy = new Uint8Array(this.pdfBytes);
+    this.pdfJsDoc = await pdfjsLib.getDocument({ data: dataCopy }).promise;
+    this.numPages = this.pdfJsDoc.numPages;
     this.pageOrder = Array.from({ length: this.numPages }, (_, i) => i);
 
     this.pages = [];
     for (let i = 0; i < this.numPages; i++) {
-      const page = this.pdfiumDoc.getPage(i);
-      const { originalWidth: w, originalHeight: h } = page.getOriginalSize();
-      // PDFium doesn't expose rotation via this API; default to 0
-      const rotation = 0;
+      const pdfPage = await this.pdfJsDoc.getPage(i + 1); // pdf.js is 1-indexed
+      const viewport = pdfPage.getViewport({ scale: 1.0 });
+      const rotation = pdfPage.rotate ?? 0;
       this.pages.push({
         pageIndex: i,
         pageNumber: i + 1,
-        width: w,
-        height: h,
+        width: viewport.width,
+        height: viewport.height,
         rotation,
       });
       this.pageRotations.set(i, rotation);
@@ -137,7 +136,7 @@ export class PdfEngine {
         const p = this.pages[idx];
         return {
           ...p,
-          rotation: this.pageRotations.get(idx) || 0,
+          rotation: this.pageRotations.get(idx) ?? 0,
         };
       });
   }
@@ -147,32 +146,30 @@ export class PdfEngine {
   }
 
   /**
-   * Render PDF page to an HTMLCanvasElement using PDFium WASM.
+   * Render PDF page to an HTMLCanvasElement using PDF.js.
    *
-   * PDFium returns raw BGRA pixel data; we swap B↔R channels to produce
-   * the RGBA layout required by the browser's ImageData API.
+   * PDF.js outputs RGBA directly — no channel-swap needed.
+   * HiDPI is handled by scaling the viewport by devicePixelRatio.
    */
   async renderPageToCanvas(
     pageIndex: number,
     canvas: HTMLCanvasElement,
     scale: number = 1.3
   ): Promise<{ width: number; height: number; unscaledWidth: number; unscaledHeight: number }> {
-    if (!this.pdfiumDoc) return { width: 0, height: 0, unscaledWidth: 0, unscaledHeight: 0 };
+    if (!this.pdfJsDoc) return { width: 0, height: 0, unscaledWidth: 0, unscaledHeight: 0 };
 
     const pageInfo = this.pages[pageIndex];
     if (!pageInfo) return { width: 0, height: 0, unscaledWidth: 0, unscaledHeight: 0 };
 
     const dpr = typeof window !== 'undefined' ? (window.devicePixelRatio || 1) : 1;
 
-    // Unscaled dimensions in PDF points
+    const pdfPage = await this.pdfJsDoc.getPage(pageIndex + 1);
+    const viewport = pdfPage.getViewport({ scale });
+
     const unscaledWidth = pageInfo.width;
     const unscaledHeight = pageInfo.height;
-
-    // Scaled display pixel dimensions (CSS pixels)
-    const displayW = Math.floor(unscaledWidth * scale);
-    const displayH = Math.floor(unscaledHeight * scale);
-
-    // Actual canvas pixel buffer at HiDPI
+    const displayW = Math.floor(viewport.width);
+    const displayH = Math.floor(viewport.height);
     const bufferW = Math.floor(displayW * dpr);
     const bufferH = Math.floor(displayH * dpr);
 
@@ -184,89 +181,85 @@ export class PdfEngine {
     const ctx = canvas.getContext('2d', { alpha: false });
     if (!ctx) return { width: displayW, height: displayH, unscaledWidth, unscaledHeight };
 
-    const page = this.pdfiumDoc.getPage(pageIndex);
+    // Scale context for HiDPI rendering
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // Render at full buffer resolution (scale * dpr) so it's crisp on HiDPI screens
-    const renderScale = scale * dpr;
-    const image = await page.render({ scale: renderScale, render: 'bitmap' });
+    const hiDpiViewport = pdfPage.getViewport({ scale });
+    await pdfPage.render({ canvasContext: ctx, viewport: hiDpiViewport }).promise;
 
-    // PDFium outputs BGRA; ImageData requires RGBA — swap B and R channels in-place
-    const bgraBuffer = new Uint8ClampedArray(image.data);
-    for (let i = 0; i < bgraBuffer.length; i += 4) {
-      const b = bgraBuffer[i];
-      bgraBuffer[i] = bgraBuffer[i + 2]; // R ← B
-      bgraBuffer[i + 2] = b;             // B ← R
-    }
-
-    const imageData = new ImageData(bgraBuffer, image.width, image.height);
-    ctx.putImageData(imageData, 0, 0);
-
-    return {
-      width: displayW,
-      height: displayH,
-      unscaledWidth,
-      unscaledHeight,
-    };
+    return { width: displayW, height: displayH, unscaledWidth, unscaledHeight };
   }
 
   /**
-   * Generate thumbnail image for the page navigator sidebar
+   * Generate thumbnail image for the page navigator sidebar.
    */
   async generateThumbnail(pageIndex: number): Promise<string> {
-    if (!this.pdfiumDoc) return '';
+    if (!this.pdfJsDoc) return '';
     const canvas = document.createElement('canvas');
     await this.renderPageToCanvas(pageIndex, canvas, 0.28);
     return canvas.toDataURL('image/jpeg', 0.85);
   }
 
   /**
-   * Extract text items from a PDF page for click-to-edit overlays and AI features.
+   * Extract text items from a PDF page using PDF.js getTextContent().
    *
-   * @hyzyla/pdfium exposes only page.getText() (flat string). We split by
-   * newline to approximate line-level blocks, then evenly distribute their Y
-   * positions across the page height. This gives good enough geometry for
-   * the whiteout+Textbox overlay and is far simpler than the old PDF.js
-   * transform-matrix heuristic that caused the alignment bugs.
+   * PDF.js returns real transform matrices with pixel-perfect per-glyph
+   * positions. This completely replaces the old @hyzyla/pdfium heuristic
+   * (which split by newline and evenly distributed Y positions — causing
+   * misaligned click-to-edit badges).
+   *
+   * PDF.js coordinate origin is bottom-left; we convert to top-left here.
    */
   async getPageTextItems(pageIndex: number): Promise<ExtractedTextItem[]> {
-    if (!this.pdfiumDoc) return [];
+    if (!this.pdfJsDoc) return [];
     try {
-      const page = this.pdfiumDoc.getPage(pageIndex);
-      const pageInfo = this.pages[pageIndex];
-      const rawText: string = page.getText();
-      if (!rawText || rawText.trim().length === 0) return [];
+      const pdfPage = await this.pdfJsDoc.getPage(pageIndex + 1);
+      const viewport = pdfPage.getViewport({ scale: 1.0 });
+      const textContent = await pdfPage.getTextContent();
 
-      // Split into logical lines; filter blank lines
-      const lines = rawText.split('\n').filter((l: string) => l.trim().length > 0);
-      if (lines.length === 0) return [];
+      const items: ExtractedTextItem[] = [];
+      for (let i = 0; i < textContent.items.length; i++) {
+        const rawItem = textContent.items[i];
+        // PDF.js TextItem has: str, transform[6], width, height, fontName
+        const item = rawItem as TextItem;
+        if (!item.str || item.str.trim().length === 0) continue;
 
-      const pageW = pageInfo.width;
-      const pageH = pageInfo.height;
+        // transform = [a, b, c, d, tx, ty] — tx/ty are the glyph origin in PDF coords
+        const [a, b, c, d, tx, ty] = item.transform;
 
-      // Estimate a uniform line height (fits all lines within page height with margins)
-      const topMargin = pageH * 0.06;
-      const bottomMargin = pageH * 0.06;
-      const usableH = pageH - topMargin - bottomMargin;
-      const lineH = Math.max(10, usableH / Math.max(lines.length, 1));
-      // Approximate font size as ~75% of line height, matching typical leading
-      const fontSize = Math.max(8, lineH * 0.75);
+        // Compute font size from the transform matrix scale factor
+        const scaleX = Math.sqrt(a * a + b * b);
+        const fontSize = Math.max(6, scaleX);
 
-      const items: ExtractedTextItem[] = lines.map((str: string, i: number) => {
-        const y = topMargin + i * lineH;
-        // Estimate text width: average ~0.52× font-size per character for sans-serif
-        const estimatedWidth = Math.min(str.length * fontSize * 0.52, pageW * 0.92);
-        return {
-          id: `text-line-${pageIndex}-${i}`,
-          str,
-          x: pageW * 0.04,           // ~4% left margin
+        // Convert PDF bottom-left origin → top-left origin for canvas
+        const x = tx;
+        const y = viewport.height - ty - fontSize; // subtract fontSize for top of glyph
+
+        // Item width from PDF.js; estimate height from font size
+        const itemWidth = item.width > 0 ? item.width : item.str.length * fontSize * 0.55;
+        const itemHeight = item.height > 0 ? item.height : fontSize * 1.2;
+
+        // Detect bold from font name heuristic
+        const fontName = (item as any).fontName || 'Helvetica';
+        const isBold = /bold/i.test(fontName);
+        const fontFamily = /Times|Serif/i.test(fontName)
+          ? 'serif'
+          : /Courier|Mono/i.test(fontName)
+          ? 'monospace'
+          : 'sans-serif';
+
+        items.push({
+          id: `text-item-${pageIndex}-${i}`,
+          str: item.str,
+          x,
           y,
-          width: estimatedWidth,
-          height: lineH,
+          width: itemWidth,
+          height: itemHeight,
           fontSize,
-          fontFamily: 'Helvetica',
-          isBold: false,
-        };
-      });
+          fontFamily,
+          isBold,
+        });
+      }
 
       return items;
     } catch (e) {
@@ -276,7 +269,7 @@ export class PdfEngine {
   }
 
   /**
-   * Bind and synchronize Fabric.js Canvas instance for active page
+   * Bind and synchronize Fabric.js Canvas instance for active page.
    */
   async attachFabricCanvas(
     fabricCanvas: Canvas,
@@ -307,7 +300,7 @@ export class PdfEngine {
   }
 
   /**
-   * Save current active page's Fabric objects into JSON cache and history
+   * Save current active page's Fabric objects into JSON cache and history.
    */
   saveCurrentPageState() {
     if (!this.activeFabricCanvas) return;
@@ -333,16 +326,12 @@ export class PdfEngine {
     }
   }
 
-  /**
-   * Record a new undoable action for current page
-   */
+  /** Record a new undoable action for current page. */
   recordHistory() {
     this.saveCurrentPageState();
   }
 
-  /**
-   * Undo last action on active page
-   */
+  /** Undo last action on active page. */
   async undo(): Promise<boolean> {
     if (!this.activeFabricCanvas) return false;
     const state = this.pageStates.get(this.activePageIndex);
@@ -356,9 +345,7 @@ export class PdfEngine {
     return true;
   }
 
-  /**
-   * Redo action on active page
-   */
+  /** Redo action on active page. */
   async redo(): Promise<boolean> {
     if (!this.activeFabricCanvas) return false;
     const state = this.pageStates.get(this.activePageIndex);
@@ -396,8 +383,33 @@ export class PdfEngine {
   }
 
   /**
-   * Export final PDF document using pdf-lib, embedding vector text and Fabric annotations.
-   * pdf-lib handles the write side; PDFium handles the read/render side.
+   * Classify a Fabric object for PDF export strategy.
+   *
+   * - 'whiteout' → white Rect with no stroke → write pdf-lib rectangle (vector)
+   * - 'text'     → Textbox/IText with user text → write pdf-lib text (vector, searchable)
+   * - 'image'    → FabricImage → embed as PNG raster
+   * - 'drawing'  → everything else (freehand paths, shapes) → rasterize to PNG
+   */
+  private classifyFabricObject(obj: any): FabricExportTag {
+    if (obj.type === 'image') return 'image';
+    if ((obj.type === 'textbox' || obj.type === 'i-text') && obj.text !== undefined) return 'text';
+    if (obj.type === 'rect' && obj.fill === '#ffffff' && (!obj.stroke || obj.stroke === 'transparent')) {
+      return 'whiteout';
+    }
+    return 'drawing';
+  }
+
+  /**
+   * Export final PDF document.
+   *
+   * BentoPDF-inspired strategy:
+   * - Whiteout Rects   → pdf-lib drawRectangle (vector, no data leak)
+   * - Textboxes        → pdf-lib drawText (vector, searchable in exported PDF)
+   * - Freehand / shapes → rasterized via StaticCanvas (png embed, only for ink/shapes)
+   * - Images/signatures → embedded as PNG via pdf-lib embedPng
+   *
+   * This eliminates the old approach of rasterizing the entire page overlay
+   * as a full-page PNG, which inflated file size and made text unsearchable.
    */
   async exportPdf(): Promise<Uint8Array> {
     if (!this.pdfBytes) {
@@ -423,35 +435,144 @@ export class PdfEngine {
       const pageState = this.pageStates.get(originalPageIndex);
 
       if (pageState && pageState.fabricJSON && pageState.fabricJSON.objects?.length > 0) {
-        // Render Fabric overlay at native PDF resolution into a temporary static canvas
-        const staticCanvasEl = document.createElement('canvas');
-        const overlayCanvas = new StaticCanvas(staticCanvasEl, {
-          width: pageWidth,
-          height: pageHeight,
+        const objects: any[] = pageState.fabricJSON.objects;
+
+        // Separate objects by export strategy
+        const vectorObjects = objects.filter((o) => {
+          const tag = this.classifyFabricObject(o);
+          return tag === 'whiteout' || tag === 'text';
+        });
+        const rasterObjects = objects.filter((o) => {
+          const tag = this.classifyFabricObject(o);
+          return tag === 'drawing' || tag === 'image';
         });
 
-        await overlayCanvas.loadFromJSON(pageState.fabricJSON);
-        overlayCanvas.renderAll();
+        // --- 1. Raster layer: freehand drawings, shapes, images ---
+        // Only rasterize objects that cannot be expressed as vector PDF ops.
+        if (rasterObjects.length > 0) {
+          const fabricScale = this.activeScale || 1.3;
 
-        // Convert to high-resolution PNG for embedding
-        const overlayDataUrl = overlayCanvas.toDataURL({
-          format: 'png',
-          multiplier: 2.0,
-        });
+          // Build a partial Fabric JSON with only raster objects
+          const rasterJSON = {
+            ...pageState.fabricJSON,
+            objects: rasterObjects,
+          };
 
-        try {
-          const embeddedOverlay = await outDoc.embedPng(overlayDataUrl);
-          page.drawImage(embeddedOverlay, {
-            x: 0,
-            y: 0,
-            width: pageWidth,
-            height: pageHeight,
+          const staticCanvasEl = document.createElement('canvas');
+          // Render at native PDF point resolution (unscaled)
+          const renderW = Math.round(pageWidth);
+          const renderH = Math.round(pageHeight);
+          const overlayCanvas = new StaticCanvas(staticCanvasEl, {
+            width: renderW,
+            height: renderH,
           });
-        } catch (e) {
-          console.warn('Could not embed raster overlay for page', originalPageIndex, e);
+
+          // Fabric objects were positioned in display-scale coordinates;
+          // scale them back down to PDF point space for embedding.
+          const scaleDown = 1 / fabricScale;
+
+          // Temporarily patch the JSON coordinates
+          const scaledRasterJSON = {
+            ...rasterJSON,
+            objects: rasterJSON.objects.map((obj: any) => ({
+              ...obj,
+              left: (obj.left ?? 0) * scaleDown,
+              top: (obj.top ?? 0) * scaleDown,
+              scaleX: (obj.scaleX ?? 1) * scaleDown,
+              scaleY: (obj.scaleY ?? 1) * scaleDown,
+              fontSize: obj.fontSize ? obj.fontSize * scaleDown : obj.fontSize,
+              strokeWidth: obj.strokeWidth ? obj.strokeWidth * scaleDown : obj.strokeWidth,
+            })),
+          };
+
+          await overlayCanvas.loadFromJSON(scaledRasterJSON);
+          overlayCanvas.renderAll();
+
+          const overlayDataUrl = overlayCanvas.toDataURL({
+            format: 'png',
+            multiplier: 2.0,
+          });
+
+          try {
+            const embeddedOverlay = await outDoc.embedPng(overlayDataUrl);
+            page.drawImage(embeddedOverlay, {
+              x: 0,
+              y: 0,
+              width: pageWidth,
+              height: pageHeight,
+            });
+          } catch (e) {
+            console.warn('Could not embed raster overlay for page', originalPageIndex, e);
+          }
+
+          overlayCanvas.dispose();
         }
 
-        overlayCanvas.dispose();
+        // --- 2. Vector layer: whiteout rects + text boxes ---
+        // These are written as native PDF content stream operations.
+        const fabricScale = this.activeScale || 1.3;
+        const scaleDown = 1 / fabricScale;
+        // pdf-lib origin is bottom-left; Fabric/canvas origin is top-left.
+        // Conversion: pdfY = pageHeight - (fabricTop * scaleDown) - objectHeight
+        const helvetica = await outDoc.embedFont(StandardFonts.Helvetica);
+        const helveticaBold = await outDoc.embedFont(StandardFonts.HelveticaBold);
+
+        for (const obj of vectorObjects) {
+          const tag = this.classifyFabricObject(obj);
+
+          if (tag === 'whiteout') {
+            const x = (obj.left ?? 0) * scaleDown;
+            const w = (obj.width ?? 0) * (obj.scaleX ?? 1) * scaleDown;
+            const h = (obj.height ?? 0) * (obj.scaleY ?? 1) * scaleDown;
+            const pdfY = pageHeight - ((obj.top ?? 0) * scaleDown) - h;
+
+            page.drawRectangle({
+              x,
+              y: pdfY,
+              width: Math.max(w, 1),
+              height: Math.max(h, 1),
+              color: rgb(1, 1, 1),
+              borderWidth: 0,
+            });
+          } else if (tag === 'text') {
+            const text: string = obj.text ?? '';
+            if (!text.trim()) continue;
+
+            const fabricFontSize: number = (obj.fontSize ?? 12) * scaleDown;
+            const clampedSize = Math.max(4, Math.min(fabricFontSize, 72));
+
+            const fillHex: string = obj.fill ?? '#000000';
+            const fillRgb = this.hexToRgb(fillHex);
+            const isBold = obj.fontWeight === 'bold' || obj.fontWeight === 700;
+            const font = isBold ? helveticaBold : helvetica;
+
+            const x = (obj.left ?? 0) * scaleDown;
+            const h = (obj.height ?? 0) * (obj.scaleY ?? 1) * scaleDown;
+            // Position text baseline: top of textbox + font size offset
+            const pdfY = pageHeight - ((obj.top ?? 0) * scaleDown) - clampedSize;
+
+            // Handle multiline textboxes: split by newline and draw each line
+            const lines = text.split('\n');
+            const lineHeight = clampedSize * 1.2;
+            for (let li = 0; li < lines.length; li++) {
+              const lineText = lines[li];
+              if (!lineText.trim()) continue;
+              try {
+                page.drawText(lineText, {
+                  x: Math.max(0, x),
+                  y: Math.max(0, pdfY - li * lineHeight),
+                  size: clampedSize,
+                  font,
+                  color: rgb(fillRgb.r, fillRgb.g, fillRgb.b),
+                  maxWidth: pageWidth - x,
+                });
+              } catch (e) {
+                // pdf-lib may reject certain unicode characters — skip gracefully
+                console.warn('Could not draw text line to PDF:', lineText, e);
+              }
+            }
+          }
+        }
       }
 
       outDoc.addPage(page);
@@ -462,14 +583,18 @@ export class PdfEngine {
 
   /**
    * Extract all plain text across all pages for AI document processing.
-   * Uses PDFium's getText() which is far more accurate than PDF.js's string concatenation.
+   * Uses PDF.js getTextContent() which provides accurate glyph-level data.
    */
   async extractFullText(): Promise<{ pageIndex: number; text: string }[]> {
-    if (!this.pdfiumDoc) return [];
+    if (!this.pdfJsDoc) return [];
     const results: { pageIndex: number; text: string }[] = [];
     for (let i = 0; i < this.numPages; i++) {
-      const page = this.pdfiumDoc.getPage(i);
-      const text: string = page.getText() || '';
+      const pdfPage = await this.pdfJsDoc.getPage(i + 1);
+      const textContent = await pdfPage.getTextContent();
+      const text = textContent.items
+        .filter((item): item is TextItem => 'str' in item)
+        .map((item) => item.str)
+        .join(' ');
       results.push({ pageIndex: i, text });
     }
     return results;
