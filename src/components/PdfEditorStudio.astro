@@ -16,55 +16,55 @@ const { mode = 'standalone' } = Astro.props;
     <div class="flex items-center gap-1 sm:gap-1.5 flex-wrap">
       
       <!-- Select / Move Tool -->
-      <button class="tool-btn active p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="select" title="Select, Move, Scale & Rotate Objects (V)">
+      <button class="tool-btn active p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="select" title="Selecionar, Mover, Redimensionar e Rodar Objetos (V)">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m3 3 7 18 3-7 7-3L3 3z"/>
           <path d="m13 13 6 6"/>
         </svg>
-        <span class="text-[12px] hidden lg:inline">Select</span>
+        <span class="text-[12px] hidden lg:inline">Selecionar</span>
       </button>
 
       <!-- Edit Existing Text Mode -->
-      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="edit-existing" title="Click & In-Place Edit Existing PDF Text (E)">
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="edit-existing" title="Clicar para Editar Texto Existente do PDF (E)">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 20h9"/>
           <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
         </svg>
-        <span class="text-[12px] font-medium hidden lg:inline text-[#533afd]">Edit Text</span>
+        <span class="text-[12px] font-medium hidden lg:inline text-[#533afd]">Editar Texto</span>
       </button>
 
       <!-- Add New Text Tool -->
-      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="text" title="Click to Add New Text Box (T)">
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="text" title="Adicionar Nova Caixa de Texto (T)">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="4 7 4 4 20 4 20 7"/>
           <line x1="9" y1="20" x2="15" y2="20"/>
           <line x1="12" y1="4" x2="12" y2="20"/>
         </svg>
-        <span class="text-[12px] hidden lg:inline">Add Text</span>
+        <span class="text-[12px] hidden lg:inline">Adicionar Texto</span>
       </button>
 
       <!-- Freehand Pen -->
-      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="draw" title="Draw / Smooth Pen (P)">
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="draw" title="Desenhar com Caneta Suave (P)">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 19l7-7 3 3-7 7-3-3z"/>
           <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
           <path d="M2 2l7.586 7.586"/>
         </svg>
-        <span class="text-[12px] hidden xl:inline">Pen</span>
+        <span class="text-[12px] hidden xl:inline">Caneta</span>
       </button>
 
       <!-- Highlighter -->
-      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="highlight" title="Highlighter (H)">
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="highlight" title="Marcador Fluorescente (H)">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m9 11-6 6v3h3l6-6"/>
           <path d="m22 2-5 5-4-4 5-5a2.828 2.828 0 1 1 4 4z"/>
         </svg>
-        <span class="text-[12px] hidden xl:inline">Highlight</span>
+        <span class="text-[12px] hidden xl:inline">Marcador</span>
       </button>
 
       <!-- Shapes Dropdown -->
       <div class="relative inline-block">
-        <button id="shapes-menu-btn" class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="shape" title="Shapes (Rectangle, Circle, Arrow, Line)">
+        <button id="shapes-menu-btn" class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="shape" title="Formas (Retângulo, Círculo, Seta, Linha)">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="18" height="18" x="3" y="3" rx="2"/>
           </svg>
@@ -74,60 +74,60 @@ const { mode = 'standalone' } = Astro.props;
         <div id="shapes-dropdown" class="hidden absolute left-0 top-full mt-1 bg-white border border-[#e3e8ee] rounded-xl shadow-level-2 p-1.5 z-30 flex flex-col gap-1 w-36">
           <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="rectangle">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
-            <span>Rectangle</span>
+            <span>Retângulo</span>
           </button>
           <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="circle">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-            <span>Circle</span>
+            <span>Círculo</span>
           </button>
           <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="arrow">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            <span>Arrow</span>
+            <span>Seta</span>
           </button>
           <button class="shape-type-btn flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[13px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] text-left" data-shape="line">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="19" x2="19" y2="5"/></svg>
-            <span>Line</span>
+            <span>Linha</span>
           </button>
         </div>
       </div>
 
       <!-- Whiteout / Redact -->
-      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="whiteout" title="Whiteout Mask / Redact Area">
+      <button class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1" data-tool="whiteout" title="Corretor Branco / Ocultar Área">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/>
           <path d="M22 21H7"/>
           <path d="m5 11 9 9"/>
         </svg>
-        <span class="text-[12px] hidden lg:inline">Whiteout</span>
+        <span class="text-[12px] hidden lg:inline">Corretor</span>
       </button>
 
       <!-- Signature -->
-      <button id="open-sign-modal-btn" class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1.5" title="Insert E-Signature">
+      <button id="open-sign-modal-btn" class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent flex items-center gap-1.5" title="Inserir Assinatura Digital">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m18 2 4 4-12 12H6v-4L18 2z"/>
           <path d="m14 6 4 4"/>
           <path d="M4 22h16"/>
         </svg>
-        <span class="text-[12px] font-normal hidden sm:inline">Sign</span>
+        <span class="text-[12px] font-normal hidden sm:inline">Assinar</span>
       </button>
 
       <!-- Image / Stamp -->
-      <label class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent cursor-pointer flex items-center gap-1" title="Insert Image / Stamp">
+      <label class="tool-btn p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] transition-colors border border-transparent cursor-pointer flex items-center gap-1" title="Inserir Imagem / Carimbo">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
           <circle cx="9" cy="9" r="2"/>
           <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
         </svg>
-        <span class="text-[12px] hidden lg:inline">Image</span>
+        <span class="text-[12px] hidden lg:inline">Imagem</span>
         <input type="file" id="image-upload-input" accept="image/png, image/jpeg, image/svg+xml, image/webp" class="hidden" />
       </label>
 
       <!-- AI Assistant Button -->
-      <button id="toggle-ai-sidebar-btn" class="p-1.5 px-2.5 rounded-lg bg-[#b9b9f9]/30 text-[#4434d4] hover:bg-[#b9b9f9]/50 transition-colors flex items-center gap-1.5 border border-[#533afd]/20 text-[13px] font-medium" title="AI Document Assistant">
+      <button id="toggle-ai-sidebar-btn" class="p-1.5 px-2.5 rounded-lg bg-[#b9b9f9]/30 text-[#4434d4] hover:bg-[#b9b9f9]/50 transition-colors flex items-center gap-1.5 border border-[#533afd]/20 text-[13px] font-medium" title="Assistente de Documentos IA">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
         </svg>
-        <span>AI Assistant</span>
+        <span>Assistente IA</span>
       </button>
     </div>
 
@@ -137,7 +137,7 @@ const { mode = 'standalone' } = Astro.props;
       <div class="flex items-center gap-1">
         <label for="active-color-input" class="cursor-pointer flex items-center gap-1.5">
           <span id="color-preview-circle" class="w-4 h-4 rounded-full bg-[#0d253d] border border-[#e3e8ee]"></span>
-          <span class="text-[12px] text-[#64748d]">Color</span>
+          <span class="text-[12px] text-[#64748d]">Cor</span>
         </label>
         <input type="color" id="active-color-input" value="#0d253d" class="w-0 h-0 opacity-0 absolute" />
       </div>
@@ -146,7 +146,7 @@ const { mode = 'standalone' } = Astro.props;
 
       <!-- Size -->
       <div class="flex items-center gap-1.5">
-        <span class="text-[12px] text-[#64748d]">Size:</span>
+        <span class="text-[12px] text-[#64748d]">Tamanho:</span>
         <select id="active-size-select" class="bg-transparent border-0 text-[#0d253d] font-normal text-[13px] focus:outline-none cursor-pointer">
           <option value="12">12px</option>
           <option value="14">14px</option>
@@ -162,8 +162,8 @@ const { mode = 'standalone' } = Astro.props;
 
       <!-- Font Family -->
       <select id="active-font-select" class="bg-transparent border-0 text-[#0d253d] font-normal text-[13px] focus:outline-none cursor-pointer">
-        <option value="Helvetica">Helvetica / Modern</option>
-        <option value="TimesRoman">Times / Serif</option>
+        <option value="Helvetica">Helvetica / Moderna</option>
+        <option value="TimesRoman">Times / Clássica</option>
         <option value="Courier">Courier / Mono</option>
       </select>
     </div>
@@ -172,13 +172,13 @@ const { mode = 'standalone' } = Astro.props;
     <div class="flex items-center gap-2">
       <!-- Undo / Redo -->
       <div class="flex items-center">
-        <button id="undo-btn" class="p-1.5 text-[#64748d] hover:text-[#0d253d] hover:bg-[#f6f9fc] rounded transition-colors" title="Undo (Ctrl+Z)">
+        <button id="undo-btn" class="p-1.5 text-[#64748d] hover:text-[#0d253d] hover:bg-[#f6f9fc] rounded transition-colors" title="Desfazer (Ctrl+Z)">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 7v6h6"/>
             <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
           </svg>
         </button>
-        <button id="redo-btn" class="p-1.5 text-[#64748d] hover:text-[#0d253d] hover:bg-[#f6f9fc] rounded transition-colors" title="Redo (Ctrl+Y)">
+        <button id="redo-btn" class="p-1.5 text-[#64748d] hover:text-[#0d253d] hover:bg-[#f6f9fc] rounded transition-colors" title="Refazer (Ctrl+Y)">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 7v6h-6"/>
             <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/>
@@ -202,7 +202,7 @@ const { mode = 'standalone' } = Astro.props;
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        <span>Download PDF</span>
+        <span>Descarregar PDF</span>
       </button>
     </div>
   </div>
@@ -216,9 +216,9 @@ const { mode = 'standalone' } = Astro.props;
       <div class="p-3 border-b border-[#e3e8ee] flex items-center justify-between">
         <div class="flex items-center gap-1.5 text-[13px] font-medium text-[#0d253d]">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
-          <span>Pages (<span id="total-page-count" class="tabular-num">0</span>)</span>
+          <span>Páginas (<span id="total-page-count" class="tabular-num">0</span>)</span>
         </div>
-        <button id="rotate-current-page-btn" class="text-[#64748d] hover:text-[#533afd] p-1 rounded hover:bg-[#f6f9fc] transition-colors" title="Rotate Current Page 90° Clockwise">
+        <button id="rotate-current-page-btn" class="text-[#64748d] hover:text-[#533afd] p-1 rounded hover:bg-[#f6f9fc] transition-colors" title="Rodar Página Atual 90°">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
           </svg>
@@ -228,7 +228,7 @@ const { mode = 'standalone' } = Astro.props;
       <!-- Thumbnail List -->
       <div id="pages-thumbnail-list" class="flex-1 overflow-y-auto p-4 space-y-4">
         <div id="no-pages-placeholder" class="text-center py-12 text-[#64748d] text-[13px]">
-          No document loaded
+          Nenhum documento carregado
         </div>
       </div>
 
@@ -236,9 +236,9 @@ const { mode = 'standalone' } = Astro.props;
       <div class="p-3 border-t border-[#e3e8ee] bg-[#f6f9fc] flex items-center justify-between text-[12px] text-[#64748d]">
         <span class="flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span>Zero Server Uploads</span>
+          <span>Zero Envios para Servidores</span>
         </span>
-        <label for="pdf-file-input" class="text-[#533afd] hover:underline cursor-pointer">Open File</label>
+        <label for="pdf-file-input" class="text-[#533afd] hover:underline cursor-pointer">Abrir Ficheiro</label>
       </div>
     </aside>
 
@@ -256,9 +256,9 @@ const { mode = 'standalone' } = Astro.props;
           </svg>
         </div>
 
-        <h3 class="display-md text-[#0d253d] mb-2">Drop your PDF here to edit</h3>
+        <h3 class="display-md text-[#0d253d] mb-2">Arraste o seu PDF para aqui para editar</h3>
         <p class="body-md text-[#64748d] max-w-md mx-auto mb-6">
-          Files are processed <strong class="text-[#0d253d] font-medium">100% locally in your browser memory</strong> using PDF.js & Fabric.js. No cloud servers, total privacy.
+          Os ficheiros são processados <strong class="text-[#0d253d] font-medium">100% localmente na memória do seu navegador</strong> através de PDF.js e Fabric.js. Sem servidores na nuvem, total privacidade.
         </p>
 
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -268,14 +268,14 @@ const { mode = 'standalone' } = Astro.props;
               <polyline points="17 8 12 3 7 8"/>
               <line x1="12" y1="3" x2="12" y2="15"/>
             </svg>
-            <span>Choose PDF File</span>
+            <span>Selecionar Ficheiro PDF</span>
           </label>
 
           <button id="load-sample-pdf-btn" class="btn-secondary-pill">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-            <span>Try Sample Contract PDF</span>
+            <span>Experimentar Contrato de Exemplo (PT)</span>
           </button>
         </div>
 
@@ -285,15 +285,15 @@ const { mode = 'standalone' } = Astro.props;
         <div class="mt-8 pt-6 border-t border-[#e3e8ee] flex flex-wrap items-center justify-center gap-6 text-[12px] text-[#64748d]">
           <span class="flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Zero Server Uploads
+            Zero Envios para Servidores
           </span>
           <span class="flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-            Fabric.js Vector Canvas
+            Telas Vetoriais Fabric.js
           </span>
           <span class="flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
-            AI PII Auto-Redaction
+            Ocultação Automática de PII com IA
           </span>
         </div>
       </div>
@@ -325,9 +325,9 @@ const { mode = 'standalone' } = Astro.props;
           <div class="w-7 h-7 rounded-lg bg-[#533afd] text-white flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
           </div>
-          <h4 class="font-medium text-[15px] text-[#0d253d]">AI Document Superpowers</h4>
+          <h4 class="font-medium text-[15px] text-[#0d253d]">Superpoderes de IA</h4>
         </div>
-        <button id="close-ai-sidebar-btn" class="text-[#64748d] hover:text-[#0d253d]">
+        <button id="close-ai-sidebar-btn" class="text-[#64748d] hover:text-[#0d253d]" title="Fechar">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
@@ -340,18 +340,18 @@ const { mode = 'standalone' } = Astro.props;
           <div class="flex items-center justify-between">
             <span class="text-[13px] font-semibold text-[#0d253d] flex items-center gap-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#ea2261]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Smart PII Auto-Redact
+              Ocultação Automática de PII
             </span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#ea2261]/10 text-[#ea2261]">Privacy Guard</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#ea2261]/10 text-[#ea2261]">Proteção Ativa</span>
           </div>
           <p class="text-[12px] text-[#64748d] leading-relaxed">
-            Auto-detect and blank out sensitive personal data (emails, credit cards, SSNs, phone numbers) with 1 click.
+            Detete e oculte automaticamente dados sensíveis em Portugal (NIF, Cartão de Cidadão, IBAN, e-mails, telemóveis e cartões) com 1 clique.
           </p>
 
           <div class="space-y-2 pt-1">
-            <input type="text" id="custom-redact-keyword" placeholder="Or custom keyword e.g. Confidential" class="w-full px-2.5 py-1.5 text-[12px] rounded-lg border border-[#a8c3de] focus:outline-none focus:border-[#533afd]" />
+            <input type="text" id="custom-redact-keyword" placeholder="Ou termo personalizado ex.: Confidencial" class="w-full px-2.5 py-1.5 text-[12px] rounded-lg border border-[#a8c3de] focus:outline-none focus:border-[#533afd]" />
             <button id="ai-auto-redact-btn" class="w-full btn-primary-pill text-[12px] py-1.5 px-3">
-              <span>1-Click Auto-Redact</span>
+              <span>Ocultar com 1 Clique</span>
             </button>
             <div id="ai-redact-result-msg" class="text-[11px] text-[#273951] hidden p-2 bg-emerald-50 text-emerald-800 rounded border border-emerald-200"></div>
           </div>
@@ -362,13 +362,13 @@ const { mode = 'standalone' } = Astro.props;
           <div class="flex items-center justify-between">
             <span class="text-[13px] font-semibold text-[#0d253d] flex items-center gap-1.5">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              Document Summary
+              Resumo do Documento
             </span>
-            <button id="generate-summary-btn" class="text-[12px] text-[#533afd] hover:underline font-medium">Generate</button>
+            <button id="generate-summary-btn" class="text-[12px] text-[#533afd] hover:underline font-medium">Gerar Resumo</button>
           </div>
 
           <div id="summary-content-area" class="text-[12px] text-[#64748d] space-y-2">
-            <p>Click "Generate" to create an instant in-browser executive brief and bullet takeaways.</p>
+            <p>Clique em «Gerar Resumo» para criar uma síntese executiva e pontos-chave no próprio navegador.</p>
           </div>
         </div>
 
@@ -376,12 +376,12 @@ const { mode = 'standalone' } = Astro.props;
         <div class="bg-white rounded-xl p-4 border border-[#e3e8ee] space-y-3 shadow-level-1">
           <span class="text-[13px] font-semibold text-[#0d253d] flex items-center gap-1.5">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-[#665efd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Ask Document
+            Perguntar ao Documento
           </span>
           <div class="space-y-2">
             <div class="flex items-center gap-1.5">
-              <input type="text" id="ask-doc-input" placeholder="e.g. What is the contract amount?" class="flex-1 px-2.5 py-1.5 text-[12px] rounded-lg border border-[#a8c3de] focus:outline-none focus:border-[#533afd]" />
-              <button id="ask-doc-btn" class="p-1.5 bg-[#533afd] text-white rounded-lg hover:bg-[#4434d4] transition-colors">
+              <input type="text" id="ask-doc-input" placeholder="ex.: Qual é o valor acordado do contrato?" class="flex-1 px-2.5 py-1.5 text-[12px] rounded-lg border border-[#a8c3de] focus:outline-none focus:border-[#533afd]" />
+              <button id="ask-doc-btn" class="p-1.5 bg-[#533afd] text-white rounded-lg hover:bg-[#4434d4] transition-colors" title="Submeter pergunta">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
               </button>
             </div>
@@ -397,7 +397,7 @@ const { mode = 'standalone' } = Astro.props;
   <!-- Toast Notification -->
   <div id="editor-toast" class="fixed bottom-6 right-6 z-50 bg-[#0d253d] text-white px-4 py-2.5 rounded-xl shadow-level-3 text-[13px] font-normal flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-200 pointer-events-none">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-    <span id="toast-message">Action completed</span>
+    <span id="toast-message">Ação concluída</span>
   </div>
 
   <!-- Signature Modal Mount -->
@@ -570,7 +570,7 @@ const { mode = 'standalone' } = Astro.props;
       if (currentTool === 'text') {
         if (opt.target && opt.target instanceof IText) return;
         const fontName = activeFontFamily === 'TimesRoman' ? 'serif' : activeFontFamily === 'Courier' ? 'monospace' : 'sans-serif';
-        const itext = new IText('Type your text...', {
+        const itext = new IText('Escreva o seu texto...', {
           left: pt.x,
           top: pt.y,
           fontSize: activeFontSize,
@@ -711,7 +711,7 @@ const { mode = 'standalone' } = Astro.props;
   // Load PDF file into Engine
   async function loadPdfBuffer(buffer: ArrayBuffer) {
     try {
-      showToast('Processing PDF locally in RAM with PDFium...');
+      showToast('A processar PDF localmente na RAM...');
       const visiblePages = await engine.loadPdf(buffer);
       if (visiblePages.length === 0) return;
 
@@ -725,10 +725,10 @@ const { mode = 'standalone' } = Astro.props;
       initFabricCanvas();
       await renderCurrentPage();
       await renderThumbnails(visiblePages);
-      showToast('PDF loaded with Fabric.js vector canvas!');
+      showToast('PDF carregado com sucesso!');
     } catch (err) {
       console.error(err);
-      alert('Could not render PDF. Please verify file format.');
+      alert('Não foi possível renderizar o PDF. Verifique o formato do ficheiro.');
     }
   }
 
@@ -830,7 +830,7 @@ const { mode = 'standalone' } = Astro.props;
       badge.style.top = `${boxTop}px`;
       badge.style.width = `${boxWidth}px`;
       badge.style.height = `${boxHeight}px`;
-      badge.title = `Click to edit: "${item.str}"`;
+      badge.title = `Clicar para editar: "${item.str}"`;
 
       badge.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -891,7 +891,7 @@ const { mode = 'standalone' } = Astro.props;
         });
 
         setTool('select');
-        showToast('Text block ready to edit in-place');
+        showToast('Bloco de texto pronto para editar diretamente');
       });
 
       extractedTextLayer.appendChild(badge);
@@ -915,7 +915,7 @@ const { mode = 'standalone' } = Astro.props;
       fabricCanvas.renderAll();
       engine.recordHistory();
       setTool('select');
-      showToast('Image inserted on page');
+      showToast('Imagem inserida na página');
     } catch (err) {
       console.error('Failed to insert image onto canvas', err);
     }
@@ -938,8 +938,8 @@ const { mode = 'standalone' } = Astro.props;
           <span class="absolute bottom-1 right-1 bg-[#0d253d]/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">${p.pageIndex + 1}</span>
         </div>
         <div class="flex items-center justify-between text-[11px] text-[#64748d]">
-          <span>Page ${p.pageIndex + 1}</span>
-          <button class="delete-page-btn text-[#64748d] hover:text-[#ea2261] p-0.5" title="Delete page">
+          <span>Página ${p.pageIndex + 1}</span>
+          <button class="delete-page-btn text-[#64748d] hover:text-[#ea2261] p-0.5" title="Eliminar página">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           </button>
         </div>
@@ -949,7 +949,7 @@ const { mode = 'standalone' } = Astro.props;
         const target = e.target as HTMLElement;
         if (target.closest('.delete-page-btn')) {
           e.stopPropagation();
-          if (confirm(`Delete Page ${p.pageIndex + 1}?`)) {
+          if (confirm(`Tem a certeza de que deseja eliminar a Página ${p.pageIndex + 1}?`)) {
             engine.deletePage(p.pageIndex);
             const remaining = engine.getVisiblePages();
             if (remaining.length > 0) {
@@ -973,73 +973,73 @@ const { mode = 'standalone' } = Astro.props;
     }
   }
 
-  // Generate Sample PDF Agreement for immediate testing
+  // Generate Sample PDF Agreement for immediate testing (Portugal)
   async function generateSamplePdf() {
     const doc = await PDFDocument.create();
     const font = await doc.embedFont(StandardFonts.Helvetica);
     const fontBold = await doc.embedFont(StandardFonts.HelveticaBold);
 
-    // Page 1: Agreement
+    // Page 1: Acordo
     const page1 = doc.addPage([595.28, 841.89]);
-    page1.drawText('MUTUAL NON-DISCLOSURE AGREEMENT', {
+    page1.drawText('ACORDO DE CONFIDENCIALIDADE E PRESTACAO DE SERVICOS', {
       x: 50,
       y: 780,
-      size: 18,
+      size: 15,
       font: fontBold,
       color: rgb(0.05, 0.15, 0.24),
     });
 
-    page1.drawText('This Agreement is entered into by and between Acme Corp and Nova Global.', {
+    page1.drawText('Pelo presente instrumento, a Empresa Alpha Lda (NIF 509123456) e a Beta Solucoes acordam:', {
       x: 50,
       y: 740,
-      size: 11,
+      size: 10,
       font: font,
       color: rgb(0.2, 0.25, 0.3),
     });
 
-    page1.drawText('1. Confidential Information & Data Protection', {
+    page1.drawText('1. Clausula de Confidencialidade e Protecao de Dados (RGPD)', {
       x: 50,
       y: 700,
-      size: 13,
+      size: 12,
       font: fontBold,
       color: rgb(0.05, 0.15, 0.24),
     });
 
-    page1.drawText('Contact Email: legal-confidential@acmecorp.com | Direct Phone: +1 (555) 492-9102', {
+    page1.drawText('Contacto E-mail: juridico@empresa.pt | Telemovel: +351 912 345 678', {
       x: 50,
       y: 675,
-      size: 11,
+      size: 10,
       font: font,
       color: rgb(0.2, 0.25, 0.3),
     });
 
-    page1.drawText('Billing Reference: 4532-8921-9844-1234 | Tax ID / SSN: 123-45-6789', {
+    page1.drawText('IBAN: PT50 0033 0000 12345678901 23 | NIF do Cliente: 245 678 910', {
       x: 50,
       y: 650,
-      size: 11,
+      size: 10,
       font: font,
       color: rgb(0.2, 0.25, 0.3),
     });
 
-    page1.drawText('The receiving party agrees that all proprietary technical diagrams, source code, and customer records', {
+    page1.drawText('As partes comprometem-se a salvaguardar todas as informacoes tecnicas e dados pessoais', {
       x: 50,
       y: 615,
-      size: 11,
+      size: 10,
       font: font,
       color: rgb(0.2, 0.25, 0.3),
     });
-    page1.drawText('shall be protected with strict encryption. Neither party shall disclose terms without written consent.', {
+    page1.drawText('em estrita observancia do RGPD e legislacao aplicavel na Republica Portuguesa.', {
       x: 50,
       y: 595,
-      size: 11,
+      size: 10,
       font: font,
       color: rgb(0.2, 0.25, 0.3),
     });
 
-    page1.drawText('2. Signatures & Approvals', {
+    page1.drawText('2. Assinaturas e Aprovacoes dos Outorgantes', {
       x: 50,
       y: 540,
-      size: 13,
+      size: 12,
       font: fontBold,
       color: rgb(0.05, 0.15, 0.24),
     });
@@ -1052,7 +1052,7 @@ const { mode = 'standalone' } = Astro.props;
       borderColor: rgb(0.8, 0.85, 0.9),
       borderWidth: 1,
     });
-    page1.drawText('Authorized Signature (Party A):', { x: 60, y: 485, size: 10, font: font, color: rgb(0.4, 0.45, 0.5) });
+    page1.drawText('Assinatura (Primeiro Outorgante):', { x: 60, y: 485, size: 9, font: font, color: rgb(0.4, 0.45, 0.5) });
 
     page1.drawRectangle({
       x: 310,
@@ -1062,25 +1062,25 @@ const { mode = 'standalone' } = Astro.props;
       borderColor: rgb(0.8, 0.85, 0.9),
       borderWidth: 1,
     });
-    page1.drawText('Authorized Signature (Party B):', { x: 320, y: 485, size: 10, font: font, color: rgb(0.4, 0.45, 0.5) });
+    page1.drawText('Assinatura (Segundo Outorgante):', { x: 320, y: 485, size: 9, font: font, color: rgb(0.4, 0.45, 0.5) });
 
-    // Page 2: Schedule
+    // Page 2: Condicoes
     const page2 = doc.addPage([595.28, 841.89]);
-    page2.drawText('SCHEDULE A — DELIVERABLES & PAYMENT MILESTONES', {
+    page2.drawText('ANEXO I — CONDICOES DE PAGAMENTO E PRAZOS', {
       x: 50,
       y: 780,
-      size: 16,
+      size: 15,
       font: fontBold,
       color: rgb(0.05, 0.15, 0.24),
     });
-    page2.drawText('Total Agreed Consideration: $45,000.00 USD payable upon completion.', {
+    page2.drawText('Valor Total Acordado: 45.000,00 EUR liquidavel apos conclusao.', {
       x: 50,
       y: 740,
       size: 11,
       font: font,
       color: rgb(0.2, 0.25, 0.3),
     });
-    page2.drawText('Effective Date: October 1, 2026. Governing Law: State of Delaware.', {
+    page2.drawText('Data de Inicio: 1 de Outubro de 2026. Foro Competente: Comarca de Lisboa.', {
       x: 50,
       y: 715,
       size: 11,
@@ -1129,7 +1129,7 @@ const { mode = 'standalone' } = Astro.props;
         activeShapeType = st;
         shapesDropdown?.classList.add('hidden');
         setTool('shape');
-        showToast(`Shape tool: ${st}`);
+        showToast(`Ferramenta de forma: ${st}`);
       }
     });
   });
@@ -1184,13 +1184,13 @@ const { mode = 'standalone' } = Astro.props;
   // Undo / Redo
   document.getElementById('undo-btn')?.addEventListener('click', async () => {
     if (await engine.undo()) {
-      showToast('Undo');
+      showToast('Desfeito');
     }
   });
 
   document.getElementById('redo-btn')?.addEventListener('click', async () => {
     if (await engine.redo()) {
-      showToast('Redo');
+      showToast('Refeito');
     }
   });
 
@@ -1201,12 +1201,12 @@ const { mode = 'standalone' } = Astro.props;
     if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
       e.preventDefault();
       if (await engine.undo()) {
-        showToast('Undo');
+        showToast('Desfeito');
       }
     } else if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
       e.preventDefault();
       if (await engine.redo()) {
-        showToast('Redo');
+        showToast('Refeito');
       }
     } else if (e.key === 'Delete' || e.key === 'Backspace') {
       if (fabricCanvas) {
@@ -1216,7 +1216,7 @@ const { mode = 'standalone' } = Astro.props;
           fabricCanvas.discardActiveObject();
           fabricCanvas.renderAll();
           engine.recordHistory();
-          showToast('Deleted object');
+          showToast('Objeto eliminado');
         }
       }
     } else if (e.key === 'v' || e.key === 'V') {
@@ -1251,19 +1251,19 @@ const { mode = 'standalone' } = Astro.props;
     await renderCurrentPage();
     const visible = engine.getVisiblePages();
     await renderThumbnails(visible);
-    showToast('Page rotated 90°');
+    showToast('Página rodada 90°');
   });
 
   // Export & Download PDF via pdf-lib
   downloadBtn?.addEventListener('click', async () => {
     try {
-      showToast('Rendering high-DPI layers with pdf-lib...');
+      showToast('A compilar documento de alta definição com pdf-lib...');
       const outputBytes = await engine.exportPdf();
       const blob = new Blob([outputBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `edited-document-${Date.now()}.pdf`;
+      a.download = `documento-editado-${Date.now()}.pdf`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -1276,10 +1276,10 @@ const { mode = 'standalone' } = Astro.props;
         colors: ['#533afd', '#ea2261', '#f96bee', '#4434d4']
       });
 
-      showToast('PDF exported successfully!');
+      showToast('PDF descarregado com sucesso!');
     } catch (e) {
       console.error(e);
-      alert('Failed to export PDF: ' + e);
+      alert('Falha ao exportar PDF: ' + e);
     }
   });
 
@@ -1291,17 +1291,17 @@ const { mode = 'standalone' } = Astro.props;
   aiAutoRedactBtn?.addEventListener('click', async () => {
     if (!fabricCanvas) return;
     try {
-      showToast('Scanning page for sensitive PII...');
+      showToast('A analisar página à procura de dados sensíveis (NIF, CC, IBAN)...');
       const textItems = await engine.getPageTextItems(currentPageIndex);
       const customWords = customRedactKw?.value ? [customRedactKw.value] : [];
       const matches = PdfAiAssistant.detectPii(currentPageIndex, textItems, customWords);
 
       if (matches.length === 0) {
         if (aiRedactMsg) {
-          aiRedactMsg.textContent = 'No sensitive emails, SSNs, or cards found on this page.';
+          aiRedactMsg.textContent = 'Nenhum NIF, Cartão de Cidadão, IBAN ou e-mail detetado nesta página.';
           aiRedactMsg.classList.remove('hidden');
         }
-        showToast('No PII detected');
+        showToast('Nenhum dado confidencial detetado');
         return;
       }
 
@@ -1321,10 +1321,10 @@ const { mode = 'standalone' } = Astro.props;
       engine.recordHistory();
 
       if (aiRedactMsg) {
-        aiRedactMsg.textContent = `Auto-redacted ${matches.length} items (${matches.map(m => m.label).join(', ')}).`;
+        aiRedactMsg.textContent = `Ocultados ${matches.length} itens confidenciais (${matches.map(m => m.label).join(', ')}).`;
         aiRedactMsg.classList.remove('hidden');
       }
-      showToast(`Redacted ${matches.length} sensitive items!`);
+      showToast(`Ocultados ${matches.length} itens confidenciais!`);
     } catch (err) {
       console.error(err);
     }
@@ -1333,19 +1333,19 @@ const { mode = 'standalone' } = Astro.props;
   // AI Document Summarizer
   generateSummaryBtn?.addEventListener('click', async () => {
     if (!summaryArea) return;
-    summaryArea.innerHTML = '<span class="animate-pulse text-[#533afd]">Analyzing document text...</span>';
+    summaryArea.innerHTML = '<span class="animate-pulse text-[#533afd]">A analisar texto do documento...</span>';
     const pagesText = await engine.extractFullText();
     const summary = PdfAiAssistant.summarizeDocument(pagesText);
 
     summaryArea.innerHTML = `
       <div class="flex gap-2 text-[11px] text-[#273951] font-mono pb-1 border-b border-[#e3e8ee]">
-        <span>Pages: <strong>${summary.pageCount}</strong></span>
-        <span>Words: <strong>${summary.wordCount}</strong></span>
-        <span>Reading: <strong>~${summary.readingTimeMinutes} min</strong></span>
+        <span>Páginas: <strong>${summary.pageCount}</strong></span>
+        <span>Palavras: <strong>${summary.wordCount}</strong></span>
+        <span>Leitura: <strong>~${summary.readingTimeMinutes} min</strong></span>
       </div>
-      <p class="font-medium text-[#0d253d] text-[12px] pt-1">Executive Summary:</p>
+      <p class="font-medium text-[#0d253d] text-[12px] pt-1">Resumo Executivo:</p>
       <p class="leading-relaxed text-[#64748d]">${summary.executiveSummary}</p>
-      <p class="font-medium text-[#0d253d] text-[12px] pt-1">Key Takeaways:</p>
+      <p class="font-medium text-[#0d253d] text-[12px] pt-1">Pontos-Chave:</p>
       <ul class="list-disc pl-4 space-y-1 text-[#64748d]">
         ${summary.keyTakeaways.map(t => `<li>${t}</li>`).join('')}
       </ul>
@@ -1357,12 +1357,12 @@ const { mode = 'standalone' } = Astro.props;
     const q = askDocInput?.value;
     if (!q || !askDocAnswer) return;
     askDocAnswer.classList.remove('hidden');
-    askDocAnswer.innerHTML = '<span class="animate-pulse text-[#533afd]">Searching clauses...</span>';
+    askDocAnswer.innerHTML = '<span class="animate-pulse text-[#533afd]">A pesquisar cláusulas...</span>';
 
     const pagesText = await engine.extractFullText();
     const res = PdfAiAssistant.askQuestion(pagesText, q);
     askDocAnswer.innerHTML = `
-      <p class="font-medium text-[#0d253d] mb-1">Answer:</p>
+      <p class="font-medium text-[#0d253d] mb-1">Resposta:</p>
       <p class="text-[#273951] leading-relaxed">${res.answer}</p>
     `;
   });
@@ -1462,7 +1462,7 @@ const { mode = 'standalone' } = Astro.props;
   });
 
   typedSigInput?.addEventListener('input', (e) => {
-    const val = (e.target as HTMLInputElement).value || 'Alex Morgan';
+    const val = (e.target as HTMLInputElement).value || 'Manuel Silva';
     document.querySelectorAll('.preview-sig-text').forEach(el => {
       el.textContent = val;
     });
@@ -1497,7 +1497,7 @@ const { mode = 'standalone' } = Astro.props;
     if (!tabDrawContent?.classList.contains('hidden')) {
       sigDataUrl = sigCanvas.toDataURL('image/png');
     } else if (!tabTypeContent?.classList.contains('hidden')) {
-      const name = typedSigInput.value || 'Alex Morgan';
+      const name = typedSigInput.value || 'Manuel Silva';
       sigDataUrl = PdfAiAssistant.generateCursiveSignature(name, activeSigTypeStyle as any, activeSigColor);
     } else if (!tabUploadContent?.classList.contains('hidden')) {
       sigDataUrl = uploadSigPreview.src;

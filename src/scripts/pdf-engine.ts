@@ -413,7 +413,7 @@ export class PdfEngine {
    */
   async exportPdf(): Promise<Uint8Array> {
     if (!this.pdfBytes) {
-      throw new Error('No PDF document loaded.');
+      throw new Error('Nenhum documento PDF carregado.');
     }
 
     // Ensure current active page state is saved

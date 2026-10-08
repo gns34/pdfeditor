@@ -16,34 +16,34 @@
         <div class="lg:col-span-7 space-y-6">
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-[#e8d5b8] text-[#9b6829] text-[12px] font-medium">
             <span class="w-2 h-2 rounded-full bg-[#9b6829]"></span>
-            <span>Zero-Knowledge Local Execution</span>
+            <span>Execução Local com Zero Conhecimento</span>
           </div>
 
           <h2 class="display-lg text-[#0d253d] text-[32px] sm:text-[38px] leading-tight">
-            Your confidential files never leave your device. Ever.
+            Os seus ficheiros confidenciais nunca saem do seu computador ou dispositivo. Nunca.
           </h2>
 
           <p class="body-lg text-[#273951] leading-relaxed font-light">
-            Traditional online editors upload your sensitive financial contracts, invoices, medical records, and passports to remote cloud servers where they can be cached, leaked, or scanned.
+            Os editores online tradicionais carregam os seus contratos financeiros, faturas, certidões, dados do Cartão de Cidadão e registos bancários para servidores remotos na nuvem onde podem ser retidos, expostos ou analisados.
           </p>
 
           <p class="body-md text-[#273951] leading-relaxed">
-            <strong>PDF Editor AI</strong> is built differently. Our entire parsing, annotation, and export engine executes inside your browser’s isolated memory via <strong class="text-[#0d253d]">WebAssembly & Canvas</strong>. You can even disconnect your internet after loading the page, and the editor will continue working without interruption.
+            O <strong>PDF Editor AI</strong> foi concebido de raiz com uma filosofia diferente. Todo o nosso motor de leitura, anotação e exportação é executado na memória isolada do seu próprio navegador através de <strong class="text-[#0d253d]">WebAssembly e Canvas</strong>. Pode inclusive desligar o Wi-Fi após carregar a página e o editor continuará a funcionar sem interrupções.
           </p>
 
           <!-- Security Badges -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
             <div class="bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-[#e8d5b8]">
               <span class="block text-xl font-light text-[#0d253d] tabular-num">0%</span>
-              <span class="text-[12px] text-[#64748d]">Server Storage</span>
+              <span class="text-[12px] text-[#64748d]">Armazenamento em Servidor</span>
             </div>
             <div class="bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-[#e8d5b8]">
               <span class="block text-xl font-light text-[#0d253d] tabular-num">100%</span>
-              <span class="text-[12px] text-[#64748d]">Client-Side RAM</span>
+              <span class="text-[12px] text-[#64748d]">Memória RAM Local</span>
             </div>
             <div class="bg-white/70 backdrop-blur-xs p-4 rounded-xl border border-[#e8d5b8]">
-              <span class="block text-xl font-light text-[#0d253d] tabular-num">GDPR & HIPAA</span>
-              <span class="text-[12px] text-[#64748d]">Safe Architecture</span>
+              <span class="block text-xl font-light text-[#0d253d] tabular-num">Conforme RGPD</span>
+              <span class="text-[12px] text-[#64748d]">Soberania em Portugal</span>
             </div>
           </div>
         </div>
@@ -51,8 +51,8 @@
         <!-- Right: Technical Architecture Diagram Card -->
         <div class="lg:col-span-5 bg-white rounded-2xl p-6 border border-[#e8d5b8] shadow-level-1 space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#e3e8ee]">
-            <span class="text-[13px] font-semibold text-[#0d253d]">Local Privacy Flow</span>
-            <span class="text-[11px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Active Protection</span>
+            <span class="text-[13px] font-semibold text-[#0d253d]">Fluxo de Privacidade Local</span>
+            <span class="text-[11px] font-mono text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Proteção Ativa</span>
           </div>
 
           <!-- Flow Steps -->
@@ -60,39 +60,39 @@
             <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
               <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">1</div>
               <div>
-                <strong class="text-[#0d253d] block">Local File Ingestion</strong>
-                <span class="text-[#64748d] text-[12px]">File bytes read directly into HTML5 FileReader memory.</span>
+                <strong class="text-[#0d253d] block">Leitura Local do Ficheiro</strong>
+                <span class="text-[#64748d] text-[12px]">Bytes do ficheiro lidos diretamente na memória FileReader HTML5.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
               <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">2</div>
               <div>
-                <strong class="text-[#0d253d] block">In-Browser PDF.js Rendering</strong>
-                <span class="text-[#64748d] text-[12px]">Pages drawn to hardware-accelerated canvas.</span>
+                <strong class="text-[#0d253d] block">Renderização PDF.js no Navegador</strong>
+                <span class="text-[#64748d] text-[12px]">Páginas desenhadas em canvas acelerado por hardware.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
               <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">3</div>
               <div>
-                <strong class="text-[#0d253d] block">AI & PII Pattern Processing</strong>
-                <span class="text-[#64748d] text-[12px]">Regex & text heuristics run client-side in Web Workers.</span>
+                <strong class="text-[#0d253d] block">Processamento de NIF e PII por IA</strong>
+                <span class="text-[#64748d] text-[12px]">Expressões e padrões locais processados no próprio dispositivo.</span>
               </div>
             </div>
 
             <div class="flex items-start gap-3 p-2.5 rounded-lg bg-[#f6f9fc]">
               <div class="w-6 h-6 rounded-full bg-[#533afd] text-white flex items-center justify-center text-[11px] font-bold shrink-0 mt-0.5">4</div>
               <div>
-                <strong class="text-[#0d253d] block">PDF-Lib Binary Export</strong>
-                <span class="text-[#64748d] text-[12px]">Compiled directly to a local download Blob.</span>
+                <strong class="text-[#0d253d] block">Exportação Binária PDF-Lib</strong>
+                <span class="text-[#64748d] text-[12px]">Compilado diretamente num Blob de transferência local.</span>
               </div>
             </div>
           </div>
 
           <div class="pt-2 text-center">
             <a href="/privacy" class="text-[13px] text-[#533afd] font-medium hover:underline inline-flex items-center gap-1">
-              <span>Read Full Security Architecture</span>
+              <span>Ver Arquitetura de Segurança Completa</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
           </div>

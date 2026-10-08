@@ -9,7 +9,7 @@ export interface RedactBox {
 }
 
 export interface PiiMatch {
-  type: 'email' | 'creditCard' | 'ssn' | 'phone' | 'custom';
+  type: 'email' | 'creditCard' | 'ssn' | 'phone' | 'nif' | 'iban' | 'cc' | 'custom';
   label: string;
   matchedText: string;
   pageIndex: number;
@@ -35,11 +35,18 @@ export interface QAResult {
 }
 
 export class PdfAiAssistant {
-  // Common Regex patterns for sensitive PII data
+  // Regex patterns for sensitive data in Portugal and International
   private static EMAIL_REGEX = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
   private static CC_REGEX = /\b(?:\d{4}[ -]?){3}\d{4}\b/g;
   private static SSN_REGEX = /\b\d{3}-\d{2}-\d{4}\b/g;
-  private static PHONE_REGEX = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
+  // Portugal NIF (Número de Identificação Fiscal - 9 dígitos começando por 1, 2, 3, 5, 6, 8, 9)
+  private static PT_NIF_REGEX = /\b[1235689]\d{2}[ -]?\d{3}[ -]?\d{3}\b/g;
+  // Portugal IBAN (começa por PT50 e tem 21 dígitos numéricos a seguir)
+  private static PT_IBAN_REGEX = /\bPT50(?:[ -]?\d{4}){5}[ -]?\d{1}\b/gi;
+  // Portugal Cartão de Cidadão (8 dígitos + 1 dígito controlo + 2 letras + 1 dígito ex: 12345678 9 ZZ4)
+  private static PT_CC_DOC_REGEX = /\b\d{8}[ -]?\d[ -]?[A-Z0-9]{3}\b/gi;
+  // Portugal Telefone/Telemóvel (+351 ou 9x/2x com 9 dígitos)
+  private static PHONE_REGEX = /(?:\+351[ -]?)?(?:9[1236]\d{1}[ -]?\d{3}[ -]?\d{3}|2\d{2}[ -]?\d{3}[ -]?\d{3})\b|(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g;
 
   /**
    * Scan PDF text items and detect PII coordinates for 1-click auto-redaction
@@ -55,13 +62,64 @@ export class PdfAiAssistant {
       const text = item.str;
       if (!text || text.trim().length === 0) continue;
 
-      // 1. Check Emails
+      // 1. Portugal NIF (Número de Identificação Fiscal)
+      const nifs = text.match(this.PT_NIF_REGEX);
+      if (nifs) {
+        for (const nif of nifs) {
+          matches.push({
+            type: 'nif',
+            label: 'NIF (Identificação Fiscal)',
+            matchedText: nif,
+            pageIndex,
+            x: item.x,
+            y: item.y - 2,
+            width: Math.max(item.width, 70),
+            height: Math.max(item.height + 4, 16),
+          });
+        }
+      }
+
+      // 2. Portugal IBAN (PT50)
+      const ibans = text.match(this.PT_IBAN_REGEX);
+      if (ibans) {
+        for (const iban of ibans) {
+          matches.push({
+            type: 'iban',
+            label: 'IBAN Português (PT50)',
+            matchedText: iban,
+            pageIndex,
+            x: item.x,
+            y: item.y - 2,
+            width: Math.max(item.width, 110),
+            height: Math.max(item.height + 4, 16),
+          });
+        }
+      }
+
+      // 3. Portugal Cartão de Cidadão
+      const ccsDoc = text.match(this.PT_CC_DOC_REGEX);
+      if (ccsDoc) {
+        for (const ccDoc of ccsDoc) {
+          matches.push({
+            type: 'cc',
+            label: 'Cartão de Cidadão (CC)',
+            matchedText: ccDoc,
+            pageIndex,
+            x: item.x,
+            y: item.y - 2,
+            width: Math.max(item.width, 85),
+            height: Math.max(item.height + 4, 16),
+          });
+        }
+      }
+
+      // 4. Emails
       const emails = text.match(this.EMAIL_REGEX);
       if (emails) {
         for (const e of emails) {
           matches.push({
             type: 'email',
-            label: 'Email Address',
+            label: 'Endereço de E-mail',
             matchedText: e,
             pageIndex,
             x: item.x,
@@ -72,13 +130,13 @@ export class PdfAiAssistant {
         }
       }
 
-      // 2. Check Credit Cards
+      // 5. Credit Cards
       const ccs = text.match(this.CC_REGEX);
       if (ccs) {
         for (const cc of ccs) {
           matches.push({
             type: 'creditCard',
-            label: 'Credit Card Number',
+            label: 'Cartão de Crédito',
             matchedText: cc,
             pageIndex,
             x: item.x,
@@ -89,31 +147,14 @@ export class PdfAiAssistant {
         }
       }
 
-      // 3. Check SSN
-      const ssns = text.match(this.SSN_REGEX);
-      if (ssns) {
-        for (const ssn of ssns) {
-          matches.push({
-            type: 'ssn',
-            label: 'Social Security Number',
-            matchedText: ssn,
-            pageIndex,
-            x: item.x,
-            y: item.y - 2,
-            width: Math.max(item.width, 70),
-            height: Math.max(item.height + 4, 16),
-          });
-        }
-      }
-
-      // 4. Check Phones
+      // 6. Phones / Telemóveis
       const phones = text.match(this.PHONE_REGEX);
       if (phones) {
         for (const ph of phones) {
-          if (ph.replace(/\D/g, '').length >= 10) {
+          if (ph.replace(/\D/g, '').length >= 9) {
             matches.push({
               type: 'phone',
-              label: 'Phone Number',
+              label: 'Telemóvel / Telefone',
               matchedText: ph,
               pageIndex,
               x: item.x,
@@ -125,12 +166,29 @@ export class PdfAiAssistant {
         }
       }
 
-      // 5. Custom Keywords
+      // 7. SSN
+      const ssns = text.match(this.SSN_REGEX);
+      if (ssns) {
+        for (const ssn of ssns) {
+          matches.push({
+            type: 'ssn',
+            label: 'Número de Segurança Social',
+            matchedText: ssn,
+            pageIndex,
+            x: item.x,
+            y: item.y - 2,
+            width: Math.max(item.width, 70),
+            height: Math.max(item.height + 4, 16),
+          });
+        }
+      }
+
+      // 8. Custom Keywords
       for (const kw of customKeywords) {
         if (kw.trim() && text.toLowerCase().includes(kw.toLowerCase().trim())) {
           matches.push({
             type: 'custom',
-            label: `Keyword: "${kw}"`,
+            label: `Termo: "${kw}"`,
             matchedText: kw,
             pageIndex,
             x: item.x,
@@ -174,8 +232,10 @@ export class PdfAiAssistant {
     const emailCount = (fullText.match(this.EMAIL_REGEX) || []).length;
     const ccCount = (fullText.match(this.CC_REGEX) || []).length;
     const ssnCount = (fullText.match(this.SSN_REGEX) || []).length;
+    const nifCount = (fullText.match(this.PT_NIF_REGEX) || []).length;
+    const ibanCount = (fullText.match(this.PT_IBAN_REGEX) || []).length;
     const phoneCount = (fullText.match(this.PHONE_REGEX) || []).length;
-    const sensitiveDataDetected = emailCount + ccCount + ssnCount + phoneCount;
+    const sensitiveDataDetected = emailCount + ccCount + ssnCount + nifCount + ibanCount + phoneCount;
 
     // Sentence extraction heuristics
     const sentences = fullText
@@ -189,8 +249,8 @@ export class PdfAiAssistant {
     if (sentences.length > 0) {
       executiveSummary = sentences.slice(0, Math.min(3, sentences.length)).join(' ');
       
-      // Select informative sentences containing key markers
-      const actionKeywords = ['shall', 'must', 'agrees', 'payment', 'total', 'liability', 'effective', 'termination', 'confidential', 'term'];
+      // Select informative sentences containing key markers in Portuguese & English
+      const actionKeywords = ['deverá', 'acordo', 'pagamento', 'responsabilidade', 'vigência', 'rescisão', 'confidencial', 'prazo', 'cláusula', 'shall', 'must', 'agrees', 'payment', 'total', 'liability'];
       const filtered = sentences.filter(s => actionKeywords.some(k => s.toLowerCase().includes(k)));
       
       if (filtered.length > 0) {
@@ -203,9 +263,9 @@ export class PdfAiAssistant {
         }
       }
     } else {
-      executiveSummary = 'This document contains visual diagrams or structured tabular content without long-form paragraphs.';
-      keyTakeaways.push(`Document contains ${pageCount} pages and approximately ${wordCount} words.`);
-      keyTakeaways.push('All text elements are ready for in-browser editing, redaction, and annotation.');
+      executiveSummary = 'Este documento contém diagramas visuais ou tabelas estruturadas sem blocos de texto contínuo.';
+      keyTakeaways.push(`O documento contém ${pageCount} páginas e cerca de ${wordCount} palavras.`);
+      keyTakeaways.push('Todos os elementos de texto estão prontos para edição, ocultação e anotação local no navegador.');
     }
 
     return {
@@ -251,9 +311,9 @@ export class PdfAiAssistant {
 
     let answer = '';
     if (topSnippets.length > 0) {
-      answer = `Based on your document (Page ${topSnippets[0].pageIndex + 1}): "${topSnippets[0].snippet}"`;
+      answer = `Com base no documento (Página ${topSnippets[0].pageIndex + 1}): «${topSnippets[0].snippet}»`;
     } else {
-      answer = `I could not find a direct mention of "${query}" in this document. You can highlight or search for specific terms using the text tool.`;
+      answer = `Não foi encontrada nenhuma menção direta a «${query}» no documento. Pode pesquisar termos específicos ou utilizar a ferramenta de texto para localizar cláusulas.`;
     }
 
     return {

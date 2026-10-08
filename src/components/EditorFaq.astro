@@ -1,28 +1,28 @@
 ---
 const faqs = [
   {
-    q: 'How does PDF Editor AI ensure 100% privacy?',
-    a: 'Unlike traditional PDF tools that upload your documents to backend cloud servers, PDF Editor AI executes completely inside your browser memory using WebAssembly (via pdf-lib and PDF.js). Your files are never sent over the network, never saved on a database, and never viewable by third parties.'
+    q: 'Como o PDF Editor AI garante 100% de privacidade?',
+    a: 'Ao contrário das ferramentas tradicionais de PDF que enviam os seus documentos para servidores remotos na nuvem, o PDF Editor AI executa todo o processamento diretamente na memória RAM do seu navegador através de WebAssembly (com recurso ao pdf-lib e PDF.js). Os seus ficheiros nunca são transmitidos pela rede, nunca são guardados numa base de dados e são totalmente confidenciais.'
   },
   {
-    q: 'Is this PDF Editor really free with no task limits?',
-    a: 'Yes. Because all processing happens client-side using your own device hardware, we don’t incur costly server GPU/CPU infrastructure overhead for standard editing. You can edit as many documents as you want, with no 3-task hourly caps (unlike Sejda).'
+    q: 'O editor é verdadeiramente gratuito e sem limites de tarefas?',
+    a: 'Sim. Como todo o processamento decorre no cliente utilizando o hardware do seu próprio computador ou telemóvel, não incorremos em custos elevados de servidores para a edição corrente. Pode editar tantos documentos quantos desejar, sem limites de 3 tarefas por hora (como acontece no Sejda).'
   },
   {
-    q: 'Can I use this editor while offline?',
-    a: 'Yes! Once you have loaded the webpage, all WebAssembly binaries and worker scripts are cached in your browser. You can turn off your Wi-Fi or go into airplane mode and continue editing, annotating, and exporting PDFs seamlessly.'
+    q: 'Posso utilizar o editor sem ligação à Internet (offline)?',
+    a: 'Sim! Após carregar a página pela primeira vez, os binários WebAssembly e scripts necessários ficam em cache no seu navegador. Pode desligar o Wi-Fi ou ativar o modo de voo e continuar a editar, anotar e exportar documentos PDF com total normalidade.'
   },
   {
-    q: 'How does the 1-Click AI Smart PII Auto-Redactor work?',
-    a: 'The Smart Redactor uses client-side text pattern recognition (regex & lexical analysis) to detect sensitive personal identifiers such as Social Security Numbers, Credit Card Numbers, Email addresses, and Phone numbers. It then computes their exact coordinates on the PDF canvas and draws opaque blackout blocks over them in one click.'
+    q: 'Como funciona a Ocultação Automática Inteligente de PII com IA?',
+    a: 'O sistema de Ocultação Inteligente analisa padrões de texto no cliente (expressões regulares e análise léxica) para detetar dados confidenciais comuns em Portugal e na Europa: NIF (Número de Identificação Fiscal), Cartão de Cidadão, IBAN (PT50), endereços de e-mail e números de telefone/telemóvel. De seguida, calcula as coordenadas exatas na página e aplica máscaras opacas de censura com apenas um clique.'
   },
   {
-    q: 'What types of annotations and modifications are supported?',
-    a: 'You can add customizable text blocks (with font, size, color), draw freehand pen strokes, use translucent highlighters, insert shapes (rectangles, circles, arrows, lines), place whiteout blocks, insert images or stamps, create digital e-signatures, and reorder/rotate/delete pages.'
+    q: 'Que tipos de anotações e edições são suportadas?',
+    a: 'Pode adicionar caixas de texto com estilos personalizados (tipo de letra, tamanho e cor), desenhar traços livres com caneta, aplicar marcadores de texto translúcidos, inserir formas geométricas (retângulos, círculos, setas, linhas), colocar corretor branco sobre texto antigo, adicionar imagens ou carimbos oficiais, criar assinaturas eletrónicas digitais e reordenar, rodar ou eliminar páginas.'
   },
   {
-    q: 'Can I sign contracts with legally binding e-signatures?',
-    a: 'Yes. You can draw your signature with mouse/touch, type your name using elegant cursive typography, or upload a transparent PNG image of your actual signature and stamp it anywhere on the document.'
+    q: 'As assinaturas eletrónicas criadas são válidas para contratos em Portugal?',
+    a: 'Sim. Pode desenhar a sua assinatura com o rato ou no ecrã tátil, digitar o seu nome com tipografia caligráfica realista ou carregar uma imagem PNG transparente da sua assinatura manuscrita para estampar em qualquer contrato ou declaração.'
   }
 ];
 ---
@@ -32,12 +32,12 @@ const faqs = [
     
     <!-- Section Opener -->
     <div class="text-center mb-16">
-      <span class="micro-cap text-[#533afd] mb-3 block">Got Questions?</span>
+      <span class="micro-cap text-[#533afd] mb-3 block">Tem Dúvidas?</span>
       <h2 class="display-xl text-[#0d253d] mb-4">
-        Frequently Asked Questions
+        Perguntas Frequentes
       </h2>
       <p class="body-lg text-[#64748d]">
-        Everything you need to know about our local privacy architecture and editing features.
+        Tudo o que precisa de saber sobre a nossa arquitetura de privacidade local em Portugal e as funcionalidades de edição.
       </p>
     </div>
 
@@ -60,10 +60,10 @@ const faqs = [
 
     <!-- Final Callout -->
     <div class="mt-16 text-center bg-white p-8 rounded-2xl border border-[#e3e8ee] shadow-level-1">
-      <h3 class="heading-lg text-[#0d253d] mb-2 font-medium">Ready to edit your PDF privately?</h3>
-      <p class="body-md text-[#64748d] mb-6">No account or credit card needed. Open the in-browser studio instantly.</p>
+      <h3 class="heading-lg text-[#0d253d] mb-2 font-medium">Pronto para editar o seu PDF com total privacidade?</h3>
+      <p class="body-md text-[#64748d] mb-6">Sem conta nem cartão de crédito. Abra o estúdio no navegador imediatamente.</p>
       <a href="/edit" class="btn-primary-pill text-[15px] py-2.5 px-7 shadow-sm">
-        <span>Open In-Browser Editor</span>
+        <span>Abrir Editor no Navegador</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>

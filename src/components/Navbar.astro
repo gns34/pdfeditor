@@ -21,18 +21,18 @@ const { isEditorPage = false } = Astro.props;
       </div>
       <div class="flex items-center gap-2">
         <span class="font-medium text-[17px] tracking-tight text-[#0d253d]">PDF Editor <span class="text-[#533afd] font-semibold">AI</span></span>
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#b9b9f9]/40 text-[#4434d4] border border-[#533afd]/20 uppercase tracking-wide">Local</span>
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#b9b9f9]/40 text-[#4434d4] border border-[#533afd]/20 uppercase tracking-wide">Portugal 🇵🇹</span>
       </div>
     </a>
 
     <!-- Center Nav Links -->
     <nav class="hidden md:flex items-center gap-7 text-[14px] text-[#273951]">
-      <a href="/edit" class="hover:text-[#533afd] transition-colors py-1">In-Browser Studio</a>
-      <a href="/#features" class="hover:text-[#533afd] transition-colors py-1">Features</a>
-      <a href="/#ai-redactor" class="hover:text-[#533afd] transition-colors py-1">AI Redactor</a>
-      <a href="/#comparison" class="hover:text-[#533afd] transition-colors py-1">Why vs Sejda</a>
-      <a href="/privacy" class="hover:text-[#533afd] transition-colors py-1">Zero-Upload Privacy</a>
-      <a href="/#faq" class="hover:text-[#533afd] transition-colors py-1">FAQ</a>
+      <a href="/edit" class="hover:text-[#533afd] transition-colors py-1">Estúdio no Navegador</a>
+      <a href="/#features" class="hover:text-[#533afd] transition-colors py-1">Funcionalidades</a>
+      <a href="/#ai-redactor" class="hover:text-[#533afd] transition-colors py-1">Ocultação IA</a>
+      <a href="/#comparison" class="hover:text-[#533afd] transition-colors py-1">Comparação</a>
+      <a href="/privacy" class="hover:text-[#533afd] transition-colors py-1">Privacidade Total</a>
+      <a href="/#faq" class="hover:text-[#533afd] transition-colors py-1">Perguntas Frequentes</a>
     </nav>
 
     <!-- Right CTAs, Theme Toggle & Privacy Badge -->
@@ -41,14 +41,14 @@ const { isEditorPage = false } = Astro.props;
       <ThemeToggle />
 
       <!-- Privacy Indicator -->
-      <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951] text-[12px] font-normal" title="No documents are ever uploaded to cloud servers">
+      <div class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951] text-[12px] font-normal" title="Nenhum documento é enviado para servidores na nuvem">
         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>100% Client-Side</span>
+        <span>100% no Cliente</span>
       </div>
 
       {!isEditorPage ? (
         <a href="/edit" class="btn-primary-pill text-[14px] py-2 px-4 shadow-sm">
-          <span>Open Editor</span>
+          <span>Abrir Editor</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M5 12h14"/>
             <path d="m12 5 7 7-7 7"/>
@@ -56,7 +56,7 @@ const { isEditorPage = false } = Astro.props;
         </a>
       ) : (
         <a href="/" class="btn-secondary-pill text-[13px] py-1.5 px-3">
-          <span>Exit Studio</span>
+          <span>Sair do Estúdio</span>
         </a>
       )}
     </div>
