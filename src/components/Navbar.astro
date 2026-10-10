@@ -8,145 +8,54 @@ interface Props {
 const { isEditorPage = false } = Astro.props;
 const pathname = Astro.url ? Astro.url.pathname : '';
 const isBlogActive = pathname.startsWith('/blog');
-const isPrivacyActive = pathname.startsWith('/privacy');
+const isEditActive = pathname.startsWith('/edit') || isEditorPage;
 ---
 
-<header class="w-full border-b border-[#e3e8ee]/70 bg-white/90 backdrop-blur-md sticky top-0 z-40">
+<header class="w-full border-b border-[var(--border-subtle,#e3e8ee)] bg-[var(--bg-header,rgba(255,255,255,0.92))] backdrop-blur-md sticky top-0 z-40 transition-colors">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-    <!-- Brand Logo -->
-    <a href="/" class="flex items-center gap-3 group text-decoration-none">
-      <div class="w-9 h-9 rounded-xl bg-[#533afd] flex items-center justify-center shadow-sm text-white transition-transform group-hover:scale-105">
+    <!-- Brand Logo & Name -->
+    <a href="/" class="flex items-center gap-2.5 sm:gap-3 group text-decoration-none">
+      <div class="w-9 h-9 rounded-xl bg-[#533afd] flex items-center justify-center shadow-xs text-white transition-transform group-hover:scale-105">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
           <polyline points="14 2 14 8 20 8"/>
           <path d="m9 15 2 2 4-4"/>
         </svg>
       </div>
-      <div class="flex items-center gap-2">
-        <span class="font-medium text-[17px] tracking-tight text-[#0d253d]">PDF Editor <span class="text-[#533afd] font-semibold">AI</span></span>
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-[#b9b9f9]/40 text-[#4434d4] border border-[#533afd]/20 uppercase tracking-wide">Portugal 🇵🇹</span>
-      </div>
+      <span class="font-medium text-[16px] sm:text-[17px] tracking-tight text-[var(--text-primary,#0d253d)]">
+        PDF Editor <span class="text-[#533afd] font-semibold">AI</span>
+      </span>
     </a>
 
-    <!-- Center Nav Links (Desktop) -->
-    <nav class="hidden md:flex items-center gap-6 lg:gap-7 text-[14px] text-[#273951]">
-      <a href="/edit" class="hover:text-[#533afd] transition-colors py-1">Estúdio no Navegador</a>
-      <a href="/#features" class="hover:text-[#533afd] transition-colors py-1">Funcionalidades</a>
-      <a href="/#ai-redactor" class="hover:text-[#533afd] transition-colors py-1">Ocultação IA</a>
-      <a href="/#comparison" class="hover:text-[#533afd] transition-colors py-1">Comparação</a>
+    <!-- Navigation & Controls: Blog, PDF Edit, Theme -->
+    <div class="flex items-center gap-2 sm:gap-3 md:gap-4">
+      <!-- Blog Link -->
       <a 
         href="/blog" 
-        class={`hover:text-[#533afd] transition-colors py-1 relative ${isBlogActive ? 'text-[#533afd] font-medium' : ''}`}
+        class={`text-[13px] sm:text-[14px] font-medium transition-colors py-1.5 px-2 sm:px-3 rounded-lg relative ${
+          isBlogActive 
+            ? 'text-[#533afd]' 
+            : 'text-[var(--text-secondary,#273951)] hover:text-[#533afd]'
+        }`}
       >
         <span>Blog</span>
         {isBlogActive && (
-          <span class="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#533afd] rounded-full"></span>
+          <span class="absolute -bottom-1 left-2 right-2 sm:left-3 sm:right-3 h-0.5 bg-[#533afd] rounded-full"></span>
         )}
       </a>
+
+      <!-- PDF Edit CTA -->
       <a 
-        href="/privacy" 
-        class={`hover:text-[#533afd] transition-colors py-1 relative ${isPrivacyActive ? 'text-[#533afd] font-medium' : ''}`}
+        href="/edit" 
+        class={`btn-primary-pill text-[13px] sm:text-[14px] py-1.5 sm:py-2 px-3.5 sm:px-4 shadow-xs font-normal ${
+          isEditActive ? 'ring-2 ring-[#533afd]/35 ring-offset-1' : ''
+        }`}
       >
-        <span>Privacidade Total</span>
-        {isPrivacyActive && (
-          <span class="absolute -bottom-1 left-0 right-0 h-0.5 bg-[#533afd] rounded-full"></span>
-        )}
+        <span>PDF Edit</span>
       </a>
-      <a href="/#faq" class="hover:text-[#533afd] transition-colors py-1">Perguntas Frequentes</a>
-    </nav>
 
-    <!-- Right CTAs, Theme Toggle & Privacy Badge -->
-    <div class="flex items-center gap-2 sm:gap-3">
-      <!-- 3-Way Theme Switcher (Light / Dark / Black) -->
+      <!-- Theme Switcher -->
       <ThemeToggle />
-
-      <!-- Privacy Indicator -->
-      <div class="hidden xl:flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951] text-[12px] font-normal" title="Nenhum documento é enviado para servidores na nuvem">
-        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>100% no Cliente</span>
-      </div>
-
-      {!isEditorPage ? (
-        <a href="/edit" class="btn-primary-pill text-[13px] sm:text-[14px] py-1.5 sm:py-2 px-3 sm:px-4 shadow-sm">
-          <span>Abrir Editor</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14"/>
-            <path d="m12 5 7 7-7 7"/>
-          </svg>
-        </a>
-      ) : (
-        <a href="/" class="btn-secondary-pill text-[13px] py-1.5 px-3">
-          <span>Sair do Estúdio</span>
-        </a>
-      )}
-
-      <!-- Mobile Menu Button -->
-      <button 
-        id="mobile-nav-toggle"
-        type="button" 
-        class="md:hidden p-2 rounded-lg text-[#273951] hover:bg-[#f6f9fc] border border-[#e3e8ee] focus:outline-none"
-        aria-label="Abrir menu de navegação"
-        aria-expanded="false"
-      >
-        <svg id="mobile-hamburger-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-        <svg id="mobile-close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <!-- Mobile Drawer / Dropdown -->
-  <div id="mobile-nav-menu" class="hidden md:hidden border-t border-[#e3e8ee] bg-white px-4 py-4 space-y-1 shadow-lg">
-    <a href="/edit" class="block py-2 px-3 rounded-lg text-[14px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd] font-medium">Estúdio no Navegador</a>
-    <a href="/#features" class="block py-2 px-3 rounded-lg text-[14px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd]">Funcionalidades</a>
-    <a href="/#ai-redactor" class="block py-2 px-3 rounded-lg text-[14px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd]">Ocultação IA</a>
-    <a href="/#comparison" class="block py-2 px-3 rounded-lg text-[14px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd]">Comparação</a>
-    <a href="/blog" class={`block py-2 px-3 rounded-lg text-[14px] hover:bg-[#f6f9fc] font-medium ${isBlogActive ? 'bg-[#533afd]/10 text-[#533afd]' : 'text-[#273951] hover:text-[#533afd]'}`}>
-      Blog & Recursos
-    </a>
-    <a href="/privacy" class={`block py-2 px-3 rounded-lg text-[14px] hover:bg-[#f6f9fc] ${isPrivacyActive ? 'bg-[#533afd]/10 text-[#533afd]' : 'text-[#273951] hover:text-[#533afd]'}`}>
-      Privacidade Total
-    </a>
-    <a href="/#faq" class="block py-2 px-3 rounded-lg text-[14px] text-[#273951] hover:bg-[#f6f9fc] hover:text-[#533afd]">Perguntas Frequentes</a>
-    <div class="pt-2 border-t border-[#e3e8ee] mt-2 flex items-center justify-between text-xs text-[#64748d]">
-      <span class="flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span>100% no Cliente</span>
-      </span>
-      <span>Sem nuvem • Sem registo</span>
     </div>
   </div>
 </header>
-
-<script>
-  function setupMobileNav() {
-    const toggleBtn = document.getElementById('mobile-nav-toggle');
-    const menu = document.getElementById('mobile-nav-menu');
-    const hamburger = document.getElementById('mobile-hamburger-icon');
-    const close = document.getElementById('mobile-close-icon');
-
-    if (!toggleBtn || !menu) return;
-
-    toggleBtn.addEventListener('click', () => {
-      const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-      toggleBtn.setAttribute('aria-expanded', String(!isExpanded));
-      
-      if (isExpanded) {
-        menu.classList.add('hidden');
-        hamburger?.classList.remove('hidden');
-        close?.classList.add('hidden');
-      } else {
-        menu.classList.remove('hidden');
-        hamburger?.classList.add('hidden');
-        close?.classList.remove('hidden');
-      }
-    });
-  }
-
-  setupMobileNav();
-  document.addEventListener('astro:page-load', setupMobileNav);
-</script>
-
