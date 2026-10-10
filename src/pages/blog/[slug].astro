@@ -404,6 +404,30 @@ const breadcrumbSchema = {
     margin-bottom: 0.5rem;
     line-height: 1.6;
   }
+  .blog-article-prose strong {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .blog-article-prose blockquote {
+    border-left: 3px solid var(--primary-accent);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .blog-article-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .blog-article-prose th, .blog-article-prose td {
+    padding: 0.75rem 1rem;
+  }
+  .blog-article-prose .tabular-num,
+  .blog-article-prose [data-tnum="true"] {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
+  }
   .blog-article-prose code {
     background-color: var(--bg-muted);
     padding: 2px 6px;
