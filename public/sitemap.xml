@@ -49,4 +49,16 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pdfeditx.com/privacy" />
   </url>
 
+  <!-- Secção de Blog e Artigos Técnicos -->
+  <url>
+    <loc>https://pdfeditx.com/blog</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://pdfeditx.com/blog" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://pdfeditx.com/blog" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://pdfeditx.com/blog" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://pdfeditx.com/blog" />
+  </url>
+
 </urlset>

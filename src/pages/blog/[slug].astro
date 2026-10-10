@@ -1,0 +1,423 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { blogPosts, getRecentPosts, type BlogPost } from '../../data/blogPosts';
+
+export async function getStaticPaths() {
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const siteUrl = 'https://pdfeditx.com';
+const currentUrl = `${siteUrl}/blog/${post.slug}`;
+const relatedPosts = getRecentPosts(3, post.slug);
+
+// Schema.org Structured Data for BlogPosting and Breadcrumbs
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  'headline': post.title,
+  'description': post.description,
+  'url': currentUrl,
+  'datePublished': post.publishDate,
+  'dateModified': post.publishDate,
+  'mainEntityOfPage': {
+    '@type': 'WebPage',
+    '@id': currentUrl
+  },
+  'author': {
+    '@type': 'Person',
+    'name': post.author.name,
+    'jobTitle': post.author.role
+  },
+  'publisher': {
+    '@type': 'Organization',
+    'name': 'PDF Editor AI',
+    'url': siteUrl,
+    'logo': {
+      '@type': 'ImageObject',
+      'url': `${siteUrl}/og-image.jpg`
+    }
+  },
+  'keywords': post.tags.join(', ')
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  'itemListElement': [
+    {
+      '@type': 'ListItem',
+      'position': 1,
+      'name': 'Início',
+      'item': siteUrl
+    },
+    {
+      '@type': 'ListItem',
+      'position': 2,
+      'name': 'Blog',
+      'item': `${siteUrl}/blog`
+    },
+    {
+      '@type': 'ListItem',
+      'position': 3,
+      'name': post.title,
+      'item': currentUrl
+    }
+  ]
+};
+---
+
+<Layout
+  title={`${post.title} — Blog PDF Editor AI`}
+  description={post.description}
+  canonical={currentUrl}
+  keywords={post.tags.join(', ')}
+  ogType="article"
+  schemaJson={[articleSchema, breadcrumbSchema]}
+>
+  <Navbar />
+
+  <main class="min-h-screen bg-[var(--bg-page)] text-[var(--text-primary)]">
+    <!-- Header Hero with Soft Atmospheric Gradient Wash -->
+    <header class="gradient-mesh-hero border-b border-[#e3e8ee]/70 pt-12 pb-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Breadcrumb Navigation -->
+        <nav aria-label="Navegação estrutural" class="flex items-center flex-wrap gap-2 text-xs font-normal text-[#64748d]">
+          <a href="/" class="hover:text-[#533afd] transition-colors">Início</a>
+          <span class="text-[#64748d]/40">/</span>
+          <a href="/blog" class="hover:text-[#533afd] transition-colors">Blog</a>
+          <span class="text-[#64748d]/40">/</span>
+          <span class="text-[#0d253d] font-medium truncate max-w-xs sm:max-w-md">{post.category}</span>
+        </nav>
+
+        <!-- Category & Read Stats -->
+        <div class="flex flex-wrap items-center gap-3 pt-2">
+          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-[#533afd]/10 text-[#533afd] border border-[#533afd]/20 uppercase tracking-wide">
+            {post.category}
+          </span>
+          <span class="text-xs text-[#64748d] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>{post.readTime}</span>
+          </span>
+          <span class="text-xs text-[#64748d] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            <span>{new Date(post.publishDate).toLocaleDateString('pt-PT', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+          </span>
+        </div>
+
+        <!-- H1 Article Title -->
+        <h1 class="display-xl text-[#0d253d] tracking-tight leading-tight">
+          {post.title}
+        </h1>
+
+        <!-- Excerpt Subtitle -->
+        <p class="body-lg text-[#64748d] font-light leading-relaxed max-w-3xl">
+          {post.description}
+        </p>
+
+        <!-- Author Byline & Social Share -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-[#e3e8ee]/80">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-[#1c1e54] text-white flex items-center justify-center font-medium text-xs">
+              {post.author.avatar}
+            </div>
+            <div>
+              <p class="text-xs font-semibold text-[#0d253d]">{post.author.name}</p>
+              <p class="text-[11px] text-[#64748d]">{post.author.role}</p>
+            </div>
+          </div>
+
+          <!-- Social Share Buttons -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-[#64748d] mr-1">Partilhar:</span>
+            <button 
+              id="copy-article-link-btn" 
+              type="button" 
+              title="Copiar Ligação"
+              class="w-8 h-8 rounded-full bg-white border border-[#e3e8ee] hover:border-[#533afd] text-[#273951] hover:text-[#533afd] flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+            <a 
+              href={`https://wa.me/?text=${encodeURIComponent(post.title + ' ' + currentUrl)}`}
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="Partilhar no WhatsApp"
+              class="w-8 h-8 rounded-full bg-white border border-[#e3e8ee] hover:border-emerald-500 text-[#273951] hover:text-emerald-600 flex items-center justify-center transition-all shadow-2xs"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.16 8.16 0 0 1 2.4 5.83c0 4.54-3.69 8.23-8.22 8.23-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.37c0-4.54 3.7-8.24 8.25-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.18-.47-.3"/></svg>
+            </a>
+            <a 
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`}
+              target="_blank" 
+              rel="noopener noreferrer"
+              title="Partilhar no LinkedIn"
+              class="w-8 h-8 rounded-full bg-white border border-[#e3e8ee] hover:border-blue-600 text-[#273951] hover:text-blue-700 flex items-center justify-center transition-all shadow-2xs"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9h2.79v8.37H6.46v-8.37M7.86 6.54a1.62 1.62 0 1 0 0 3.24 1.62 1.62 0 0 0 0-3.24"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+        <!-- Article Body -->
+        <article class="lg:col-span-8 space-y-8 blog-article-prose">
+          
+          <!-- Key Takeaways Highlight Box -->
+          <div class="bg-[#f6f9fc] rounded-2xl p-6 border border-[#e3e8ee] space-y-3 shadow-2xs">
+            <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#0d253d]">
+              <svg class="w-4 h-4 text-[#533afd]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Pontos Essenciais (Key Takeaways)</span>
+            </div>
+            <ul class="space-y-2 text-xs text-[#273951]">
+              {post.keyTakeaways.map((takeaway) => (
+                <li class="flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#533afd] mt-1.5 shrink-0"></span>
+                  <span class="leading-relaxed">{takeaway}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- HTML Article Body -->
+          <div class="prose max-w-none text-[#273951] leading-relaxed space-y-5 text-[15px]" set:html={post.content} />
+
+          <!-- Tags Cloud -->
+          <div class="pt-8 border-t border-[#e3e8ee]">
+            <span class="text-xs text-[#64748d] block mb-2 font-medium">Tópicos abordados:</span>
+            <div class="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <span class="px-3 py-1 rounded-full text-xs bg-[#f6f9fc] border border-[#e3e8ee] text-[#273951]">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Interactive Action Card inside Article -->
+          <div class="bg-gradient-to-br from-[#1c1e54] to-[#0d253d] text-white rounded-3xl p-8 sm:p-10 space-y-5 shadow-level-2 mt-10">
+            <span class="text-[10px] font-semibold tracking-widest text-[#b9b9f9] uppercase block">
+              Pronto para testar na prática?
+            </span>
+            <h3 class="display-lg text-white font-light">
+              Edite o seu PDF agora com 100% de privacidade
+            </h3>
+            <p class="text-sm text-slate-300 font-light leading-relaxed max-w-lg">
+              Sem registo, sem limites de tamanho e com zero envio de ficheiros para servidores. Tudo funciona diretamente na sua memória local.
+            </p>
+            <div class="pt-2 flex flex-wrap gap-3">
+              <a href="/edit" class="btn-primary-pill text-xs py-2.5 px-6 shadow-sm">
+                <span>Abrir Editor no Navegador</span>
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+              <a href="/privacy" class="btn-secondary-pill text-xs py-2.5 px-6 bg-white/10 text-white border-white/20 hover:bg-white/20">
+                <span>Como funciona a segurança</span>
+              </a>
+            </div>
+          </div>
+
+        </article>
+
+        <!-- Right Sticky Sidebar with Table of Contents -->
+        <aside class="lg:col-span-4 space-y-6">
+          <div class="sticky top-24 space-y-6">
+            
+            <!-- Table of Contents Card -->
+            <div class="bg-white rounded-2xl p-6 border border-[#e3e8ee] shadow-level-1 space-y-4">
+              <h4 class="text-xs font-semibold text-[#0d253d] uppercase tracking-wider flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#533afd]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="8" x2="21" y1="6" y2="6"/><line x1="8" x2="21" y1="12" y2="12"/><line x1="8" x2="21" y1="18" y2="18"/><line x1="3" x2="3.01" y1="6" y2="6"/><line x1="3" x2="3.01" y1="12" y2="12"/><line x1="3" x2="3.01" y1="18" y2="18"/></svg>
+                <span>Neste Artigo</span>
+              </h4>
+              <nav class="space-y-2 text-xs">
+                {post.tableOfContents.map((item) => (
+                  <a 
+                    href={`#${item.id}`} 
+                    class="block text-[#64748d] hover:text-[#533afd] hover:translate-x-1 transition-all py-1 border-l-2 border-transparent hover:border-[#533afd] pl-2.5 leading-snug"
+                  >
+                    {item.text}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            <!-- Author Bio Card -->
+            <div class="bg-[#f6f9fc] rounded-2xl p-6 border border-[#e3e8ee] space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#1c1e54] text-white flex items-center justify-center font-medium text-xs">
+                  {post.author.avatar}
+                </div>
+                <div>
+                  <h5 class="text-xs font-semibold text-[#0d253d]">{post.author.name}</h5>
+                  <p class="text-[11px] text-[#64748d]">{post.author.role}</p>
+                </div>
+              </div>
+              <p class="text-[11px] text-[#64748d] leading-relaxed">
+                Especialista em segurança de informação com foco em conformidade RGPD, criptografia aplicada e tecnologias WebAssembly de nova geração em Portugal.
+              </p>
+            </div>
+
+            <!-- Back to Blog Button -->
+            <a href="/blog" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-full border border-[#e3e8ee] text-xs font-medium text-[#273951] hover:text-[#533afd] hover:border-[#533afd]/50 bg-white shadow-2xs transition-all">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+              <span>Ver Todos os Artigos do Blog</span>
+            </a>
+
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- Related Articles Section -->
+    <section class="border-t border-[#e3e8ee] bg-[#f6f9fc] py-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-6xl mx-auto space-y-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="micro-cap text-[#533afd] block">Leituras Recomendadas</span>
+            <h3 class="heading-lg text-[#0d253d] font-normal">Artigos Relacionados</h3>
+          </div>
+          <a href="/blog" class="text-xs font-medium text-[#533afd] hover:underline flex items-center gap-1">
+            <span>Ver arquivo completo</span>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {relatedPosts.map((related) => (
+            <article class="bg-white rounded-2xl border border-[#e3e8ee] p-5 shadow-level-1 hover:shadow-level-2 transition-all flex flex-col justify-between group hover:border-[#533afd]/40">
+              <div class="space-y-3">
+                <span class="text-[10px] font-semibold text-[#533afd] uppercase tracking-wider">
+                  {related.category}
+                </span>
+                <h4 class="text-sm font-medium text-[#0d253d] group-hover:text-[#533afd] transition-colors line-clamp-2 leading-snug">
+                  <a href={`/blog/${related.slug}`}>
+                    {related.title}
+                  </a>
+                </h4>
+                <p class="text-xs text-[#64748d] line-clamp-2 leading-relaxed">
+                  {related.description}
+                </p>
+              </div>
+              <div class="pt-4 mt-4 border-t border-[#e3e8ee] flex items-center justify-between text-xs text-[#64748d]">
+                <span class="text-[11px]">{related.readTime}</span>
+                <a href={`/blog/${related.slug}`} class="text-[#533afd] font-medium flex items-center gap-1">
+                  <span>Ler</span>
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  function setupArticleShare() {
+    const copyBtn = document.getElementById('copy-article-link-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          const originalTitle = copyBtn.getAttribute('title') || 'Copiar Ligação';
+          copyBtn.setAttribute('title', 'Ligação copiada!');
+          copyBtn.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-600');
+          setTimeout(() => {
+            copyBtn.setAttribute('title', originalTitle);
+            copyBtn.classList.remove('bg-emerald-50', 'border-emerald-300', 'text-emerald-600');
+          }, 2000);
+        } catch (e) {
+          console.warn('Erro ao copiar link', e);
+        }
+      });
+    }
+  }
+
+  setupArticleShare();
+  document.addEventListener('astro:page-load', setupArticleShare);
+</script>
+
+<style>
+  /* Blog article prose styling */
+  .blog-article-prose h2 {
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.22px;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    scroll-margin-top: 5rem;
+  }
+  .blog-article-prose h3 {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    scroll-margin-top: 5rem;
+  }
+  .blog-article-prose p {
+    margin-bottom: 1.2rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+  .blog-article-prose p.lead {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+  .blog-article-prose ul, .blog-article-prose ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.25rem;
+    color: var(--text-secondary);
+  }
+  .blog-article-prose ul {
+    list-style-type: disc;
+  }
+  .blog-article-prose ol {
+    list-style-type: decimal;
+  }
+  .blog-article-prose li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+  .blog-article-prose code {
+    background-color: var(--bg-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--primary-accent);
+  }
+  .blog-article-prose kbd {
+    background-color: var(--bg-muted);
+    border: 1px solid var(--border-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+    color: var(--text-primary);
+  }
+</style>
