@@ -14,9 +14,9 @@ const isEditActive = pathname.startsWith('/edit') || isEditorPage;
 <header class="w-full border-b border-[var(--border-subtle,#e3e8ee)] bg-[var(--bg-header,rgba(255,255,255,0.92))] backdrop-blur-md sticky top-0 z-40 transition-colors">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
     <!-- Brand Logo & Name -->
-    <a href="/" class="flex items-center gap-2.5 sm:gap-3 group text-decoration-none">
+    <a href="/" class="flex items-center gap-2.5 sm:gap-3 group text-decoration-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#533afd] rounded-xl p-1">
       <div class="w-9 h-9 rounded-xl bg-[#533afd] flex items-center justify-center shadow-xs text-white transition-transform group-hover:scale-105">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
           <polyline points="14 2 14 8 20 8"/>
           <path d="m9 15 2 2 4-4"/>
@@ -32,7 +32,7 @@ const isEditActive = pathname.startsWith('/edit') || isEditorPage;
       <!-- Blog Link -->
       <a 
         href="/blog" 
-        class={`text-[13px] sm:text-[14px] font-medium transition-colors py-1.5 px-2 sm:px-3 rounded-lg relative ${
+        class={`text-[13px] sm:text-[14px] font-medium transition-colors py-1.5 px-2 sm:px-3 rounded-lg relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#533afd] ${
           isBlogActive 
             ? 'text-[#533afd]' 
             : 'text-[var(--text-secondary,#273951)] hover:text-[#533afd]'

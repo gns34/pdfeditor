@@ -11,7 +11,7 @@ import PdfEditorStudio from '../components/PdfEditorStudio.astro';
 >
   <div class="h-screen flex flex-col overflow-hidden bg-white">
     <Navbar isEditorPage={true} />
-    <main class="flex-1 flex flex-col overflow-hidden">
+    <main id="main-content" class="flex-1 flex flex-col overflow-hidden">
       <PdfEditorStudio mode="standalone" />
     </main>
   </div>

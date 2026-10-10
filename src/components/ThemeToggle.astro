@@ -15,13 +15,14 @@ const { size = 'sm', class: className = '' } = Astro.props;
   <!-- Light Option -->
   <button 
     type="button"
-    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] transition-all flex items-center gap-1 cursor-pointer"
+    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#533afd] transition-all flex items-center gap-1 cursor-pointer"
     data-theme-val="light"
     role="radio"
     aria-checked="true"
+    aria-label="Tema Claro (Branco)"
     title="Tema Claro (Branco)"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="4"/>
       <path d="M12 2v2"/>
       <path d="M12 20v2"/>
@@ -38,13 +39,14 @@ const { size = 'sm', class: className = '' } = Astro.props;
   <!-- Dark (Navy/Midnight) Option -->
   <button 
     type="button"
-    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] transition-all flex items-center gap-1 cursor-pointer"
+    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#533afd] transition-all flex items-center gap-1 cursor-pointer"
     data-theme-val="dark"
     role="radio"
     aria-checked="false"
+    aria-label="Tema Escuro (Azul Noturno)"
     title="Tema Escuro (Azul Noturno)"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
     </svg>
     <span class="hidden sm:inline text-[11px]">Escuro</span>
@@ -53,13 +55,14 @@ const { size = 'sm', class: className = '' } = Astro.props;
   <!-- Black (OLED Pitch Black) Option -->
   <button 
     type="button"
-    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] transition-all flex items-center gap-1 cursor-pointer"
+    class="theme-toggle-btn px-2 py-1 rounded-full text-[12px] font-medium text-[#64748d] hover:text-[#0d253d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#533afd] transition-all flex items-center gap-1 cursor-pointer"
     data-theme-val="black"
     role="radio"
     aria-checked="false"
+    aria-label="Tema Preto (OLED Puro)"
     title="Tema Preto (OLED Puro)"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="12" cy="12" r="10"/>
       <path d="M12 2a10 10 0 0 1 0 20Z" fill="currentColor"/>
     </svg>

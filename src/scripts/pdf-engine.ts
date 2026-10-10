@@ -422,8 +422,15 @@ export class PdfEngine {
     const srcDoc = await PDFDocument.load(this.pdfBytes);
     const outDoc = await PDFDocument.create();
 
+    // Pre-embed standard fonts once for the entire document export
+    const helvetica = await outDoc.embedFont(StandardFonts.Helvetica);
+    const helveticaBold = await outDoc.embedFont(StandardFonts.HelveticaBold);
+
     const activePageIndices = this.pageOrder.filter((idx) => !this.deletedPages.has(idx));
     const copiedPages = await outDoc.copyPages(srcDoc, activePageIndices);
+
+    const fabricScale = this.activeScale || 1.3;
+    const scaleDown = 1 / fabricScale;
 
     for (let i = 0; i < copiedPages.length; i++) {
       const originalPageIndex = activePageIndices[i];
@@ -437,21 +444,21 @@ export class PdfEngine {
       if (pageState && pageState.fabricJSON && pageState.fabricJSON.objects?.length > 0) {
         const objects: any[] = pageState.fabricJSON.objects;
 
-        // Separate objects by export strategy
-        const vectorObjects = objects.filter((o) => {
+        // Single-pass partition by export strategy
+        const vectorObjects: any[] = [];
+        const rasterObjects: any[] = [];
+        for (const o of objects) {
           const tag = this.classifyFabricObject(o);
-          return tag === 'whiteout' || tag === 'text';
-        });
-        const rasterObjects = objects.filter((o) => {
-          const tag = this.classifyFabricObject(o);
-          return tag === 'drawing' || tag === 'image';
-        });
+          if (tag === 'whiteout' || tag === 'text') {
+            vectorObjects.push(o);
+          } else {
+            rasterObjects.push(o);
+          }
+        }
 
         // --- 1. Raster layer: freehand drawings, shapes, images ---
         // Only rasterize objects that cannot be expressed as vector PDF ops.
         if (rasterObjects.length > 0) {
-          const fabricScale = this.activeScale || 1.3;
-
           // Build a partial Fabric JSON with only raster objects
           const rasterJSON = {
             ...pageState.fabricJSON,
@@ -469,9 +476,6 @@ export class PdfEngine {
 
           // Fabric objects were positioned in display-scale coordinates;
           // scale them back down to PDF point space for embedding.
-          const scaleDown = 1 / fabricScale;
-
-          // Temporarily patch the JSON coordinates
           const scaledRasterJSON = {
             ...rasterJSON,
             objects: rasterJSON.objects.map((obj: any) => ({
@@ -510,13 +514,8 @@ export class PdfEngine {
 
         // --- 2. Vector layer: whiteout rects + text boxes ---
         // These are written as native PDF content stream operations.
-        const fabricScale = this.activeScale || 1.3;
-        const scaleDown = 1 / fabricScale;
         // pdf-lib origin is bottom-left; Fabric/canvas origin is top-left.
         // Conversion: pdfY = pageHeight - (fabricTop * scaleDown) - objectHeight
-        const helvetica = await outDoc.embedFont(StandardFonts.Helvetica);
-        const helveticaBold = await outDoc.embedFont(StandardFonts.HelveticaBold);
-
         for (const obj of vectorObjects) {
           const tag = this.classifyFabricObject(obj);
 
