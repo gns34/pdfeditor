@@ -6,13 +6,63 @@ import PdfEditorStudio from '../components/PdfEditorStudio.astro';
 import EditorFeatures from '../components/EditorFeatures.astro';
 import PrivacyGuarantee from '../components/PrivacyGuarantee.astro';
 import CompetitorComparison from '../components/CompetitorComparison.astro';
+import SeoContentSection from '../components/SeoContentSection.astro';
 import EditorFaq from '../components/EditorFaq.astro';
 import Footer from '../components/Footer.astro';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': [
+    {
+      '@type': 'Question',
+      'name': 'Como funciona este editor de PDF online gratuito?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'O PDF Editor AI executa todo o processamento de visualização, edição, anotação e compilação de PDFs diretamente na memória RAM do navegador com WebAssembly e HTML5 Canvas. Os documentos nunca são enviados para a nuvem nem gravados em servidores remotos.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'O editor de PDF é verdadeiramente gratuito e sem limites?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'Sim, 100% gratuito e sem restrições. Ao contrário de serviços como Sejda ou iLovePDF que impõem quotas de 3 tarefas por hora ou limites de tamanho reduzidos, a nossa ferramenta local permite editar pdf online grátis sem qualquer bloqueio temporal.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'É possível editar PDF online sem ligação à Internet (offline)?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'Sim. Após carregar o editor pela primeira vez, os binários WebAssembly ficam em cache no navegador. Pode ativar o modo de voo ou desligar o Wi-Fi e continuar a editar documentos, adicionar anotações e descarregar ficheiros normalmente.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'Como funciona a ocultação automática de dados confidenciais (NIF, CC, IBAN) com IA?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'O motor analisa o texto localmente no navegador identificando padrões confidenciais de Portugal e Europa: NIF, Cartão de Cidadão, IBAN, e-mails e telemóveis. Permite aplicar máscaras de censura opacas com apenas um clique antes da partilha.'
+      }
+    },
+    {
+      '@type': 'Question',
+      'name': 'Posso assinar documentos e contratos em PDF de forma legal?',
+      'acceptedAnswer': {
+        '@type': 'Answer',
+        'text': 'Sim. Pode desenhar a sua assinatura manuscrita com rato/ecrã tátil, digitar o seu nome com caligrafia fluida ou carregar uma imagem PNG com transparência para apor assinaturas eletrónicas válidas em contratos e recibos.'
+      }
+    }
+  ]
+};
 ---
 
 <Layout 
-  title="PDF Editor AI — Editor de PDF Online Gratuito e 100% Privado no Navegador"
-  description="Edite documentos PDF diretamente no seu navegador com 100% de privacidade em Portugal. Adicione texto, desenhe anotações, assine contratos e oculte dados confidenciais (NIF, IBAN, CC) com IA sem enviar ficheiros para servidores."
+  title="Editor de PDF Online Gratuito — Editar PDF Grátis e Privado no Navegador | PDF Editor AI"
+  description="Use o melhor editor de pdf online grátis para editar pdf diretamente no navegador. Ferramenta gratuita sem registo para editar texto, assinar, anotar e ocultar dados confidenciais com 100% de privacidade."
+  canonical="https://pdfeditx.com/"
+  schemaJson={faqSchema}
 >
   <Navbar />
   
@@ -40,6 +90,10 @@ import Footer from '../components/Footer.astro';
     <EditorFeatures />
     <PrivacyGuarantee />
     <CompetitorComparison />
+    
+    <!-- Comprehensive 800 - 1200 words SEO Content Guide -->
+    <SeoContentSection />
+
     <EditorFaq />
   </main>
 

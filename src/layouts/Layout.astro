@@ -4,12 +4,68 @@ import '../styles/global.css';
 interface Props {
 	title?: string;
 	description?: string;
+	canonical?: string;
+	keywords?: string;
+	ogImage?: string;
+	ogType?: string;
+	schemaJson?: Record<string, any> | Array<Record<string, any>>;
 }
 
+const defaultTitle = 'Editor de PDF Online Gratuito — Editar PDF Grátis sem Limites | PDF Editor AI';
+const defaultDescription = 'Use o melhor editor de pdf online grátis para editar pdf diretamente no navegador. Ferramenta gratuita sem registo para editar texto, assinar, anotar e ocultar dados confidenciais com 100% de privacidade.';
+const defaultKeywords = 'editar pdf, editor pdf, editor pdf online, editor pdf gratuito, editor pdf online grátis, editor pdf online gratuito, editor pdf online gratis, editor pdf gratis, editor de pdf, editor de pdf online, editor de pdf gratuito, editor de pdf grátis, editor de pdf online grátis, editor de pdf online gratuito, editor de pdf online gratis, editar pdf online, editar pdf gratuito, editar pdf online gratis, editar pdf grátis, editar pdf online gratuito, editar pdf gratis, editar pdf online grátis, editar pdf online free, editar pdf gratuito online';
+
 const { 
-	title = 'PDF Editor AI — Editor de PDF Online Gratuito e 100% Privado no Navegador',
-	description = 'Edite documentos PDF diretamente no seu navegador com 100% de privacidade em Portugal. Sem envio para a nuvem, edição gratuita ilimitada, ocultação inteligente de NIF e dados pessoais com IA, assinaturas eletrónicas e gestão de páginas.'
+	title = defaultTitle,
+	description = defaultDescription,
+	canonical,
+	keywords = defaultKeywords,
+	ogImage = 'https://pdfeditx.com/og-image.jpg',
+	ogType = 'website',
+	schemaJson
 } = Astro.props;
+
+// Canonical URL derivation
+const siteUrl = 'https://pdfeditx.com';
+const canonicalUrl = canonical || (Astro.url ? new URL(Astro.url.pathname, siteUrl).href.replace(/\/$/, '') || siteUrl : siteUrl);
+
+// Base WebApplication Schema
+const defaultAppSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebApplication',
+	'name': 'PDF Editor AI',
+	'alternateName': [
+		'Editor de PDF Online',
+		'Editor PDF Gratuito',
+		'Editar PDF Online Grátis',
+		'PDF Editor Online Free'
+	],
+	'url': siteUrl,
+	'applicationCategory': 'UtilitiesApplication',
+	'operatingSystem': 'All (Web Browser)',
+	'browserRequirements': 'Requires JavaScript and HTML5 Canvas. Works on Chrome, Edge, Safari, Firefox, Opera.',
+	'offers': {
+		'@type': 'Offer',
+		'price': '0',
+		'priceCurrency': 'EUR',
+		'availability': 'https://schema.org/InStock'
+	},
+	'image': ogImage,
+	'description': defaultDescription,
+	'featureList': [
+		'Edição e inserção de caixas de texto com fontes personalizadas',
+		'Caneta à mão livre e marcador de texto translúcido',
+		'Assinatura digital e eletrónica manuscrita ou tipográfica',
+		'Ocultação automática e censura de PII (NIF, CC, IBAN) com inteligência artificial local',
+		'Desenho de formas vetoriais, corretor branco e carimbos oficiais',
+		'Organização visual, rotação de 90° e eliminação de páginas',
+		'Processamento 100% no cliente em WebAssembly com zero envio de ficheiros para servidores'
+	]
+};
+
+const finalSchemas = schemaJson 
+	? (Array.isArray(schemaJson) ? [defaultAppSchema, ...schemaJson] : [defaultAppSchema, schemaJson])
+	: [defaultAppSchema];
 ---
 
 <!doctype html>
@@ -18,18 +74,47 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="sitemap" href="/sitemap.xml" />
+		<link rel="canonical" href={canonicalUrl} />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
 		
-		<!-- Open Graph / Meta -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="https://pdfeditx.com" />
+		<!-- Primary Meta Tags -->
+		<title>{title}</title>
+		<meta name="title" content={title} />
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+		<meta name="author" content="PDF Editor AI" />
+		<meta name="theme-color" content="#533afd" />
+		
+		<!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content="PDF Editor AI" />
+		<meta property="og:url" content={canonicalUrl} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:secure_url" content={ogImage} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="PDF Editor AI — Editor de PDF Online Gratuito e 100% Privado" />
 		<meta property="og:locale" content="pt_PT" />
+		<meta property="og:locale:alternate" content="pt_BR" />
+
+		<!-- Twitter Meta Tags -->
 		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={canonicalUrl} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+		<meta name="twitter:image:alt" content="PDF Editor AI — Editor de PDF Online Gratuito e 100% Privado" />
+
+		<!-- JSON-LD Structured Data for Google Rich Snippets -->
+		{finalSchemas.map((schema) => (
+			<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+		))}
 
 		<!-- Inter Font with 300, 400, 500, 600 weights & Cursive Fonts for E-Signatures -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
