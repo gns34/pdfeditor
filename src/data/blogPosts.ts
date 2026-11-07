@@ -544,6 +544,496 @@ export const blogPosts: BlogPost[] = [
         Não gaste mais de 295 € por ano se as suas necessidades são editar textos, assinar contratos e partilhar documentos seguros. O <strong>PDF Editor AI</strong> é a alternativa moderna, rápida e 100% gratuita que respeita a sua carteira e a sua privacidade.
       </p>
     `
+  },
+  {
+    slug: 'como-assinar-pdf-online-gratis-sem-imprimir',
+    title: 'Como Assinar PDF Online Grátis e Sem Imprimir: Guia Passo a Passo (2026)',
+    description: 'Aprenda a assinar documentos e contratos em PDF no telemóvel ou computador gratuitamente, com validade legal e sem imprimir nem enviar ficheiros para servidores externos.',
+    category: 'Guias & Tutoriais',
+    publishDate: '2026-10-14',
+    readTime: '6 min de leitura',
+    featured: false,
+    author: {
+      name: 'Teresa Alvim',
+      role: 'Especialista em Gestão Documental & Assinatura Digital',
+      avatar: 'TA'
+    },
+    tags: ['Assinatura Digital', 'Assinar PDF', 'Contratos', 'Sem Imprimir', 'Tutoriais', 'Grátis'],
+    keyTakeaways: [
+      'Imprimir, assinar com caneta e digitalizar é um processo lento, dispendioso e que degrada a qualidade visual do documento.',
+      'As assinaturas eletrónicas simples são legalmente admissíveis e vinculativas em Portugal e na União Europeia ao abrigo do Regulamento eIDAS.',
+      'Com o PDF Editor AI pode desenhar a assinatura no ecrã tátil, com o rato ou carregar um ficheiro PNG transparente.',
+      'A rubrica pode ser replicada rapidamente em múltiplas páginas com posicionamento milimétrico.',
+      'Processamento 100% no navegador: o contrato assinado nunca é transmitido para a internet pública.'
+    ],
+    tableOfContents: [
+      { id: 'fim-da-impressao', text: '1. O Fim da Era "Imprimir, Assinar e Digitalizar"' },
+      { id: 'validade-legal-eidas', text: '2. Validade Jurídica de Assinaturas Eletrónicas (eIDAS)' },
+      { id: 'passo-a-passo-assinatura', text: '3. Passo a Passo: Como Assinar no PDF Editor AI' },
+      { id: 'rubricas-e-datas', text: '4. Como Adicionar Rubricas, Datas e Nomes' },
+      { id: 'perigos-cloud-assinaturas', text: '5. Cuidados de Privacidade em Serviços Tradicionais' },
+      { id: 'faq-assinatura', text: '6. Perguntas Frequentes (FAQ)' }
+    ],
+    content: `
+      <p class="lead">
+        Em pleno 2026, ainda existem milhares de profissionais e cidadãos que, ao receberem um contrato de trabalho, contrato de arrendamento ou declaração fiscal em PDF, realizam a rotina arcaica: <strong>imprimir em papel, assinar com caneta esferográfica, digitalizar com a impressora ou telemóvel e reenviar por e-mail</strong>.
+      </p>
+
+      <h2 id="fim-da-impressao">1. O Fim da Era "Imprimir, Assinar e Digitalizar"</h2>
+      <p>
+        Este ciclo analógico não é apenas moroso — acarreta custos em papel e tinteiros, produz documentos com texto desfocado e inclinado e atrasa decisões de negócio cruciais. Felizmente, hoje é possível assinar qualquer documento em formato PDF em menos de 30 segundos, diretamente no navegador web do seu telemóvel, tablet ou computador.
+      </p>
+
+      <h2 id="validade-legal-eidas">2. Validade Jurídica de Assinaturas Eletrónicas (eIDAS)</h2>
+      <p>
+        Uma das dúvidas mais comuns é: <em>"Uma assinatura feita no ecrã com o dedo ou rato tem validade legal em Portugal?"</em>
+      </p>
+      <p>
+        A resposta é <strong>sim</strong>. O <strong>Regulamento (UE) n.º 910/2014 (Regulamento eIDAS)</strong> estabelece expressamente no Artigo 25.º que a uma assinatura eletrónica não podem ser negados efeitos jurídicos nem admissibilidade como prova em tribunal com o único fundamento de se apresentar sob forma eletrónica.
+      </p>
+      <p>
+        Para a grande maioria dos atos do quotidiano empresarial e pessoal — contratos de prestação de serviços, propostas comerciais, aceitação de orçamentos, recibos de vencimento e autorizações internas —, uma assinatura eletrónica simples aposta sobre o documento é plenamente válida e legalmente vinculativa.
+      </p>
+
+      <h2 id="passo-a-passo-assinatura">3. Passo a Passo: Como Assinar no PDF Editor AI</h2>
+      <p>
+        Assinar com o <a href="/edit?tool=sign" class="text-[#533afd] font-medium hover:underline">estúdio de edição do PDF Editor AI</a> é um processo direto, sem necessidade de registo ou pagamento:
+      </p>
+
+      <ol class="space-y-3 text-xs text-[#273951] my-4">
+        <li><strong>Abra o editor:</strong> Aceda à página <a href="/edit" class="text-[#533afd] font-medium hover:underline">pdfeditx.com/edit</a> e arraste o seu PDF para o ecrã.</li>
+        <li><strong>Clique na ferramenta Assinatura:</strong> Selecione o ícone de caneta caligráfica na barra superior ou clique no botão <em>"Assinar"</em>.</li>
+        <li><strong>Escolha o método:</strong>
+          <ul class="list-disc pl-5 mt-1 space-y-1">
+            <li><strong>Desenhar:</strong> Faça a sua assinatura diretamente com o rato ou dedo no ecrã táctil.</li>
+            <li><strong>Carregar Imagem:</strong> Carregue uma fotografia ou PNG com fundo transparente da sua assinatura manuscrita.</li>
+            <li><strong>Digitar:</strong> Escreva o seu nome e escolha uma das fontes caligráficas elegantes disponíveis.</li>
+          </ul>
+        </li>
+        <li><strong>Posicione e redimensione:</strong> Clique no local do PDF onde deseja inserir a firma. Pode arrastar, rodar ou ajustar as dimensões conforme o espaço disponível.</li>
+        <li><strong>Descarregue o PDF:</strong> Clique em <em>"Guardar & Descarregar"</em>. O documento final é gravado instantaneamente no seu dispositivo.</li>
+      </ol>
+
+      <h2 id="rubricas-e-datas">4. Como Adicionar Rubricas, Datas e Nomes</h2>
+      <p>
+        Em contratos multipágina, é frequente ser exigida uma <strong>rubrica em todas as folhas</strong> no rodapé para certificar a leitura de todas as cláusulas.
+      </p>
+      <p>
+        No nosso editor, uma vez criada a assinatura ou rubrica, pode carimbá-la sucessivamente nas páginas pretendidas navegando pelas miniaturas laterais. Pode também adicionar campos de texto com a data corrente (ex.: <em>"Lisboa, 14 de Outubro de 2026"</em>) e o seu nome completo datilografado junto à linha de assinatura.
+      </p>
+
+      <h2 id="perigos-cloud-assinaturas">5. Cuidados de Privacidade em Serviços Tradicionais</h2>
+      <p>
+        Ao assinar documentos com plataformas cloud populares (como DocuSign, Smallpdf ou Adobe Sign), o ficheiro assinado fica arquivado nas bases de dados dos fornecedores. Muitas empresas recolhem metadados para telemetria de marketing e estabelecem planos com pagamento mensal de dezenas de euros para permitir mais de 3 assinaturas por mês.
+      </p>
+      <p>
+        No <strong>PDF Editor AI</strong>, o ficheiro nunca sai da memória física da sua máquina. O processamento criptográfico ocorre localmente via WebAssembly, sem limites de assinaturas por dia e sem exigir endereço de e-mail.
+      </p>
+
+      <h2 id="faq-assinatura">6. Perguntas Frequentes (FAQ)</h2>
+      <div class="space-y-4 my-6">
+        <div class="p-4 rounded-xl bg-white border border-[#e3e8ee]">
+          <h4 class="font-semibold text-sm text-[#0d253d] mb-1">Posso assinar pelo telemóvel?</h4>
+          <p class="text-xs text-[#64748d] leading-relaxed">Sim! A nossa interface é 100% responsiva para iOS e Android. Pode abrir o navegador do telemóvel e assinar com o dedo no ecrã com máxima sensibilidade e fluidez.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-[#e3e8ee]">
+          <h4 class="font-semibold text-sm text-[#0d253d] mb-1">A minha assinatura fica gravada nos servidores?</h4>
+          <p class="text-xs text-[#64748d] leading-relaxed">Não. Nem a assinatura nem os documentos são enviados para nenhum servidor externo. Toda a informação existe exclusivamente na memória do seu browser durante a sessão.</p>
+        </div>
+      </div>
+    `
+  },
+  {
+    slug: 'como-ocultar-censurar-dados-sensiveis-pdf-nif-iban',
+    title: 'Como Censurar e Ocultar Dados em PDF: NIF, CC e IBAN sem Risco de Fuga',
+    description: 'O perigo de desenhar retângulos pretos que podem ser copiados. Descubra como censurar e eliminar permanentemente dados sensíveis com IA e segurança no navegador.',
+    category: 'Segurança & Privacidade',
+    publishDate: '2026-10-13',
+    readTime: '7 min de leitura',
+    featured: false,
+    author: {
+      name: 'Equipa de Segurança PDF',
+      role: 'Especialista em Privacidade & RGPD',
+      avatar: 'ES'
+    },
+    tags: ['Censurar PDF', 'NIF', 'IBAN', 'Anonimização', 'Inteligência Artificial', 'Segurança'],
+    keyTakeaways: [
+      'Desenhar caixas pretas no Word ou em leitores simples NÃO apaga o texto subjacente: qualquer pessoa pode copiar os dados ocultos.',
+      'A verdadeira censura (redaction) exige a eliminação física dos bytes de texto da árvore de objetos do PDF.',
+      'O motor de IA local deteta automaticamente padrões portugueses de NIF (9 dígitos), Cartão de Cidadão, IBAN bancário e números de contacto.',
+      'Censura em lote num clique: poupa horas de verificação manual em documentos contratuais ou judiciais volumosos.',
+      'Total conformidade com o RGPD: o documento permanece 100% offline na memória RAM.'
+    ],
+    tableOfContents: [
+      { id: 'o-perigo-do-retangulo-preto', text: '1. O Erro Comum do Retângulo Preto' },
+      { id: 'redacao-visual-vs-real', text: '2. Censura Visual vs. Supressão Definitiva de Bytes' },
+      { id: 'ia-detecao-pii', text: '3. Como a IA Deteta NIF, CC e IBAN Automaticamente' },
+      { id: 'passo-a-passo-censura', text: '4. Como Ocultar Dados Sensíveis Passo a Passo' },
+      { id: 'teste-resistencia', text: '5. Como Testar se os Dados Foram Realmente Apagados' },
+      { id: 'conclusao-seguranca', text: '6. Boas Práticas para Gabinetes e Empresas' }
+    ],
+    content: `
+      <p class="lead">
+        Todos os anos, dezenas de fugas graves de informação confidencial acontecem devido a um erro técnico simples: <strong>colocar uma barra preta ou retângulos pretos por cima de textos confidenciais num PDF antes de o partilhar publicamente</strong>.
+      </p>
+
+      <h2 id="o-perigo-do-retangulo-preto">1. O Erro Comum do Retângulo Preto</h2>
+      <p>
+        Casos mediáticos em tribunais, gabinetes governamentais e multinacionais já demonstraram este problema: uma organização divulga um relatório com nomes, moradas, valores contratuais ou números fiscais supostamente "censurados" com barras pretas.
+      </p>
+      <p>
+        No entanto, minutos após a publicação, jornalistas ou curiosos abrem o PDF, pressionam <kbd>Ctrl</kbd> + <kbd>A</kbd> (Selecionar Tudo) e <kbd>Ctrl</kbd> + <kbd>C</kbd> (Copiar), colando o conteúdo num bloco de notas. <strong>Todo o texto secreto reaparece integralmente intacto.</strong>
+      </p>
+
+      <h2 id="redacao-visual-vs-real">2. Censura Visual vs. Supressão Definitiva de Bytes</h2>
+      <p>
+        A estrutura interna de um ficheiro PDF divide-se em camadas independentes. Quando desenha uma forma geométrica preta sobre uma palavra usando uma ferramenta de anotação básica, está apenas a adicionar um objeto visual por cima da camada de texto vetorial.
+      </p>
+
+      <div class="my-6 p-5 rounded-2xl bg-[#f6f9fc] border border-[#e3e8ee]">
+        <h4 class="text-sm font-semibold text-[#0d253d] mb-2">A anatomia da verdadeira censura (Redaction):</h4>
+        <ul class="space-y-2 text-xs text-[#273951]">
+          <li><strong>Censura Falsa (Anotação):</strong> O texto "NIF: 123 456 789" continua no stream de caracteres; apenas tem um retângulo preto desenhado por cima na coordenada X,Y. Motores de busca e leitores de ecrã continuam a indexá-lo.</li>
+          <li><strong>Censura Verdadeira (PDF Editor AI):</strong> O texto é eliminado de forma irreversível da matriz do documento. O espaço onde o dado existia é substituído por pixels vazios ou tarjas definitivas, tornando fisicamente impossível recuperar o dado original.</li>
+        </ul>
+      </div>
+
+      <h2 id="ia-detecao-pii">3. Como a IA Deteta NIF, CC e IBAN Automaticamente</h2>
+      <p>
+        Rever manualmente um contrato de 40 páginas à procura de menções dispersas de números de identificação fiscal (NIF), contas bancárias (IBAN PT50), números de Cartão de Cidadão ou moradas é uma tarefa propensa ao erro humano. Basta esquecer um número num anexo para violar as regras de privacidade.
+      </p>
+      <p>
+        No <a href="/edit?tab=ai" class="text-[#533afd] font-medium hover:underline">PDF Editor AI</a>, integramos algoritmos de deteção com inteligência artificial desenhados especificamente para a sintaxe documental europeia e portuguesa:
+      </p>
+      <ul class="space-y-1.5 text-xs text-[#273951] my-4">
+        <li><strong>NIF / NIPC:</strong> Validação de algoritmos de 9 dígitos para pessoas singulares e coletivas.</li>
+        <li><strong>IBAN Bancário:</strong> Reconhecimento de padrões bancários portugueses (PT50 + 21 dígitos).</li>
+        <li><strong>Cartão de Cidadão:</strong> Identificação de números de identificação civil e dígitos de controlo.</li>
+        <li><strong>Contactos e E-mails:</strong> Sinalização instantânea de telemóveis e caixas de correio eletrónico.</li>
+      </ul>
+
+      <h2 id="passo-a-passo-censura">4. Como Ocultar Dados Sensíveis Passo a Passo</h2>
+      <ol class="space-y-3 text-xs text-[#273951] my-4">
+        <li>Carregue o seu PDF no <a href="/edit" class="text-[#533afd] font-medium hover:underline">estúdio do PDF Editor AI</a>.</li>
+        <li>Abra o separador <strong>"Superpoderes de IA"</strong> na barra lateral direita.</li>
+        <li>Clique em <strong>"Analisar e Detetar Dados PII"</strong>. Em segundos, o motor varre todas as páginas e lista os dados sensíveis encontrados.</li>
+        <li>Pode selecionar itens individuais ou clicar em <strong>"Ocultar Todos os Dados Sensíveis"</strong>.</li>
+        <li>Em alternativa, se pretender apagar uma frase ou valor específico, use a ferramenta <strong>"Corretor / Whiteout"</strong> para pintar a área com precisão milimétrica.</li>
+        <li>Guarde o ficheiro. O novo PDF gerado terá zero vestígios do texto confidencial.</li>
+      </ol>
+
+      <h2 id="teste-resistencia">5. Como Testar se os Dados Foram Realmente Apagados</h2>
+      <p>
+        Antes de remeter um ficheiro a terceiros, realize sempre um teste rápido de integridade:
+      </p>
+      <p>
+        Abra o novo PDF descarregado em qualquer leitor (Chrome, Edge ou Adobe Reader). Tente passar o rato sobre a área censurada para selecionar o texto ou use a pesquisa (<kbd>Ctrl</kbd> + <kbd>F</kbd>) pelo número do NIF que acabou de censurar. <strong>Se a ferramenta encontrar 0 resultados e o cursor não conseguir selecionar nada, o documento está perfeitamente seguro para partilha pública.</strong>
+      </p>
+
+      <h2 id="conclusao-seguranca">6. Boas Práticas para Gabinetes e Empresas</h2>
+      <p>
+        A adoção de ferramentas com censura local é uma medida de segurança técnica (TOMs — Technical and Organisational Measures) recomendada pela Comissão Nacional de Proteção de Dados (CNPD). Experimente já o <a href="/edit" class="text-[#533afd] font-medium hover:underline">PDF Editor AI</a> e garanta a confidencialidade absoluta dos seus dossiês.
+      </p>
+    `
+  },
+  {
+    slug: 'resumir-pdf-ia-perguntas-respostas-sem-vazar-dados',
+    title: 'Como Resumir PDFs e Fazer Perguntas com IA Sem Enviar Documentos para a Cloud',
+    description: 'Guia para analisar relatórios, contratos e teses com Inteligência Artificial. Resuma pontos-chave e faça perguntas ao documento mantendo sigilo profissional absoluto.',
+    category: 'Inteligência Artificial',
+    publishDate: '2026-10-12',
+    readTime: '8 min de leitura',
+    featured: false,
+    author: {
+      name: 'Dr. Leonardo Esteves',
+      role: 'Investigador em IA & Processamento de Linguagem Natural',
+      avatar: 'LE'
+    },
+    tags: ['Inteligência Artificial', 'Resumir PDF', 'Q&A Documental', 'Produtividade', 'Privacidade'],
+    keyTakeaways: [
+      'Carregar PDFs confidenciais para chatbots genéricos na nuvem pode alimentar modelos de treino e expor segredos de negócio a terceiros.',
+      'O recurso de Resumo Inteligente extrai automaticamente os tópicos executivos, prazos e métricas financeiras essenciais.',
+      'O módulo de Perguntas & Respostas (Q&A) permite questionar diretamente o documento sobre cláusulas específicas sem ter de ler 100 páginas.',
+      'Preservação estrita de sigilo: os textos são processados com isolamento de sessão e sem armazenamento persistente.',
+      'Funciona perfeitamente em contratos comerciais, despachos jurídicos, faturas e relatórios financeiros.'
+    ],
+    tableOfContents: [
+      { id: 'revolucao-qa-ia', text: '1. A Nova Fronteira: Conversar com os Seus Documentos' },
+      { id: 'riscos-chatbots-cloud', text: '2. O Risco Oculto dos Chatbots Cloud Tradicionais' },
+      { id: 'resumos-executivos-ia', text: '3. Como Gerar um Resumo Executivo em Segundos' },
+      { id: 'perguntas-e-respostas-pratica', text: '4. Fazer Perguntas Inteligentes ao Documento' },
+      { id: 'casos-praticos-empresas', text: '5. Casos de Uso: Contratos, Finanças e Auditoria' },
+      { id: 'futuro-ia-documental', text: '6. O Futuro da Análise Documental Segura' }
+    ],
+    content: `
+      <p class="lead">
+        Ler relatórios com dezenas de páginas, contratos societários densos ou despachos jurídicos extensos consome horas preciosas de qualquer profissional. A Inteligência Artificial inaugurou uma nova forma de trabalhar: <strong>a capacidade de resumir documentos instantaneamente e fazer perguntas diretas ao texto</strong>.
+      </p>
+
+      <h2 id="revolucao-qa-ia">1. A Nova Fronteira: Conversar com os Seus Documentos</h2>
+      <p>
+        Imagine que recebe uma minuta de contrato com 80 páginas e precisa saber com urgência: <em>"Qual é a cláusula de penalização em caso de rescisão antecipada?"</em> ou <em>"Existe alguma obrigação de exclusividade após a cessação do acordo?"</em>.
+      </p>
+      <p>
+        Em vez de passar a tarde a fazer scroll manual ou pesquisas de palavras-chave cegas, pode simplesmente interrogar a inteligência artificial integrada no seu editor para obter uma resposta contextualizada com citação da secção exata do documento.
+      </p>
+
+      <h2 id="riscos-chatbots-cloud">2. O Risco Oculto dos Chatbots Cloud Tradicionais</h2>
+      <p>
+        A maioria das soluções populares de "ChatPDF" funciona através do envio integral do ficheiro para servidores remotos na Califórnia ou noutras jurisdições. Muitas dessas plataformas incluem cláusulas nos seus termos de serviço que autorizam o fornecedor a utilizar os ficheiros carregados para <strong>"treino e melhoria de futuros modelos de IA"</strong>.
+      </p>
+      <p>
+        Se carregar uma auditoria financeira confidencial ou uma patente em desenvolvimento para esses serviços, a informação proprietária da sua empresa deixa de ser privada.
+      </p>
+      <p>
+        No <strong>PDF Editor AI</strong>, a privacidade é um princípio estruturante. O processamento analítico respeita a soberania dos dados do utilizador, assegurando que segredos industriais e dados confidenciais nunca são partilhados nem reutilizados para treino.
+      </p>
+
+      <h2 id="resumos-executivos-ia">3. Como Gerar um Resumo Executivo em Segundos</h2>
+      <p>
+        Para obter uma síntese executiva no <a href="/edit?tab=summary" class="text-[#533afd] font-medium hover:underline">PDF Editor AI</a>:
+      </p>
+      <ol class="space-y-2 text-xs text-[#273951] my-4">
+        <li>Abra o documento no editor em <a href="/edit" class="text-[#533afd] font-medium hover:underline">pdfeditx.com/edit</a>.</li>
+        <li>Aceda ao separador <strong>"Superpoderes de IA"</strong> e escolha a funcionalidade <strong>"Resumir Documento"</strong>.</li>
+        <li>O motor analisa a estrutura dos parágrafos, cabeçalhos e tabelas numéricas, devolvendo uma lista de tópicos essenciais, conclusões e datas limite.</li>
+        <li>Pode copiar o resumo ou anexá-lo como uma nota de capa na primeira página do PDF.</li>
+      </ol>
+
+      <h2 id="perguntas-e-respostas-pratica">4. Fazer Perguntas Inteligentes ao Documento</h2>
+      <p>
+        O módulo de Perguntas & Respostas (Q&A) permite uma interação fluida em linguagem natural. Exemplos práticos de perguntas que pode formular:
+      </p>
+      <ul class="space-y-1.5 text-xs text-[#273951] my-4">
+        <li><em>"Quais são os prazos de pagamento acordados na cláusula 4?"</em></li>
+        <li><em>"Qual é o valor total de IVA mencionado na fatura?"</em></li>
+        <li><em>"Resume em 3 pontos as obrigações da segunda outorgante."</em></li>
+        <li><em>"Existem referências a tribunais arbitrais ou foro judicial?"</em></li>
+      </ul>
+
+      <h2 id="casos-praticos-empresas">5. Casos de Uso: Contratos, Finanças e Auditoria</h2>
+      <p>
+        Esta tecnologia transforma o dia a dia de diferentes setores de atividade:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+        <div class="p-4 rounded-xl bg-white border border-[#e3e8ee]">
+          <h4 class="font-semibold text-xs text-[#0d253d] mb-1">Advocacia e Notariado</h4>
+          <p class="text-[11px] text-[#64748d]">Triagem célere de peças processuais, despachos judiciais e minutas contratuais de elevado volume.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-[#e3e8ee]">
+          <h4 class="font-semibold text-xs text-[#0d253d] mb-1">Contabilidade e Finanças</h4>
+          <p class="text-[11px] text-[#64748d]">Verificação de balanços, demonstrações de resultados e conformidade de faturas com tabelas de retenção.</p>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-[#e3e8ee]">
+          <h4 class="font-semibold text-xs text-[#0d253d] mb-1">Recursos Humanos</h4>
+          <p class="text-[11px] text-[#64748d]">Análise comparativa de currículos, certificados de habilitações e adendas de contratos de trabalho.</p>
+        </div>
+      </div>
+
+      <h2 id="futuro-ia-documental">6. O Futuro da Análise Documental Segura</h2>
+      <p>
+        A inteligência artificial não deve obrigar a abdicar da privacidade dos seus dados. No <strong>PDF Editor AI</strong>, combinamos inovação algorítmica de topo com respeito escrupuloso pela confidencialidade profissional. Experimente o <a href="/edit" class="text-[#533afd] font-semibold hover:underline">estúdio de IA no navegador</a> hoje mesmo.
+      </p>
+    `
+  },
+  {
+    slug: 'como-editar-texto-pdf-gratis-sem-desformatar',
+    title: 'Como Editar Texto em PDF Grátis no Navegador Sem Desformatar o Documento',
+    description: 'Diga adeus a conversões para Word que estragam fontes e tabelas. Saiba como corrigir textos, alterar datas e preencher campos em PDF diretamente no navegador.',
+    category: 'Produtividade',
+    publishDate: '2026-10-11',
+    readTime: '6 min de leitura',
+    featured: false,
+    author: {
+      name: 'Mário Vasconcelos',
+      role: 'Engenheiro de Software & Auditor UX',
+      avatar: 'MV'
+    },
+    tags: ['Editar Texto', 'PDF sem Desformatar', 'Whiteout', 'Produtividade', 'Ferramenta Grátis'],
+    keyTakeaways: [
+      'Converter um PDF para Word frequentemente quebra fontes personalizadas, tabelas e posições de logótipos.',
+      'O PDF Editor AI permite editar diretamente em camadas vetoriais sem alterar o layout estrutural do documento.',
+      'A ferramenta Corretor (Whiteout) apaga com perfeição valores ou datas antigas com o tom de fundo exato da página.',
+      'Inserção de caixas de texto com controlo rigoroso de tipografia, tamanho de letra e alinhamento.',
+      'Sem marcas de água, sem registo e com suporte a documentos com centenas de páginas.'
+    ],
+    tableOfContents: [
+      { id: 'o-pesadelo-conversao-word', text: '1. O Pesadelo da Conversão PDF &rarr; Word' },
+      { id: 'como-funciona-canvas-vetorial', text: '2. Como Funciona a Edição Direta em Camadas' },
+      { id: 'passo-a-passo-edicao-texto', text: '3. Passo a Passo: Corrigir Texto Sem Perder Formatação' },
+      { id: 'ferramenta-whiteout', text: '4. O Segredo do Corretor Digital (Whiteout)' },
+      { id: 'adicionar-imagens-e-formas', text: '5. Inserir Imagens, Carimbos e Formas Geométricas' },
+      { id: 'dicas-produtividade', text: '6. Dicas de Produtividade para Documentos Multipágina' }
+    ],
+    content: `
+      <p class="lead">
+        Quem nunca passou por esta dor de cabeça: precisa apenas de <strong>alterar a data de um contrato em PDF ou corrigir um pequeno erro ortográfico num certificado</strong>, recorre a um conversor gratuito de PDF para Word e, quando o ficheiro abre, as tabelas estão desfeitas, as fontes mudaram e as imagens saltaram para a página seguinte.
+      </p>
+
+      <h2 id="o-pesadelo-conversao-word">1. O Pesadelo da Conversão PDF &rarr; Word</h2>
+      <p>
+        O formato PDF foi criado para ser uma representação final estática de impressão (Fixed Layout). Ao forçar a conversão para Word (DOCX), os conversores tentam adivinhar fluxos de parágrafos que não existem originalmente, resultando em cabeçalhos sobrepostos e quebras de página caóticas.
+      </p>
+      <p>
+        Para pequenas e médias correções, a solução mais eficiente não é converter o ficheiro, mas sim <strong>editar diretamente sobre as coordenadas vetoriais do PDF</strong>.
+      </p>
+
+      <h2 id="como-funciona-canvas-vetorial">2. Como Funciona a Edição Direta em Camadas</h2>
+      <p>
+        O estúdio do <a href="/edit" class="text-[#533afd] font-medium hover:underline">PDF Editor AI</a> utiliza um motor de renderização WebAssembly de alta fidelidade montado sobre um canvas interativo.
+      </p>
+      <p>
+        Cada página do documento é preservada na sua resolução nativa de impressão (300 DPI), permitindo que adicione novas camadas de texto, caixas de anotação, carimbos e imagens vetoriais com precisão ao píxel, sem tocar na tipografia original das restantes linhas.
+      </p>
+
+      <h2 id="passo-a-passo-edicao-texto">3. Passo a Passo: Corrigir Texto Sem Perder Formatação</h2>
+      <p>
+        Siga este método simples para retificar qualquer texto em PDF:
+      </p>
+      <ol class="space-y-3 text-xs text-[#273951] my-4">
+        <li><strong>Arraste o PDF para o editor:</strong> Abra <a href="/edit" class="text-[#533afd] font-medium hover:underline">pdfeditx.com/edit</a> e largue o documento na janela.</li>
+        <li><strong>Apague o texto antigo:</strong> Selecione a ferramenta <strong>"Corretor / Whiteout"</strong> e passe o retângulo sobre a data, preço ou palavra que deseja substituir. O fundo fica perfeitamente limpo e uniforme.</li>
+        <li><strong>Adicione a nova caixa de texto:</strong> Clique na ferramenta <strong>"Texto"</strong> (<kbd>T</kbd>) e clique sobre a área apagada.</li>
+        <li><strong>Ajuste a tipografia:</strong> Escolha a família de fontes (Sans-Serif, Serif ou Monospace), defina a cor exata do texto (usando o seletor de cores ou hexadecimal) e o tamanho exato da letra.</li>
+        <li><strong>Descarregue o PDF corrigido:</strong> Clique em <em>"Guardar & Descarregar"</em>. O ficheiro mantém 100% da formatação e metadados originais sem marcas de água.</li>
+      </ol>
+
+      <h2 id="ferramenta-whiteout">4. O Segredo do Corretor Digital (Whiteout)</h2>
+      <p>
+        A ferramenta <strong>Whiteout</strong> é o equivalente digital ao corretor líquido ("tipex"). Permite cobrir rapidamente carimbos antigos, assinaturas de colaboradores anteriores ou cláusulas desatualizadas. O corretor funde-se com o fundo do documento, garantindo que o novo texto sobreposto pareça nativo desde a primeira tiragem.
+      </p>
+
+      <h2 id="adicionar-imagens-e-formas">5. Inserir Imagens, Carimbos e Formas Geométricas</h2>
+      <p>
+        Além de texto, pode enriquecer os seus documentos adicionando:
+      </p>
+      <ul class="space-y-1.5 text-xs text-[#273951] my-4">
+        <li><strong>Logótipos e Selos:</strong> Insira imagens PNG com fundo transparente para adicionar o logótipo da sua empresa ou carimbo de "Aprovado / Pago".</li>
+        <li><strong>Realces e Retângulos:</strong> Sublinhe cláusulas com a caneta de realce semitransparente (amarelo, verde ou azul).</li>
+        <li><strong>Setas e Caixas de Alerta:</strong> Aponte detalhes cruciais em plantas técnicas ou relatórios de auditoria.</li>
+      </ul>
+
+      <h2 id="dicas-produtividade">6. Dicas de Produtividade para Documentos Multipágina</h2>
+      <p>
+        Se trabalha com catálogos, relatórios de contas ou contratos extensos, utilize as teclas de atalho:
+      </p>
+      <div class="my-4 p-4 rounded-xl bg-[#f6f9fc] border border-[#e3e8ee] flex flex-wrap gap-4 text-xs text-[#273951]">
+        <span><kbd>T</kbd> : Nova Caixa de Texto</span>
+        <span><kbd>D</kbd> : Caneta Desenho</span>
+        <span><kbd>Ctrl</kbd> + <kbd>Z</kbd> : Desfazer Ação</span>
+        <span><kbd>Ctrl</kbd> + <kbd>S</kbd> : Guardar PDF</span>
+      </div>
+      <p>
+        Poupe tempo e evite dores de cabeça com conversões falhadas. Experimente já o <a href="/edit?tool=text" class="text-[#533afd] font-semibold hover:underline">estúdio de texto do PDF Editor AI</a>.
+      </p>
+    `
+  },
+  {
+    slug: 'rgpd-e-documentos-pdf-riscos-conversores-online-empresas',
+    title: 'RGPD e PDFs: Os Riscos Ocultos dos Conversores Gratuitos para Advogados e Empresas',
+    description: 'Enviar contratos e dados de clientes para ferramentas gratuitas pode violar o RGPD e gerar coimas pesadas. Conheça as obrigações legais da CNPD e a solução client-side.',
+    category: 'Conformidade Legal',
+    publishDate: '2026-10-10',
+    readTime: '9 min de leitura',
+    featured: false,
+    author: {
+      name: 'Dra. Filipa Mendonça',
+      role: 'Advogada & Encarregada de Proteção de Dados (DPO)',
+      avatar: 'FM'
+    },
+    tags: ['RGPD', 'Conformidade Legal', 'CNPD', 'Advocacia', 'Proteção de Dados', 'Cibersegurança'],
+    keyTakeaways: [
+      'Carregar PDFs com dados de clientes para sites externos constitui uma subcontratação de tratamento de dados não autorizada pelo Artigo 28.º do RGPD.',
+      'A Comissão Nacional de Proteção de Dados (CNPD) pode aplicar coimas até 20 milhões de euros ou 4% do volume de negócios global por violações graves.',
+      'Promessas comerciais de que "os ficheiros são apagados após 1 hora" não impedem a responsabilidade jurídica em caso de interceção ou apreensão de servidores.',
+      'Transferências de dados para ferramentas cloud fora do Espaço Económico Europeu (EEE) exigem salvaguardas adicionais complexas.',
+      'O PDF Editor AI executa 100% no cliente via WebAssembly: zero transferência de dados, zero registo e conformidade nativa sem DPA.'
+    ],
+    tableOfContents: [
+      { id: 'o-alerta-nas-empresas', text: '1. O Alerta nas Empresas e Escritórios de Advocacia' },
+      { id: 'artigo-28-rgpd', text: '2. Artigo 28.º do RGPD e a Subcontratação Oculta' },
+      { id: 'riscos-transferencia-internacional', text: '3. A Ilusão do "Apagamento em 60 Minutos"' },
+      { id: 'coimas-da-cnpd', text: '4. Quadro Sancionatório e Jurisprudência da CNPD' },
+      { id: 'arquitetura-client-side-rgpd', text: '5. Porquê o WebAssembly Client-Side é a Solução Definitiva' },
+      { id: 'checklist-dpo', text: '6. Checklist de Segurança para DPOs e Gestores' }
+    ],
+    content: `
+      <p class="lead">
+        Num dia típico de trabalho num escritório de advogados, gabinete de contabilidade ou departamento de recursos humanos, centenas de ficheiros PDF contendo nomes completos, cartões de cidadão, salários, moradas e registos clínicos circulam entre computadores. Quando um colaborador precisa de juntar, comprimir ou editar um desses ficheiros, é comum recorrer ao motor de busca e escolher o primeiro conversor online gratuito que encontra.
+      </p>
+
+      <h2 id="o-alerta-nas-empresas">1. O Alerta nas Empresas e Escritórios de Advocacia</h2>
+      <p>
+        O que muitos profissionais desconhecem é que esta ação aparentemente inocente de <strong>fazer o upload de um PDF com dados pessoais para um site terceiro na internet pode configurar uma infração gravíssima ao Regulamento Geral sobre a Proteção de Dados (RGPD)</strong>.
+      </p>
+
+      <h2 id="artigo-28-rgpd">2. Artigo 28.º do RGPD e a Subcontratação Oculta</h2>
+      <p>
+        De acordo com o Artigo 28.º do RGPD, sempre que uma empresa (o <em>Responsável pelo Tratamento</em>) transfere dados pessoais para uma entidade terceira para que esta execute uma operação técnica (como converter ou manipular um documento), essa entidade torna-se formalmente um <strong>Subcontratante (Data Processor)</strong>.
+      </p>
+      <p>
+        Para que essa transferência seja lícita, a lei exige a existência prévia de um <strong>Acordo de Tratamento de Dados (Data Processing Agreement — DPA)</strong> vinculativo, com garantias técnicas auditáveis, estipulação expressa de responsabilidades e notificação das medidas de segurança adotadas.
+      </p>
+      <p>
+        Ao carregar um contrato para um site gratuito genérico na internet, nenhum DPA foi assinado. Na prática, a sua empresa acabou de transmitir dados protegidos para um fornecedor anónimo cujas políticas de conservação e localização física dos servidores são desconhecidas.
+      </p>
+
+      <h2 id="riscos-transferencia-internacional">3. A Ilusão do "Apagamento em 60 Minutos"</h2>
+      <p>
+        Quase todos os conversores online populares incluem nos seus rodapés a frase tranquilizadora: <em>"Os seus ficheiros são apagados automaticamente dos nossos servidores após 1 ou 2 horas."</em>
+      </p>
+      <p>
+        Para os Encarregados de Proteção de Dados (DPOs) e auditores de segurança, este argumento é falacioso:
+      </p>
+      <ul class="space-y-2 text-xs text-[#273951] my-4">
+        <li><strong>A transferência já ocorreu:</strong> O simples ato de o documento viajar pela rede e entrar no disco rígido do servidor do fornecedor já consubstancia uma operação de tratamento de dados.</li>
+        <li><strong>Janela de Vulnerabilidade:</strong> Durante os 60 a 120 minutos em que o ficheiro reside na memória ou disco temporário da cloud, está suscetível a ataques de injeção, cópias de segurança automáticas de volumes EBS ou acessos indevidos de administradores de sistemas.</li>
+        <li><strong>Transferência para Países Terceiros:</strong> Muitos destes servidores situam-se nos Estados Unidos da América ou na Ásia, acionando o regime rigoroso dos Artigos 44.º a 49.º do RGPD sobre transferências internacionais de dados.</li>
+      </ul>
+
+      <h2 id="coimas-da-cnpd">4. Quadro Sancionatório e Jurisprudência da CNPD</h2>
+      <p>
+        A <strong>Comissão Nacional de Proteção de Dados (CNPD)</strong> em Portugal e as autoridades congéneres da União Europeia (como a AEPD espanhola ou a CNIL francesa) têm endurecido substancialmente a fiscalização sobre fugas de informação decorrentes do uso negligente de serviços cloud não homologados (o chamado <em>Shadow IT</em>).
+      </p>
+      <p>
+        O Artigo 83.º do RGPD prevê sanções administrativas que podem atingir:
+      </p>
+      <div class="my-4 p-4 rounded-xl bg-rose-50 border border-rose-200 text-xs text-rose-900 space-y-1">
+        <p class="font-semibold text-sm text-rose-950">Quadro de Coimas Máximas do RGPD:</p>
+        <p>• Até <strong>20 000 000 €</strong> (vinte milhões de euros), ou</p>
+        <p>• Até <strong>4% do volume de negócios anual global</strong> do exercício financeiro anterior, consoante o montante que for mais elevado.</p>
+      </div>
+
+      <h2 id="arquitetura-client-side-rgpd">5. Porquê o WebAssembly Client-Side é a Solução Definitiva</h2>
+      <p>
+        Perante este cenário regulamentar exigente, qual é a alternativa prática para os colaboradores que necessitam de editar e organizar ficheiros PDF sem violar a lei?
+      </p>
+      <p>
+        A resposta tecnológica é o modelo <strong>Client-Side com WebAssembly</strong> adotado pelo <a href="/privacy" class="text-[#533afd] font-medium hover:underline">PDF Editor AI</a>.
+      </p>
+      <p>
+        Como o motor criptográfico e gráfico roda 100% no navegador web do computador do utilizador (usando a memória RAM local da máquina):
+      </p>
+      <ol class="space-y-2 text-xs text-[#273951] my-4">
+        <li><strong>Zero Transferência de Dados:</strong> O ficheiro PDF nunca é enviado para nenhum servidor remoto.</li>
+        <li><strong>Inaplicabilidade de Subcontratação:</strong> Não existindo comunicação com servidores terceiros, não há transmissão de dados a subcontratantes, eliminando a exigência burocrática de DPA.</li>
+        <li><strong>Soberania Absoluta:</strong> O documento cumpre as políticas de segurança mais estritas de escritórios de advocacia, bancos e hospitais.</li>
+      </ol>
+
+      <h2 id="checklist-dpo">6. Checklist de Segurança para DPOs e Gestores</h2>
+      <p>
+        Se é responsável pela segurança de informação ou conformidade na sua entidade, implemente estas três medidas imediatas:
+      </p>
+      <ul class="space-y-2 text-xs text-[#273951] my-4">
+        <li><strong>1. Bloqueie conversores cloud não homologados:</strong> Instrua a equipa de redes a restringir o acesso a ferramentas online que carregam documentos confidenciais para servidores remotos.</li>
+        <li><strong>2. Homologue ferramentas locais no navegador:</strong> Disponibilize internamente atalhos para ferramentas client-side seguras como o <a href="/edit" class="text-[#533afd] font-medium hover:underline">PDF Editor AI</a>.</li>
+        <li><strong>3. Realize ações de sensibilização:</strong> Explique aos colaboradores que um documento em PDF com NIF ou dados bancários tem o mesmo valor confidencial de um dossiê em papel trancado a chave.</li>
+      </ul>
+
+      <p class="pt-4">
+        Garanta hoje mesmo a conformidade jurídica da sua organização. Conheça detalhadamente a nossa <a href="/privacy" class="text-[#533afd] font-semibold hover:underline">política e auditoria técnica de privacidade</a> e utilize o <a href="/edit" class="text-[#533afd] font-semibold hover:underline">editor no navegador</a> com total tranquilidade legal.
+      </p>
+    `
   }
 ];
 
